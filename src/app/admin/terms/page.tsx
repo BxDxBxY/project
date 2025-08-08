@@ -170,13 +170,18 @@ export default function AdminTermsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Manage Terms</h1>
-      <button
-        onClick={() => handleOpenModal()}
-        className="mb-4 px-4 py-2 bg-green-600 text-white rounded"
-      >
-        Create New Term
-      </button>
+      <div className="mb-2 flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Terminlarni Boshqarish</h1>
+        <Button
+          variant="contained"
+          color="success"
+          size="medium"
+          onClick={() => handleOpenModal()}
+          className="mb-4 px-4 py-2 bg-green-600 text-white rounded"
+        >
+          Yangi termin yaratish
+        </Button>
+      </div>
 
       {loading ? (
         <LoadingSpinner size="lg" />
@@ -193,19 +198,24 @@ export default function AdminTermsPage() {
                 <div className="font-semibold">{term.title}</div>
                 <div className="text-sm text-gray-500">{term.definition}</div>
               </div>
-              <div className="flex space-x-2">
-                <button
+              <div className="flex space-x-2 gap-2">
+                <Button
+                  size="small"
+                  color="info"
+                  variant="outlined"
                   onClick={() => handleOpenModal(term)}
                   className="px-3 py-1 bg-blue-100 text-blue-700 rounded"
                 >
-                  Edit
-                </button>
-                <button
+                  O'zgartirish
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  variant="contained"
                   onClick={() => handleOpenDeleteModal(term.id)}
-                  className="px-3 py-1 bg-red-100 text-red-700 rounded"
                 >
-                  Delete
-                </button>
+                  Ochirish
+                </Button>
               </div>
             </div>
           ))}
@@ -259,7 +269,7 @@ export default function AdminTermsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, definition: e.target.value })
                   }
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 min-h-[50px] max-h-[200px] rounded overflow-y-scroll"
                   required
                 />
               </div>
@@ -322,20 +332,26 @@ export default function AdminTermsPage() {
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
-              <div className="flex justify-end space-x-2">
-                <button
+              <div className="flex justify-end gap-2">
+                <Button
                   type="button"
+                  size="small"
+                  color="info"
+                  variant="outlined"
                   onClick={handleCloseModal}
                   className="px-4 py-2 bg-gray-400 text-white rounded"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
+                  size="small"
+                  color="success"
+                  variant="contained"
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded"
                 >
                   {editingTerm ? "Update Term" : "Create Term"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -354,23 +370,25 @@ export default function AdminTermsPage() {
             Confirm Deletion
           </Typography>
           <Typography id="delete-modal-description" className="my-4">
-            Are you sure you want to delete this term? This action cannot be
-            undone.
+            Haqiqatan ham bu shartni oʻchirib tashlamoqchimisiz? Bunday harakat
+            bo'lishi mumkin emas bekor qilindi.
           </Typography>
-          <div className="flex justify-end space-x-2">
+          <div className="flex justify-end gap-2">
             <Button
               variant="outlined"
               onClick={handleCloseDeleteModal}
               color="secondary"
+              size="small"
             >
-              Cancel
+              Bekor qilish
             </Button>
             <Button
+              size="small"
               variant="contained"
               onClick={handleDeleteTerm}
               color="error"
             >
-              Confirm
+              Tasdiqlash
             </Button>
           </div>
         </Box>

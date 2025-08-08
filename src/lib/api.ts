@@ -234,13 +234,15 @@ class ApiClient {
     id: number,
     data: UpdateCategoryData
   ): Promise<Category> {
+    console.log(data, '123')
     return this.request<Category>({
       method: "PUT",
-      url: `/dictionary/create_category/${id}/`,
+      url: `/dictionary/category/${id}/`,
       data,
     });
   }
   async deleteCategory(id: number): Promise<void> {
+    console.log(id)
     return this.request<void>({
       method: "DELETE",
       url: `/dictionary/create_category/${id}/`,
