@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { debounce } from '@/lib/utils';
+import React, { useState, useEffect, useRef } from "react";
+import { debounce } from "@/lib/utils"; // debounce function as you provided
 
 interface SearchBarProps {
   value: string;
@@ -13,20 +13,26 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
-  placeholder = 'Search terms...',
-  className = '',
+  placeholder = "Search terms...",
+  className = "",
   debounceMs = 300,
   disabled = false,
 }) => {
   const [localValue, setLocalValue] = useState(value);
 
-  // Debounced onChange handler
-  const debouncedOnChange = useCallback(
+  // Create a stable ref to store the debounced function
+  const debouncedOnChangeRef = useRef(
     debounce((searchValue: string) => {
       onChange(searchValue);
-    }, debounceMs),
-    [onChange, debounceMs]
+    }, debounceMs)
   );
+
+  // Update ref when debounceMs changes
+  useEffect(() => {
+    debouncedOnChangeRef.current = debounce((searchValue: string) => {
+      onChange(searchValue);
+    }, debounceMs);
+  }, [debounceMs, onChange]);
 
   // Update local value when prop changes
   useEffect(() => {
@@ -37,13 +43,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setLocalValue(newValue);
-    debouncedOnChange(newValue);
+    debouncedOnChangeRef.current(newValue);
   };
 
   // Handle clear button
   const handleClear = () => {
-    setLocalValue('');
-    onChange('');
+    setLocalValue("");
+    onChange("");
   };
 
   return (
@@ -95,4 +101,4 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       )}
     </div>
   );
-}; 
+};

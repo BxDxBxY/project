@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Term } from "@/types";
-import { fetchTerm, fetchTerms } from "@/lib/api";
+import { fetchTerm, fetchTermPhoto, fetchTerms } from "@/lib/api";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LanguageSelector } from "@/components/dictionary/LanguageSelector";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/lib/utils";
 import { logger } from "@/lib/utils";
 import RelatedTerm from "@/components/dictionary/RelatedTerm";
+import Image from "next/image";
 
 interface TermDetailPageProps {
   params: Promise<{ word: string }>;
@@ -26,9 +27,17 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("en");
+  const [termPhotos, setTermPhotos] = useState([1, 2]);
+  const [termPhotosURL, setTermPhotosURL] = useState(null);
   const resolvedParams = useParams();
   const termId = resolvedParams?.word as string;
 
+  const fetchTermPhotos = async (termPhotos: number[]) => {
+    // termPhotos.map((item) => {
+    //   return
+    // });
+    fetchTermPhoto(2).then((data) => setTermPhotosURL(data.photo));
+  };
   useEffect(() => {
     const loadTerm = async () => {
       if (!termId) {
@@ -46,6 +55,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
         setTerms(terms);
         setTerm(termData);
         logger.info(`Loaded term: ${termData.title}`);
+        if (termPhotos.length > 0) {
+          fetchTermPhotos(termPhotos);
+        }
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to load term";
@@ -57,7 +69,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
     };
 
     loadTerm();
-  }, [termId]);
+  }, [termId, termPhotos]);
 
   if (loading) {
     return (
@@ -118,11 +130,11 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
           </h1>
 
           {/* Language Selector */}
-          <LanguageSelector
+          {/* <LanguageSelector
             currentLanguage={language}
             onLanguageChange={setLanguage}
             className="mb-6"
-          />
+          /> */}
 
           {/* Back Button */}
           <Link
@@ -147,7 +159,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
         </div>
 
         {/* Term Details */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-white rounded-lg shadow-lg p-8 w-full">
           {/* Definition */}
           <div className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">
@@ -161,17 +173,22 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
           </div>
 
           {/* Photo if available */}
-          {term.photo && (
-            <div className="mb-8">
+          {termPhotos.length > 0 && (
+            <div className="mb-8 w-full box-border">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                 Photo
               </h2>
-              <div className="flex justify-center">
-                <img
-                  src={term.photo}
-                  alt={term.title}
-                  className="max-w-full h-auto rounded-lg shadow-md"
-                />
+              <div className="grid grid-cols-2 w-full gap-2 ">
+                {termPhotos.map((e, i) => (
+                  <Image
+                    key={i}
+                    src={termPhotosURL || ""}
+                    alt={term.title}
+                    height={100}
+                    width={200}
+                    className="w-full rounded-lg box-border shadow-md"
+                  />
+                ))}
               </div>
             </div>
           )}
@@ -204,7 +221,6 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
                   </dd>
                 </div>
                 <div>
-                  
                   <dd className="text-sm text-gray-900">
                     <RelatedTerm term={term} terms={terms} />
                   </dd>

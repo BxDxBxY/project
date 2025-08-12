@@ -81,7 +81,7 @@ class ApiClient {
     this.client.interceptors.request.use(
       (config) => {
         // Only add auth token for POST, PUT, DELETE requests as per Swagger
-        const requiresAuth = ["POST", "PUT", "DELETE"].includes(
+        const requiresAuth = ["POST","GET", "PUT", "DELETE"].includes(
           config.method?.toUpperCase() || ""
         );
         if (requiresAuth) {
@@ -114,6 +114,10 @@ class ApiClient {
           try {
             const refreshToken = TokenManager.getRefreshToken();
             if (!refreshToken) {
+              TokenManager.clearTokens();
+              if (typeof window !== "undefined") {
+                window.location.replace("/admin/login"); // replace prevents back nav
+              }
               throw new Error("No refresh token available");
             }
 
@@ -147,13 +151,6 @@ class ApiClient {
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
-          }
-        }
-
-        if (error.response?.status === 401) {
-          TokenManager.clearTokens();
-          if (typeof window !== "undefined") {
-            window.location.replace("/admin/login"); // replace prevents back nav
           }
         }
 
@@ -199,8 +196,11 @@ class ApiClient {
     });
   }
 
-  async verifyToken(token: string): Promise<{ valid: boolean }> {
-    return this.request<{ valid: boolean }>({
+  async verifyToken(
+    token: string
+  ): Promise<{ detail?: string; code?: string }> {
+    return axios.post(API_BASE_URL + "/auth/token/verify/", { token });
+    return this.request<{ detail?: string; code?: string }>({
       method: "POST",
       url: "/auth/token/verify/",
       data: { token },
@@ -234,15 +234,14 @@ class ApiClient {
     id: number,
     data: UpdateCategoryData
   ): Promise<Category> {
-    console.log(data, '123')
     return this.request<Category>({
       method: "PUT",
-      url: `/dictionary/category/${id}/`,
+      url: `/dictionary/create_category/${id}/`,
       data,
     });
   }
   async deleteCategory(id: number): Promise<void> {
-    console.log(id)
+    console.log(id);
     return this.request<void>({
       method: "DELETE",
       url: `/dictionary/create_category/${id}/`,
@@ -261,6 +260,13 @@ class ApiClient {
     return this.request<Term>({
       method: "GET",
       url: `/dictionary/term/${id}/`,
+    });
+  }
+  async fetchTermPhoto(id: number): Promise<any> {
+    console.log(id);
+    return this.request<any>({
+      method: "GET",
+      url: `/dictionary/term_photo/${id}/`,
     });
   }
 
@@ -382,6 +388,8 @@ export const createCategory = (data: CreateCategoryData) =>
 export const updateCategory = (id: number, data: UpdateCategoryData) =>
   apiClient.updateCategory(id, data);
 export const deleteCategory = (id: number) => apiClient.deleteCategory(id);
+
+export const fetchTermPhoto = (id: number) => apiClient.fetchTermPhoto(id);
 
 export const fetchTerms = () => apiClient.fetchTerms();
 export const fetchTerm = (id: number) => apiClient.fetchTerm(id);

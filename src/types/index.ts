@@ -29,6 +29,7 @@ export interface CreateUserData {
 export interface AuthTokens {
   access: string;
   refresh: string;
+  user_type: string;
 }
 
 export interface User {
@@ -47,6 +48,8 @@ export interface Category {
   id: number;
   name: string;
 }
+
+export type ModalType = "add" | "edit" | "delete";
 
 export interface Term {
   id: number;
@@ -151,4 +154,4 @@ export interface LanguageSelectorProps {
   languages: Language[];
   currentLanguage: string;
   onLanguageChange: (language: string) => void;
-} 
+}

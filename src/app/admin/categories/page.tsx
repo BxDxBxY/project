@@ -6,10 +6,11 @@ import {
   updateCategory,
   deleteCategory,
 } from "@/lib/api";
-import { Category } from "@/types";
+import { Category, ModalType } from "@/types";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Modal } from "@/components/ui/Modal";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
+import { CategoryModal } from "@/components/ui/CategoryModal";
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -19,6 +20,7 @@ export default function AdminCategoriesPage() {
   const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<ModalType>("add");
 
   // NEW: add category modal
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -35,14 +37,20 @@ export default function AdminCategoriesPage() {
       const data = await fetchCategories();
       setCategories(data);
     } catch (err: any) {
-      setError(err.message || "Failed to load categories");
+      setModalError(err?.details?.name || "Failed to load categories");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEdit = (category: Category) => setEditCategory(category);
-  const handleDelete = (id: number) => setDeleteCategoryId(id);
+  const handleEdit = (category: Category) => {
+    setModalType("edit");
+    setEditCategory(category);
+  };
+  const handleDelete = (id: number) => {
+    setModalType("delete");
+    setDeleteCategoryId(id);
+  };
   const closeModals = () => {
     setEditCategory(null);
     setDeleteCategoryId(null);
@@ -51,17 +59,18 @@ export default function AdminCategoriesPage() {
     setModalError(null);
   };
 
-  const handleEditSubmit = async (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.FormEvent, newCategoryName = "") => {
     e.preventDefault();
     if (!editCategory) return;
     setModalLoading(true);
     setModalError(null);
     try {
-      await updateCategory(editCategory.id, { name: editCategory.name });
+      console.log(editCategory);
+      await updateCategory(editCategory.id, { name: newCategoryName });
       await loadCategories();
       closeModals();
     } catch (err: any) {
-      setModalError(err.message || "Failed to update category");
+      setModalError(err?.details?.name || "Failed to update category");
     } finally {
       setModalLoading(false);
     }
@@ -84,7 +93,7 @@ export default function AdminCategoriesPage() {
 
   const handleAddCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCategoryName.trim()) return;
+    // if (!newCategoryName.trim()) return;
     setModalLoading(true);
     setModalError(null);
     try {
@@ -92,7 +101,9 @@ export default function AdminCategoriesPage() {
       await loadCategories();
       closeModals();
     } catch (err: any) {
-      setModalError(err.message || "Failed to create category");
+      console.log(err);
+
+      setModalError(err?.details?.name || "Failed to create category");
     } finally {
       setModalLoading(false);
     }
@@ -101,19 +112,23 @@ export default function AdminCategoriesPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Manage Categories</h1>
+        <h1 className="text-2xl font-bold">Kategoriyalar boshqarish</h1>
         <Button
-          onClick={() => setAddModalOpen(true)}
+          onClick={() => {
+            setModalType("add");
+            setAddModalOpen(true);
+            // handleAddCategorySubmit()
+          }}
           variant="contained"
           color="success"
           size="medium"
         >
-          + Kategoriya qo'shish
+         { "+ Kategoriya qo'shish"}
         </Button>
       </div>
 
       {loading ? (
-        <LoadingSpinner size="lg" />
+        <CircularProgress />
       ) : error ? (
         <div className="text-red-600">{error}</div>
       ) : (
@@ -129,7 +144,11 @@ export default function AdminCategoriesPage() {
                   variant="outlined"
                   color="info"
                   size="small"
-                  onClick={() => handleEdit(category)}
+                  onClick={() => {
+                    setModalType("edit");
+                    handleEdit(category);
+                    setAddModalOpen(true);
+                  }}
                 >
                   O‘zgartirish
                 </Button>
@@ -137,7 +156,11 @@ export default function AdminCategoriesPage() {
                   size="small"
                   color="error"
                   variant="contained"
-                  onClick={() => handleDelete(category.id)}
+                  onClick={() => {
+                    setModalType("delete");
+                    handleDelete(category.id);
+                    setAddModalOpen(true);
+                  }}
                 >
                   O‘chirish
                 </Button>
@@ -147,8 +170,25 @@ export default function AdminCategoriesPage() {
         </div>
       )}
 
+      <CategoryModal
+        open={addModalOpen} // modalType: "add" | "edit" | "delete" | null
+        type={modalType}
+        categoryName={editCategory?.name}
+        newCategoryName={newCategoryName}
+        setNewCategoryName={setNewCategoryName}
+        loading={modalLoading}
+        error={modalError}
+        onClose={closeModals}
+        onSubmitDelete={handleDeleteConfirm}
+        onSubmit={(e) => {
+          if (modalType === "add") handleAddCategorySubmit(e);
+          if (modalType === "edit") handleEditSubmit(e, newCategoryName);
+          if (modalType === "delete") handleDeleteConfirm();
+        }}
+      />
+
       {/* Add Modal */}
-      <Modal open={addModalOpen} onClose={closeModals} title="Add Category">
+      {/* <Modal open={addModalOpen} onClose={closeModals} title="Add Category">
         <form onSubmit={handleAddCategorySubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Name</label>
@@ -180,10 +220,11 @@ export default function AdminCategoriesPage() {
             </button>
           </div>
         </form>
-      </Modal>
+      </Modal> */}
 
       {/* Edit Modal */}
-      <Modal open={!!editCategory} onClose={closeModals} title="Edit Category">
+
+      {/* <Modal open={!!editCategory} onClose={closeModals} title="Edit Category">
         {editCategory && (
           <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
@@ -219,10 +260,10 @@ export default function AdminCategoriesPage() {
             </div>
           </form>
         )}
-      </Modal>
+      </Modal> */}
 
       {/* Delete Modal */}
-      <Modal
+      {/* <Modal
         open={!!deleteCategoryId}
         onClose={closeModals}
         title="Delete Category"
@@ -254,7 +295,7 @@ export default function AdminCategoriesPage() {
             {modalLoading ? "Deleting..." : "Delete"}
           </Button>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

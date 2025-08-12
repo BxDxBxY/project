@@ -2,22 +2,25 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, TokenManager } from "@/lib/api";
+import { login, TokenManager, verifyToken } from "@/lib/api";
 
 export default function AdminLoginPage() {
-  console.log("checking4");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const accessToken = TokenManager.getAccessToken();
 
   // If already logged in, redirect to /admin/terms
   React.useEffect(() => {
-    if (TokenManager.getAccessToken()) {
+    if (accessToken) {
+      verifyToken(accessToken)
+        .then((res) => console.log("123"))
+        .catch((err) => console.log("err"));
       router.replace("/admin/terms");
     }
-  }, [router]);
+  }, [router, accessToken]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +28,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       const tokens = await login({ username, password });
+      console.log("TOKENS", tokens)
       TokenManager.setTokens(tokens.access, tokens.refresh);
       router.replace("/admin/terms");
     } catch (err: any) {

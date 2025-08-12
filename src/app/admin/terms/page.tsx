@@ -18,15 +18,18 @@ import {
   Modal,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 
 export default function AdminTermsPage() {
   const [terms, setTerms] = useState<Term[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorFetching, setErrorFetching] = useState<string | null>(null);
 
   // Modal states
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [loadingReq, setLoadingReq] = useState<boolean>(false);
   const [editingTerm, setEditingTerm] = useState<Term | null>(null); // For editing
   const [formData, setFormData] = useState<CreateTermData>({
     title: "",
@@ -75,24 +78,26 @@ export default function AdminTermsPage() {
 
   // Handle create term
   const handleCreateTerm = async () => {
-    setLoading(true);
+    setLoadingReq(true);
     setError(null);
     try {
       const newTerm = await createTerm(formData);
+      console.log("cant");
       setTerms([...terms, newTerm]);
       setShowModal(false);
       resetForm();
     } catch (err: any) {
-      setError("Failed to create term");
+      console.log(err.details.title[0]);
+      setError("Failed to create term: " + err?.details?.title[0]);
     } finally {
-      setLoading(false);
+      setLoadingReq(false);
     }
   };
 
   // Handle update term
   const handleUpdateTerm = async () => {
     if (!editingTerm) return;
-    setLoading(true);
+    setLoadingReq(true);
     setError(null);
     try {
       const updatedTerm = await updateTerm(
@@ -105,9 +110,9 @@ export default function AdminTermsPage() {
       setShowModal(false);
       resetForm();
     } catch (err: any) {
-      setError("Failed to update term");
+      setError("Failed to create term: " + err.details.title[0]);
     } finally {
-      setLoading(false);
+      setLoadingReq(false);
     }
   };
 
@@ -184,9 +189,9 @@ export default function AdminTermsPage() {
       </div>
 
       {loading ? (
-        <LoadingSpinner size="lg" />
-      ) : error ? (
-        <div className="text-red-600">{error}</div>
+        <CircularProgress />
+      ) : errorFetching ? (
+        <div className="text-red-600">{errorFetching}</div>
       ) : (
         <div className="space-y-4">
           {terms.map((term) => (
@@ -206,7 +211,7 @@ export default function AdminTermsPage() {
                   onClick={() => handleOpenModal(term)}
                   className="px-3 py-1 bg-blue-100 text-blue-700 rounded"
                 >
-                  O'zgartirish
+                  {"O'zgartirish"}
                 </Button>
                 <Button
                   size="small"
@@ -225,137 +230,124 @@ export default function AdminTermsPage() {
       {/* Create/Edit Term Modal */}
       {showModal && (
         <Modal
-          open={showModal}
-          className="fixed inset-0 flex items-center justify-center z-50 "
-        >
-          <div className="bg-white p-6 rounded shadow-lg max-w-lg w-full">
-            <h2 className="text-xl font-bold mb-4">
-              {editingTerm ? "Edit Term" : "Create New Term"}
-            </h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (editingTerm) {
-                  handleUpdateTerm();
-                } else {
-                  handleCreateTerm();
+        open={showModal}
+        className="w-screen h-screen flex items-center justify-center p-5  z-50"
+      >
+        <div className="bg-gray-400 w-screen rounded-2xl p-6 overflow-auto">
+          <h2 className="text-2xl font-bold mb-4">
+            {editingTerm ? "Edit Term" : "Create New Term"}
+          </h2>
+      
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (editingTerm) {
+                handleUpdateTerm();
+              } else {
+                handleCreateTerm();
+              }
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <label htmlFor="title" className="block">
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
                 }
-              }}
-            >
-              <div className="mb-4">
-                <label htmlFor="title" className="block">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
+                className="w-full p-2 border border-gray-300 rounded"
+                required
+              />
+              <span className="text-red-400 text-sm">{error}</span>
+            </div>
+      
+            <div>
+              <label htmlFor="definition" className="block">
+                Definition
+              </label>
+              <textarea
+                id="definition"
+                name="definition"
+                value={formData.definition}
+                onChange={(e) =>
+                  setFormData({ ...formData, definition: e.target.value })
+                }
+                className="w-full p-2 border border-gray-300 min-h-[50px] max-h-[200px] rounded overflow-y-scroll"
+                required
+              />
+            </div>
+      
+            <div>
+              <FormControl fullWidth>
+                <InputLabel id="category-label">Category</InputLabel>
+                <Select
+                  labelId="category-label"
+                  id="category"
+                  value={formData.category}
+                  onChange={(e: any) =>
+                    setFormData({ ...formData, category: e.target.value })
                   }
-                  className="w-full p-2 border border-gray-300 rounded"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="definition" className="block">
-                  Definition
-                </label>
-                <textarea
-                  id="definition"
-                  name="definition"
-                  value={formData.definition}
-                  onChange={(e) =>
-                    setFormData({ ...formData, definition: e.target.value })
-                  }
-                  className="w-full p-2 border border-gray-300 min-h-[50px] max-h-[200px] rounded overflow-y-scroll"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <FormControl fullWidth>
-                  <InputLabel id="category-label">Category</InputLabel>
-                  <Select
-                    labelId="category-label"
-                    id="category"
-                    value={formData.category}
-                    onChange={(e: any) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                    label="Category"
-                  >
-                    {categories.map((category) => (
-                      <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-              {/* <div className="mb-4">
-                <label htmlFor="related_terms" className="block">
-                  Related Terms (IDs)
-                </label>
-                <input
-                  type="text"
-                  id="related_terms"
-                  name="related_terms[]"
-                  value={
-                    formData.related_terms && formData.related_terms.join(", ")
-                  }
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      related_terms: e.target.value
-                        .split(",")
-                        .map((id) => parseInt(id.trim())),
-                    })
-                  }
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div> */}
-              <div className="mb-4">
-                <label htmlFor="photo" className="block">
-                  Upload Photo
-                </label>
-                <input
-                  type="file"
-                  id="photo"
-                  name="photo"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      photo: e.target.files ? e.target.files[0] : null,
-                    })
-                  }
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button
-                  type="button"
-                  size="small"
-                  color="info"
-                  variant="outlined"
-                  onClick={handleCloseModal}
-                  className="px-4 py-2 bg-gray-400 text-white rounded"
+                  label="Category"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  size="small"
-                  color="success"
-                  variant="contained"
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded"
-                >
-                  {editingTerm ? "Update Term" : "Create Term"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </Modal>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+      
+            <div>
+              <label htmlFor="photo" className="block">
+                Upload Photo
+              </label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    photo: e.target.files ? e.target.files[0] : null,
+                  })
+                }
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+      
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                size="small"
+                color="info"
+                variant="outlined"
+                onClick={handleCloseModal}
+                className="px-4 py-2 bg-gray-400 text-white rounded"
+              >
+                Cancel
+              </Button>
+              <Button
+                loading={loadingReq}
+                size="small"
+                color="success"
+                variant="contained"
+                type="submit"
+                className="px-4 py-2 bg-blue-600 text-white rounded"
+              >
+                {editingTerm ? "Update Term" : "Create Term"}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+      
       )}
 
       {/* Delete Confirmation Modal */}
@@ -371,7 +363,7 @@ export default function AdminTermsPage() {
           </Typography>
           <Typography id="delete-modal-description" className="my-4">
             Haqiqatan ham bu shartni oʻchirib tashlamoqchimisiz? Bunday harakat
-            bo'lishi mumkin emas bekor qilindi.
+            {"bo'lishi"} mumkin emas bekor qilindi.
           </Typography>
           <div className="flex justify-end gap-2">
             <Button

@@ -1,40 +1,44 @@
 "use client";
 
-import React from 'react';
-import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { SearchBar } from '@/components/dictionary/SearchBar';
-import { CategoryFilter } from '@/components/dictionary/CategoryFilter';
-import { LanguageSelector } from '@/components/dictionary/LanguageSelector';
-import { TermCard } from '@/components/dictionary/TermCard';
-import { useDictionary } from '@/hooks/useDictionary';
-import { logger } from '@/lib/utils';
-import { useMemo } from 'react';
-import { Term } from '@/types';
-import { Modal } from '@/components/ui/Modal';
-import { updateTerm, deleteTerm } from '@/lib/api';
+import React from "react";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { SearchBar } from "@/components/dictionary/SearchBar";
+import { CategoryFilter } from "@/components/dictionary/CategoryFilter";
+import { LanguageSelector } from "@/components/dictionary/LanguageSelector";
+import { TermCard } from "@/components/dictionary/TermCard";
+import { useDictionary } from "@/hooks/useDictionary";
+import { logger } from "@/lib/utils";
+import { useMemo } from "react";
+import { Term } from "@/types";
+import { Modal } from "@/components/ui/Modal";
+import { updateTerm, deleteTerm } from "@/lib/api";
 
-const ALPHABET = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+const ALPHABET = Array.from({ length: 26 }, (_, i) =>
+  String.fromCharCode(65 + i)
+);
 
 const groupTermsByAlphabet = (terms: Term[]): Record<string, Term[]> => {
   const grouped: Record<string, Term[]> = {};
-  ALPHABET.forEach(letter => {
+  ALPHABET.forEach((letter) => {
     grouped[letter] = [];
   });
   terms.forEach((term: Term) => {
-    const firstLetter = (term.title[0] || '').toUpperCase();
+    const firstLetter = (term.title[0] || "").toUpperCase();
     if (grouped[firstLetter]) {
       grouped[firstLetter].push(term);
     }
   });
   // Sort each group alphabetically
-  ALPHABET.forEach(letter => {
+  ALPHABET.forEach((letter) => {
     grouped[letter].sort((a: Term, b: Term) => a.title.localeCompare(b.title));
   });
   return grouped;
 };
 
-const isAdminRoute = () => typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+const isAdminRoute = () =>
+  typeof window !== "undefined" &&
+  window.location.pathname.startsWith("/admin");
 
 const DictionaryPage: React.FC = () => {
   const {
@@ -63,13 +67,16 @@ const DictionaryPage: React.FC = () => {
   const handleRefresh = async () => {
     try {
       await refreshData();
-      logger.info('Dictionary data refreshed successfully');
+      logger.info("Dictionary data refreshed successfully");
     } catch (error) {
-      logger.error('Failed to refresh dictionary data:', error);
+      logger.error("Failed to refresh dictionary data:", error);
     }
   };
 
-  const groupedTerms = useMemo(() => groupTermsByAlphabet(filteredTerms), [filteredTerms]);
+  const groupedTerms = useMemo(
+    () => groupTermsByAlphabet(filteredTerms),
+    [filteredTerms]
+  );
 
   const handleEdit = (term: Term) => setEditTerm(term);
   const handleDelete = (id: number) => setDeleteTermId(id);
@@ -96,7 +103,7 @@ const DictionaryPage: React.FC = () => {
       await refreshData();
       closeModals();
     } catch (err: any) {
-      setModalError(err.message || 'Failed to update term');
+      setModalError(err.message || "Failed to update term");
     } finally {
       setModalLoading(false);
     }
@@ -111,7 +118,7 @@ const DictionaryPage: React.FC = () => {
       await refreshData();
       closeModals();
     } catch (err: any) {
-      setModalError(err.message || 'Failed to delete term');
+      setModalError(err.message || "Failed to delete term");
     } finally {
       setModalLoading(false);
     }
@@ -121,7 +128,9 @@ const DictionaryPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
         <div className="flex flex-col items-center gap-6">
-          <h1 className="text-3xl font-bold text-gray-900">Diplomatic Dictionary</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Diplomatic Dictionary
+          </h1>
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
               <svg
@@ -141,9 +150,7 @@ const DictionaryPage: React.FC = () => {
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Failed to Load Dictionary
             </h3>
-            <p className="text-sm text-gray-500 mb-4">
-              {error}
-            </p>
+            <p className="text-sm text-gray-500 mb-4">{error}</p>
             <button
               onClick={handleRefresh}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -159,14 +166,16 @@ const DictionaryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
       <div className="flex flex-col items-center gap-6">
-        <h1 className="text-3xl font-bold text-gray-900">Diplomatic Dictionary</h1>
-        
+        <h1 className="text-3xl font-bold text-gray-900">
+          Diplomatic Dictionary
+        </h1>
+
         {/* Language Selector */}
-        <LanguageSelector
+        {/* <LanguageSelector
           currentLanguage={language}
           onLanguageChange={setLanguage}
           disabled={loading}
-        />
+        /> */}
 
         {/* Search and Filter Controls */}
         <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full max-w-2xl">
@@ -192,9 +201,7 @@ const DictionaryPage: React.FC = () => {
             <span>
               Showing {filteredTerms.length} of {totalTerms} terms
             </span>
-            <span>
-              {totalCategories} categories available
-            </span>
+            <span>{totalCategories} categories available</span>
           </div>
         </div>
 
@@ -207,17 +214,19 @@ const DictionaryPage: React.FC = () => {
             </div>
           ) : (
             <>
-              {ALPHABET.map(letter => (
+              {ALPHABET.map((letter) => (
                 <div key={letter} className="mb-8">
                   <div className="mb-4">
-                    <span className="text-2xl font-extrabold text-blue-800">{letter}</span>
+                    <span className="text-2xl font-extrabold text-blue-800">
+                      {letter}
+                    </span>
                   </div>
                   {groupedTerms[letter].length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                      {groupedTerms[letter].map(term => (
+                      {groupedTerms[letter].map((term) => (
                         <div key={term.id} className="relative group">
                           <TermCard
-                          categories={categories}
+                            categories={categories}
                             term={term}
                             language={language}
                           />
@@ -226,18 +235,24 @@ const DictionaryPage: React.FC = () => {
                               <button
                                 className="px-2 py-1 bg-blue-600 text-white rounded text-xs"
                                 onClick={() => handleEdit(term)}
-                              >Edit</button>
+                              >
+                                Edit
+                              </button>
                               <button
                                 className="px-2 py-1 bg-red-600 text-white rounded text-xs"
                                 onClick={() => handleDelete(term.id)}
-                              >Delete</button>
+                              >
+                                Delete
+                              </button>
                             </div>
                           )}
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-gray-400 italic text-center py-2">No terms</div>
+                    <div className="text-gray-400 italic text-center py-2">
+                      No terms
+                    </div>
                   )}
                 </div>
               ))}
@@ -250,38 +265,78 @@ const DictionaryPage: React.FC = () => {
                       <input
                         type="text"
                         value={editTerm.title}
-                        onChange={e => setEditTerm({ ...editTerm, title: e.target.value })}
+                        onChange={(e) =>
+                          setEditTerm({ ...editTerm, title: e.target.value })
+                        }
                         className="w-full border rounded px-2 py-1"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium">Definition</label>
+                      <label className="block text-sm font-medium">
+                        Definition
+                      </label>
                       <textarea
                         value={editTerm.definition}
-                        onChange={e => setEditTerm({ ...editTerm, definition: e.target.value })}
+                        onChange={(e) =>
+                          setEditTerm({
+                            ...editTerm,
+                            definition: e.target.value,
+                          })
+                        }
                         className="w-full border rounded px-2 py-1"
                         required
                       />
                     </div>
-                    {modalError && <div className="text-red-600 text-sm">{modalError}</div>}
+                    {modalError && (
+                      <div className="text-red-600 text-sm">{modalError}</div>
+                    )}
                     <div className="flex justify-end gap-2">
-                      <button type="button" onClick={closeModals} className="px-3 py-1 bg-gray-200 rounded">Cancel</button>
-                      <button type="submit" className="px-3 py-1 bg-blue-600 text-white rounded" disabled={modalLoading}>
-                        {modalLoading ? 'Saving...' : 'Save'}
+                      <button
+                        type="button"
+                        onClick={closeModals}
+                        className="px-3 py-1 bg-gray-200 rounded"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-3 py-1 bg-blue-600 text-white rounded"
+                        disabled={modalLoading}
+                      >
+                        {modalLoading ? "Saving..." : "Save"}
                       </button>
                     </div>
                   </form>
                 )}
               </Modal>
               {/* Delete Modal */}
-              <Modal open={!!deleteTermId} onClose={closeModals} title="Delete Term">
-                <div className="mb-4">Are you sure you want to delete this term?</div>
-                {modalError && <div className="text-red-600 text-sm mb-2">{modalError}</div>}
+              <Modal
+                open={!!deleteTermId}
+                onClose={closeModals}
+                title="Delete Term"
+              >
+                <div className="mb-4">
+                  Are you sure you want to delete this term?
+                </div>
+                {modalError && (
+                  <div className="text-red-600 text-sm mb-2">{modalError}</div>
+                )}
                 <div className="flex justify-end gap-2">
-                  <button type="button" onClick={closeModals} className="px-3 py-1 bg-gray-200 rounded">Cancel</button>
-                  <button type="button" onClick={handleDeleteConfirm} className="px-3 py-1 bg-red-600 text-white rounded" disabled={modalLoading}>
-                    {modalLoading ? 'Deleting...' : 'Delete'}
+                  <button
+                    type="button"
+                    onClick={closeModals}
+                    className="px-3 py-1 bg-gray-200 rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteConfirm}
+                    className="px-3 py-1 bg-red-600 text-white rounded"
+                    disabled={modalLoading}
+                  >
+                    {modalLoading ? "Deleting..." : "Delete"}
                   </button>
                 </div>
               </Modal>
@@ -301,4 +356,4 @@ const DictionaryPageWithErrorBoundary: React.FC = () => {
   );
 };
 
-export default DictionaryPageWithErrorBoundary; 
+export default DictionaryPageWithErrorBoundary;
