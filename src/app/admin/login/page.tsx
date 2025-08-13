@@ -16,8 +16,8 @@ export default function AdminLoginPage() {
   React.useEffect(() => {
     if (accessToken) {
       verifyToken(accessToken)
-        .then((res) => console.log("123"))
-        .catch((err) => console.log("err"));
+        // .then((res) => console.log("123"))
+        // .catch((err) => console.log("err"));
       router.replace("/admin/terms");
     }
   }, [router, accessToken]);

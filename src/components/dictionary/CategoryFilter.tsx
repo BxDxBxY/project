@@ -1,5 +1,5 @@
-import React from 'react';
-import { Category } from '@/types';
+import React from "react";
+import { Category } from "@/types";
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -13,7 +13,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
   categories,
   selectedCategory,
   onCategoryChange,
-  className = '',
+  className = "",
   disabled = false,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -29,7 +29,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
         aria-label="Filter by category"
       >
-        <option value="">All Categories</option>
+        <option value="">Barcha Kategoriyalar</option>
         {categories.length > 0 ? (
           categories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -37,9 +37,9 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
             </option>
           ))
         ) : (
-          <option disabled>No Categories Available</option>
+          <option disabled>Hechqanday kategoriyalar topilmadi</option>
         )}
       </select>
     </div>
   );
-}; 
+};

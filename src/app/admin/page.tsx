@@ -5,7 +5,7 @@ import { TokenManager } from '@/lib/api';
 
 export default function AdminIndexPage() {
   const router = useRouter();
-  console.log(TokenManager.getAccessToken())
+  // console.log(TokenManager.getAccessToken())
   useEffect(() => {
     if (TokenManager.getAccessToken()) {
       router.replace('/admin/terms');

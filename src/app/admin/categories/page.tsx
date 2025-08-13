@@ -65,7 +65,7 @@ export default function AdminCategoriesPage() {
     setModalLoading(true);
     setModalError(null);
     try {
-      console.log(editCategory);
+      // console.log(editCategory);
       await updateCategory(editCategory.id, { name: newCategoryName });
       await loadCategories();
       closeModals();

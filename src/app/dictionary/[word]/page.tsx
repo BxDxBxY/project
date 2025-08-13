@@ -27,7 +27,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("en");
-  const [termPhotos, setTermPhotos] = useState([1, 2]);
+  const [termPhotos, setTermPhotos] = useState([]);
   const [termPhotosURL, setTermPhotosURL] = useState(null);
   const resolvedParams = useParams();
   const termId = resolvedParams?.word as string;
@@ -121,142 +121,142 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
   const translatedDescription = getTermDescription(term, language);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">
-            {translatedTitle}
-          </h1>
-
-          {/* Language Selector */}
-          {/* <LanguageSelector
-            currentLanguage={language}
-            onLanguageChange={setLanguage}
-            className="mb-6"
-          /> */}
-
-          {/* Back Button */}
-          <Link
-            href="/dictionary"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100  py-8 px-4 sm:px-8">
+    <div className="max-w-[1340px] mx-auto">
+      {/* Header */}
+      <div className="flex flex-col items-center mb-8 text-center">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4 max-w-[800px] break-words">
+          {translatedTitle}
+        </h1>
+  
+        {/* Language Selector (optional) */}
+        {/* <LanguageSelector
+          currentLanguage={language}
+          onLanguageChange={setLanguage}
+          className="mb-6"
+        /> */}
+  
+        {/* Back Button */}
+        <Link
+          href="/dictionary"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <svg
+            className="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Dictionary
-          </Link>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          {"Lug'atga"} qaytish
+        </Link>
+      </div>
+  
+      {/* Term Details */}
+      <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
+        {/* Definition */}
+        <div className="mb-8">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+            Manosi
+          </h2>
+          <div className="prose max-w-none">
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+              {translatedDescription}
+            </p>
+          </div>
         </div>
-
-        {/* Term Details */}
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full">
-          {/* Definition */}
+  
+        {/* Photos */}
+        {/* {termPhotos.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              Definition
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+              Photo
             </h2>
-            <div className="prose max-w-none">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                {translatedDescription}
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {termPhotos.map((e, i) => (
+                <Image
+                  key={i}
+                  src={termPhotosURL || ""}
+                  alt={term.title}
+                  height={100}
+                  width={200}
+                  className="w-full rounded-lg shadow-md object-cover"
+                />
+              ))}
             </div>
           </div>
-
-          {/* Photo if available */}
-          {termPhotos.length > 0 && (
-            <div className="mb-8 w-full box-border">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                Photo
-              </h2>
-              <div className="grid grid-cols-2 w-full gap-2 ">
-                {termPhotos.map((e, i) => (
-                  <Image
-                    key={i}
-                    src={termPhotosURL || ""}
-                    alt={term.title}
-                    height={100}
-                    width={200}
-                    className="w-full rounded-lg box-border shadow-md"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Metadata */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-200">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Term Information
-              </h3>
-              <dl className="space-y-2">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Term ID</dt>
-                  <dd className="text-sm text-gray-900">{term.id}</dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Category
-                  </dt>
-                  <dd className="text-sm text-gray-900">
-                    {term.category
-                      ? `Category ${term.category}`
-                      : "No Category"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Created</dt>
-                  <dd className="text-sm text-gray-900">
-                    {formatDate(term.created_at)}
-                  </dd>
-                </div>
-                <div>
-                  <dd className="text-sm text-gray-900">
-                    <RelatedTerm term={term} terms={terms} />
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Related Data */}
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Related Data
-              </h3>
-              <dl className="space-y-2">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Related Countries
-                  </dt>
-                  <dd className="text-sm text-gray-900">
-                    {term.related_countries.length > 0
-                      ? term.related_countries.join(", ")
-                      : "None"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Sources</dt>
-                  <dd className="text-sm text-gray-900">
-                    {term.sources.length > 0 ? term.sources.join(", ") : "None"}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </div>
+        )} */}
       </div>
     </div>
+  </div>
+  
   );
 };
 
 export default TermDetailPage;
+
+// <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-200">
+//   <div>
+//     <h3 className="text-lg font-medium text-gray-900 mb-2">
+//       Termin haqida {"ma’lumot"}
+//     </h3>
+//     <dl className="space-y-2">
+//       <div>
+//         <dt className="text-sm font-medium text-gray-500">Term ID</dt>
+//         <dd className="text-sm text-gray-900">{term.id}</dd>
+//       </div>
+//       <div>
+//         <dt className="text-sm font-medium text-gray-500">
+//           Category
+//         </dt>
+//         <dd className="text-sm text-gray-900">
+//           {term.category
+//             ? `Category ${term.category}`
+//             : "No Category"}
+//         </dd>
+//       </div>
+//       <div>
+//         <dt className="text-sm font-medium text-gray-500">Created</dt>
+//         <dd className="text-sm text-gray-900">
+//           {formatDate(term.created_at)}
+//         </dd>
+//       </div>
+//       <div>
+//         <dd className="text-sm text-gray-900">
+//           <RelatedTerm term={term} terms={terms} />
+//         </dd>
+//       </div>
+//     </dl>
+//   </div>
+
+//   {/* Related Data */}
+//   <div>
+//     <h3 className="text-lg font-medium text-gray-900 mb-2">
+//       Related Data
+//     </h3>
+//     <dl className="space-y-2">
+//       <div>
+//         <dt className="text-sm font-medium text-gray-500">
+//           Related Countries
+//         </dt>
+//         <dd className="text-sm text-gray-900">
+//           {term.related_countries.length > 0
+//             ? term.related_countries.join(", ")
+//             : "None"}
+//         </dd>
+//       </div>
+//       <div>
+//         <dt className="text-sm font-medium text-gray-500">Sources</dt>
+//         <dd className="text-sm text-gray-900">
+//           {term.sources.length > 0 ? term.sources.join(", ") : "None"}
+//         </dd>
+//       </div>
+//     </dl>
+//   </div>
+// </div>

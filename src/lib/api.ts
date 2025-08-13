@@ -19,11 +19,17 @@ import {
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://13.49.18.4:8000";
 
+interface ErrorResponse {
+  code?: string;
+  message?: string;
+  // Add other properties that you expect in the error response
+}
+
 // Token management
 class TokenManager {
   private static getStorage(): Storage | null {
     if (typeof window !== "undefined") {
-      return localStorage;
+      return window.localStorage;
     }
     return null;
   }
@@ -81,7 +87,7 @@ class ApiClient {
     this.client.interceptors.request.use(
       (config) => {
         // Only add auth token for POST, PUT, DELETE requests as per Swagger
-        const requiresAuth = ["POST","GET", "PUT", "DELETE"].includes(
+        const requiresAuth = ["POST", "PUT", "DELETE"].includes(
           config.method?.toUpperCase() || ""
         );
         if (requiresAuth) {
@@ -102,6 +108,12 @@ class ApiClient {
         const originalRequest = error.config as any;
 
         if (error.response?.status === 401 && !originalRequest._retry) {
+          const responseData = error.response.data as ErrorResponse;
+
+          if (responseData.code === "token_not_valid") {
+            TokenManager.clearTokens();
+            window.location.href = "/admin/login"; // replace prevents back nav
+          }
           if (this.isRefreshing) {
             return new Promise((resolve, reject) => {
               this.failedQueue.push({ resolve, reject });
@@ -163,7 +175,7 @@ class ApiClient {
   private async request<T>(config: any): Promise<T> {
     try {
       const response = await this.client(config);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -241,7 +253,7 @@ class ApiClient {
     });
   }
   async deleteCategory(id: number): Promise<void> {
-    console.log(id);
+    // console.log(id);
     return this.request<void>({
       method: "DELETE",
       url: `/dictionary/create_category/${id}/`,
@@ -263,7 +275,7 @@ class ApiClient {
     });
   }
   async fetchTermPhoto(id: number): Promise<any> {
-    console.log(id);
+    // console.log(id);
     return this.request<any>({
       method: "GET",
       url: `/dictionary/term_photo/${id}/`,

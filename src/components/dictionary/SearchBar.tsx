@@ -13,7 +13,7 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
-  placeholder = "Search terms...",
+  placeholder = "Terminlarni qidirish...",
   className = "",
   debounceMs = 300,
   disabled = false,

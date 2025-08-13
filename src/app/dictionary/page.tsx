@@ -13,25 +13,65 @@ import { useMemo } from "react";
 import { Term } from "@/types";
 import { Modal } from "@/components/ui/Modal";
 import { updateTerm, deleteTerm } from "@/lib/api";
+import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 
-const ALPHABET = Array.from({ length: 26 }, (_, i) =>
-  String.fromCharCode(65 + i)
-);
+// Define the Uzbek alphabet
+const UZBEK_ALPHABET = [
+  "A",
+  "B",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "X",
+  "Y",
+  "Z",
+  "Oʻ",
+  "Gʻ",
+  "Sh",
+  "Ch",
+  "Ng",
+];
 
 const groupTermsByAlphabet = (terms: Term[]): Record<string, Term[]> => {
   const grouped: Record<string, Term[]> = {};
-  ALPHABET.forEach((letter) => {
+  UZBEK_ALPHABET.forEach((letter) => {
     grouped[letter] = [];
   });
   terms.forEach((term: Term) => {
+    // Normalize the first letter for case-insensitive grouping
     const firstLetter = (term.title[0] || "").toUpperCase();
-    if (grouped[firstLetter]) {
-      grouped[firstLetter].push(term);
+    // Handle special Uzbek letters (case-insensitive)
+    let normalizedLetter = firstLetter;
+    if (firstLetter === "Oʻ" || firstLetter === "oʻ") normalizedLetter = "Oʻ";
+    if (firstLetter === "Gʻ" || firstLetter === "gʻ") normalizedLetter = "Gʻ";
+    if (firstLetter === "S" || firstLetter === "s") normalizedLetter = "Sh"; // Adjust if 'Sh' terms start with 'S'
+    if (firstLetter === "C" || firstLetter === "c") normalizedLetter = "Ch"; // Adjust if 'Ch' terms start with 'C'
+    if (firstLetter === "N" || firstLetter === "n") normalizedLetter = "Ng"; // Adjust if 'Ng' terms start with 'N'
+    if (grouped[normalizedLetter]) {
+      grouped[normalizedLetter].push(term);
     }
   });
   // Sort each group alphabetically
-  ALPHABET.forEach((letter) => {
-    grouped[letter].sort((a: Term, b: Term) => a.title.localeCompare(b.title));
+  UZBEK_ALPHABET.forEach((letter) => {
+    grouped[letter].sort((a: Term, b: Term) =>
+      a.title.localeCompare(b.title, "uz")
+    );
   });
   return grouped;
 };
@@ -92,13 +132,9 @@ const DictionaryPage: React.FC = () => {
     setModalLoading(true);
     setModalError(null);
     try {
-      // Only send fields valid for UpdateTermData
       await updateTerm(editTerm.id, {
         title: editTerm.title,
         definition: editTerm.definition,
-        // photo: undefined, // Not handled in modal
-        // category: editTerm.category, // Not handled in modal
-        // related_terms: editTerm.related_terms, // Not handled in modal
       });
       await refreshData();
       closeModals();
@@ -129,7 +165,7 @@ const DictionaryPage: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold text-gray-900">
-            Diplomatic Dictionary
+            Diplomatik {"Lugʻat"}
           </h1>
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
@@ -148,14 +184,14 @@ const DictionaryPage: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Failed to Load Dictionary
+              {"Lugʻatni"} yuklash muvaffaqiyatsiz yakunlandi
             </h3>
             <p className="text-sm text-gray-500 mb-4">{error}</p>
             <button
               onClick={handleRefresh}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Try Again
+              Qayta urinish
             </button>
           </div>
         </div>
@@ -164,67 +200,62 @@ const DictionaryPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
-      <div className="flex flex-col items-center gap-6">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Diplomatic Dictionary
-        </h1>
+    <>
+  <div className=" px-4 sm:px-8 py-8 transition-all duration-300">
+    <div className="flex flex-col items-center gap-6 max-w-[1920px] mx-auto">
+      {/* Title */}
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center">
+        Diplomatik {"Lugʻat"}
+      </h1>
 
-        {/* Language Selector */}
-        {/* <LanguageSelector
-          currentLanguage={language}
-          onLanguageChange={setLanguage}
+      {/* Search and Filter Controls */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full max-w-2xl">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Terminlarni qidirish..."
+          className="flex-1"
           disabled={loading}
-        /> */}
+        />
+        {/* CategoryFilter can be added back here if needed */}
+      </div>
 
-        {/* Search and Filter Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full max-w-2xl">
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            placeholder="Search terms..."
-            className="flex-1"
-            disabled={loading}
-          />
-          <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            disabled={loading}
-            className="w-full sm:w-48"
-          />
-        </div>
+      {/* Statistics */}
+      <div className="w-full max-w-2xl text-sm text-gray-600 flex justify-between mb-4">
+        <span>
+          {filteredTerms.length} / {totalTerms} termin {"koʻrsatilmoqda"}
+        </span>
+        {/* <span>{totalCategories} kategoriyalar mavjud</span> */}
+      </div>
 
-        {/* Statistics */}
-        <div className="w-full max-w-2xl">
-          <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
-            <span>
-              Showing {filteredTerms.length} of {totalTerms} terms
-            </span>
-            <span>{totalCategories} categories available</span>
+      {/* Content Area */}
+      <div className="w-full">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <LoadingSpinner size="lg" />
+            <p className="mt-4 text-gray-500">{"Lugʻat"} yuklanmoqda...</p>
           </div>
-        </div>
+        ) : (
+          <>
+            {UZBEK_ALPHABET.map(
+              (letter) =>
+                groupedTerms[letter]?.length > 0 && (
+                  <div key={letter} className="mb-8">
+                    {/* Letter Header */}
+                    <div className="mb-4 px-2 sm:px-4">
+                      <span className="text-3xl sm:text-[46px] font-extrabold text-zinc-700">
+                        {letter}
+                      </span>
+                      <hr className="mt-1 border-gray-300 opacity-30" />
+                    </div>
 
-        {/* Content Area */}
-        <div className="w-full max-w-6xl">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <LoadingSpinner size="lg" />
-              <p className="mt-4 text-gray-500">Loading dictionary...</p>
-            </div>
-          ) : (
-            <>
-              {ALPHABET.map((letter) => (
-                <div key={letter} className="mb-8">
-                  <div className="mb-4">
-                    <span className="text-2xl font-extrabold text-blue-800">
-                      {letter}
-                    </span>
-                  </div>
-                  {groupedTerms[letter].length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {/* Terms Grid */}
+                    <div className="flex flex-wrap gap-4 px-2 sm:px-4">
                       {groupedTerms[letter].map((term) => (
-                        <div key={term.id} className="relative group">
+                        <div
+                          key={term.id}
+                          className="relative group transition"
+                        >
                           <TermCard
                             categories={categories}
                             term={term}
@@ -236,115 +267,121 @@ const DictionaryPage: React.FC = () => {
                                 className="px-2 py-1 bg-blue-600 text-white rounded text-xs"
                                 onClick={() => handleEdit(term)}
                               >
-                                Edit
+                                Tahrirlash
                               </button>
                               <button
                                 className="px-2 py-1 bg-red-600 text-white rounded text-xs"
                                 onClick={() => handleDelete(term.id)}
                               >
-                                Delete
+                                Oʻchirish
                               </button>
                             </div>
                           )}
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    <div className="text-gray-400 italic text-center py-2">
-                      No terms
-                    </div>
+                  </div>
+                )
+            )}
+
+            {/* Edit Modal */}
+            <Modal
+              open={!!editTerm}
+              onClose={closeModals}
+              title="Atamani tahrirlash"
+            >
+              {editTerm && (
+                <form onSubmit={handleEditSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium">
+                      Sarlavha
+                    </label>
+                    <input
+                      type="text"
+                      value={editTerm.title}
+                      onChange={(e) =>
+                        setEditTerm({ ...editTerm, title: e.target.value })
+                      }
+                      className="w-full border rounded px-2 py-1"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">
+                      {"Taʼrif"}
+                    </label>
+                    <textarea
+                      value={editTerm.definition}
+                      onChange={(e) =>
+                        setEditTerm({
+                          ...editTerm,
+                          definition: e.target.value,
+                        })
+                      }
+                      className="w-full border rounded px-2 py-1"
+                      required
+                    />
+                  </div>
+                  {modalError && (
+                    <div className="text-red-600 text-sm">{modalError}</div>
                   )}
-                </div>
-              ))}
-              {/* Edit Modal */}
-              <Modal open={!!editTerm} onClose={closeModals} title="Edit Term">
-                {editTerm && (
-                  <form onSubmit={handleEditSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium">Title</label>
-                      <input
-                        type="text"
-                        value={editTerm.title}
-                        onChange={(e) =>
-                          setEditTerm({ ...editTerm, title: e.target.value })
-                        }
-                        className="w-full border rounded px-2 py-1"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium">
-                        Definition
-                      </label>
-                      <textarea
-                        value={editTerm.definition}
-                        onChange={(e) =>
-                          setEditTerm({
-                            ...editTerm,
-                            definition: e.target.value,
-                          })
-                        }
-                        className="w-full border rounded px-2 py-1"
-                        required
-                      />
-                    </div>
-                    {modalError && (
-                      <div className="text-red-600 text-sm">{modalError}</div>
-                    )}
-                    <div className="flex justify-end gap-2">
-                      <button
-                        type="button"
-                        onClick={closeModals}
-                        className="px-3 py-1 bg-gray-200 rounded"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        className="px-3 py-1 bg-blue-600 text-white rounded"
-                        disabled={modalLoading}
-                      >
-                        {modalLoading ? "Saving..." : "Save"}
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </Modal>
-              {/* Delete Modal */}
-              <Modal
-                open={!!deleteTermId}
-                onClose={closeModals}
-                title="Delete Term"
-              >
-                <div className="mb-4">
-                  Are you sure you want to delete this term?
-                </div>
-                {modalError && (
-                  <div className="text-red-600 text-sm mb-2">{modalError}</div>
-                )}
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={closeModals}
-                    className="px-3 py-1 bg-gray-200 rounded"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleDeleteConfirm}
-                    className="px-3 py-1 bg-red-600 text-white rounded"
-                    disabled={modalLoading}
-                  >
-                    {modalLoading ? "Deleting..." : "Delete"}
-                  </button>
-                </div>
-              </Modal>
-            </>
-          )}
-        </div>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={closeModals}
+                      className="px-3 py-1 bg-gray-200 rounded"
+                    >
+                      Bekor qilish
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-3 py-1 bg-blue-600 text-white rounded"
+                      disabled={modalLoading}
+                    >
+                      {modalLoading ? "Saqlanmoqda..." : "Saqlash"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Modal>
+
+            {/* Delete Modal */}
+            <Modal
+              open={!!deleteTermId}
+              onClose={closeModals}
+              title="Atamani oʻchirish"
+            >
+              <div className="mb-4">
+                Ushbu atamani oʻchirishga ishonchingiz komilmi?
+              </div>
+              {modalError && (
+                <div className="text-red-600 text-sm mb-2">{modalError}</div>
+              )}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={closeModals}
+                  className="px-3 py-1 bg-gray-200 rounded"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDeleteConfirm}
+                  className="px-3 py-1 bg-red-600 text-white rounded"
+                  disabled={modalLoading}
+                >
+                  {modalLoading ? "Oʻchirilmoqda..." : "Oʻchirish"}
+                </button>
+              </div>
+            </Modal>
+          </>
+        )}
       </div>
     </div>
+  </div>
+</>
+
   );
 };
 

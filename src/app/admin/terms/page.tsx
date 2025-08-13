@@ -82,7 +82,7 @@ export default function AdminTermsPage() {
     setError(null);
     try {
       const newTerm = await createTerm(formData);
-      console.log("cant");
+      // console.log("cant");
       setTerms([...terms, newTerm]);
       setShowModal(false);
       resetForm();
@@ -174,7 +174,7 @@ export default function AdminTermsPage() {
   };
 
   return (
-    <div>
+    <div className="max-w-full box-border">
       <div className="mb-2 flex justify-between items-center">
         <h1 className="text-2xl font-bold">Terminlarni Boshqarish</h1>
         <Button
@@ -193,15 +193,36 @@ export default function AdminTermsPage() {
       ) : errorFetching ? (
         <div className="text-red-600">{errorFetching}</div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-full">
           {terms.map((term) => (
             <div
               key={term.id}
-              className="p-4 bg-white rounded shadow flex items-center justify-between"
+              className="p-4 bg-white rounded shadow flex items-center justify-between box-border "
             >
-              <div>
-                <div className="font-semibold">{term.title}</div>
-                <div className="text-sm text-gray-500">{term.definition}</div>
+              <div className="w-full">
+                {/* <div className="font-semibold w-[400px]">{term.title}</div> */}
+                <Typography
+                  className="font-semibold  max-w-[400px]"
+                  sx={{
+                    overflow: "hidden",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {term.title}
+                </Typography>
+                <Typography
+                  className="text-sm max-w-[1200px] text-gray-500"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {term.definition}
+                </Typography>
               </div>
               <div className="flex space-x-2 gap-2">
                 <Button
@@ -230,124 +251,128 @@ export default function AdminTermsPage() {
       {/* Create/Edit Term Modal */}
       {showModal && (
         <Modal
-        open={showModal}
-        className="w-screen h-screen flex items-center justify-center p-5  z-50"
-      >
-        <div className="bg-gray-400 w-screen rounded-2xl p-6 overflow-auto">
-          <h2 className="text-2xl font-bold mb-4">
-            {editingTerm ? "Edit Term" : "Create New Term"}
-          </h2>
-      
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (editingTerm) {
-                handleUpdateTerm();
-              } else {
-                handleCreateTerm();
-              }
-            }}
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="title" className="block">
-                Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
+          open={showModal}
+          className="w-screen h-screen flex items-center justify-center p-5  z-50"
+        >
+          <div className="bg-[#203e61] text-white w-screen rounded-2xl p-6 overflow-auto">
+            <h2 className="text-2xl font-bold mb-4">
+              {editingTerm ? "Edit Term" : "Create New Term"}
+            </h2>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (editingTerm) {
+                  handleUpdateTerm();
+                } else {
+                  handleCreateTerm();
                 }
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-              <span className="text-red-400 text-sm">{error}</span>
-            </div>
-      
-            <div>
-              <label htmlFor="definition" className="block">
-                Definition
-              </label>
-              <textarea
-                id="definition"
-                name="definition"
-                value={formData.definition}
-                onChange={(e) =>
-                  setFormData({ ...formData, definition: e.target.value })
-                }
-                className="w-full p-2 border border-gray-300 min-h-[50px] max-h-[200px] rounded overflow-y-scroll"
-                required
-              />
-            </div>
-      
-            <div>
-              <FormControl fullWidth>
-                <InputLabel id="category-label">Category</InputLabel>
-                <Select
-                  labelId="category-label"
-                  id="category"
-                  value={formData.category}
-                  onChange={(e: any) =>
-                    setFormData({ ...formData, category: e.target.value })
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label htmlFor="title" className="block">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
                   }
-                  label="Category"
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+                <span className="text-red-400 text-sm">{error}</span>
+              </div>
+
+              <div>
+                <label htmlFor="definition" className="block">
+                  Definition
+                </label>
+                <textarea
+                  id="definition"
+                  name="definition"
+                  value={formData.definition}
+                  onChange={(e) =>
+                    setFormData({ ...formData, definition: e.target.value })
+                  }
+                  className="w-full p-2 border border-gray-300 min-h-[350px] max-h-[200px] rounded overflow-y-scroll"
+                  required
+                />
+              </div>
+
+              <div>
+                <FormControl fullWidth>
+                  <InputLabel id="category-label">Category</InputLabel>
+                  <Select
+                    labelId="category-label"
+                    className="text-white decoration-white placeholder-white outline-white ring-white "
+                    id="category"
+                    value={formData.category}
+                    onChange={(e: any) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    label="Category"
+                  >
+                    {categories.map((category) => (
+                      <MenuItem
+                        key={category.id}
+                        value={category.id}
+                        className="text-white decoration-white placeholder-white outline-white ring-white"
+                      >
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div>
+                <label htmlFor="photo" className="block">
+                  Upload Photo
+                </label>
+                <input
+                  type="file"
+                  id="photo"
+                  name="photo"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      photo: e.target.files ? e.target.files[0] : null,
+                    })
+                  }
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="button"
+                  size="small"
+                  color="info"
+                  variant="outlined"
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 bg-gray-400 text-white rounded"
                 >
-                  {categories.map((category) => (
-                    <MenuItem key={category.id} value={category.id}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-      
-            <div>
-              <label htmlFor="photo" className="block">
-                Upload Photo
-              </label>
-              <input
-                type="file"
-                id="photo"
-                name="photo"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    photo: e.target.files ? e.target.files[0] : null,
-                  })
-                }
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-      
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                size="small"
-                color="info"
-                variant="outlined"
-                onClick={handleCloseModal}
-                className="px-4 py-2 bg-gray-400 text-white rounded"
-              >
-                Cancel
-              </Button>
-              <Button
-                loading={loadingReq}
-                size="small"
-                color="success"
-                variant="contained"
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                {editingTerm ? "Update Term" : "Create Term"}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </Modal>
-      
+                  Cancel
+                </Button>
+                <Button
+                  loading={loadingReq}
+                  size="small"
+                  color="success"
+                  variant="contained"
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded"
+                >
+                  {editingTerm ? "Update Term" : "Create Term"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </Modal>
       )}
 
       {/* Delete Confirmation Modal */}

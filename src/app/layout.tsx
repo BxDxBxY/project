@@ -1,15 +1,23 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Head from 'next/head'; // Import Head component from next/head
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Head from "next/head"; // Import Head component from next/head
+import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
+import FooterComponent from "@/components/dictionary/FooterComponent";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Diplomatic Dictionary',
-  description: 'A comprehensive dictionary of diplomatic terms and concepts',
-  keywords: ['diplomatic', 'dictionary', 'terms', 'foreign affairs', 'international relations'],
-  authors: [{ name: 'Diplomatic Dictionary Team' }],
+  title: "Diplomatic Dictionary",
+  description: "A comprehensive dictionary of diplomatic terms and concepts",
+  keywords: [
+    "diplomatic",
+    "dictionary",
+    "terms",
+    "foreign affairs",
+    "international relations",
+  ],
+  authors: [{ name: "Diplomatic Dictionary Team" }],
   // Do not include viewport here anymore
 };
 
@@ -21,12 +29,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-gray-50">
+        <div className="flex flex-col min-h-screen bg-gray-50">
           <Head>
             {/* Move the viewport meta tag here */}
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
           </Head>
-          {children}
+          <HeaderDefault />
+
+          <main className="flex-1 bg-gray-100 ">
+            {children}
+          </main>
+          <FooterComponent />
         </div>
       </body>
     </html>

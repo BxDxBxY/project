@@ -8,96 +8,55 @@ import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 
 export default function HomePage() {
   return (
-    <div className="bg-white">
-      <HeaderDefault />
-      <section className="min-h-screen px-[50px] max-w-[1920px]  mx-auto pt-[200px] grid grid-cols-2 md:flex-row items-center justify-center pb-10">
-        {/* Left: Title and description */}
-        <div className="text-left ">
-          <h2 className="text-6xl font-bold text-gray-900 mb-4">
-            Diplomatik Lug‘at
-          </h2>
-          <p className="text-4xl text-gray-700 mb-6 ">
-            Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi Diplomatik
-            akademiyaning Diplomatik {"Lug'ati"}
-          </p>
-        </div>
-
-        {/* Right: Image of the Diplomatic Academy */}
-        <div className=" items-center flex justify-end">
-          <Image
-            src="/diplomatic-academy.jpg" // Image of the Diplomatic Academy
-            alt="Diplomatik Akademiya"
-            width={600}
-            height={400}
-            className="object-cover rounded-lg shadow-lg"
-          />
-        </div>
-      </section>
-      <hr />
-      <section className="w-full py-16 bg-white">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Bizning Hamkorlarimiz
-        </h2>
-
-        <div className="flex gap-8 w-full items-center justify-center overflow-x-auto py-4 px-2 scrollbar-hide">
-          {/* Loop through partners */}
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className=" p-2 h-[160px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer"
-              onClick={() => window.open("https://partner-link.com", "_blank")} // Link to partner website
-            >
-              <Image
-                src={`/partner-${i + 1}.png`} // Partner logo URL
-                alt={`Hamkor ${i + 1}`}
-                width={150}
-                height={75}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-      <footer className="w-full bg-gray-800 text-white py-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6">
-          {/* Footer Links */}
-          <nav className="space-x-6 text-sm">
-            <Link href="/terms">
-              <span>Terms & Conditions</span>
-            </Link>
-            <Link href="/privacy">
-              <span>Privacy Policy</span>
-            </Link>
-            <Link href="/contact">
-              <span>Contact Us</span>
-            </Link>
-          </nav>
-
-          {/* Social Media Links */}
-          <div className="space-x-4">
-            <a
-              href="https://twitter.com/dipacademy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <XIcon />
-              {/* <img src="/icons/twitter.svg" alt="Twitter" width={20} /> */}
-            </a>
-            <a
-              href="https://linkedin.com/company/dipacademy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <LinkedInIcon />
-              {/* <img src="/icons/linkedin.svg" alt="LinkedIn" width={20} /> */}
-            </a>
-            {/* Add more social icons as needed */}
+    <div className="bg-gradient-to-br min-h-full transition-all duration-300 from-gray-50 to-gray-100">
+    {/* Hero Section */}
+    <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
+      <p className="text-3xl md:text-5xl font-bold text-gray-700 uppercase leading-snug">
+        Tashqi ishlar vazirligi <br />
+        Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi <br />
+        Diplomatik akademiyaning Diplomatik {"Lug'ati"}
+      </p>
+  
+      {/* If you want to bring back the image, it will stack on mobile */}
+      {/* <div className="flex justify-center">
+        <Image
+          src="/diplomatic-academy.jpg"
+          alt="Diplomatik Akademiya"
+          width={600}
+          height={400}
+          className="object-cover rounded-lg shadow-lg"
+        />
+      </div> */}
+    </section>
+  
+    <hr className="border-gray-200" />
+  
+    {/* Partners Section */}
+    <section className="w-full py-16 px-4">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        Bizning Hamkorlarimiz
+      </h2>
+  
+      <div className="flex gap-8 w-full items-center justify-start md:justify-center overflow-x-auto py-4 scrollbar-hide">
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 p-4 h-[160px] w-[200px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer hover:shadow-lg transition"
+            onClick={() => window.open("https://partner-link.com", "_blank")}
+          >
+            <Image
+              src={`/partner-${i + 1}.png`}
+              alt={`Hamkor ${i + 1}`}
+              width={150}
+              height={75}
+              className="object-contain"
+            />
           </div>
-        </div>
-        <div className="mt-4 text-center text-sm text-gray-400">
-          &copy; 2025 Diplomatik Akademiya. All Rights Reserved.
-        </div>
-      </footer>
-    </div>
+        ))}
+      </div>
+    </section>
+  </div>
+  
   );
 }
 

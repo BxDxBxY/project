@@ -53,7 +53,7 @@ export const handleApiError = (error: any): ApiError => {
 
 // Data validation utilities - Updated to match Swagger
 export const validateTerm = (term: any): term is Term => {
-  console.log(term)
+  // console.log(term)
   return (
     term &&
     typeof term.id === "number" &&
