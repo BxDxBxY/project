@@ -34,9 +34,9 @@ export default function AdminTermsPage() {
   const [formData, setFormData] = useState<CreateTermData>({
     title: "",
     definition: "",
-    category: [],
+    categories: [],
     related_terms: [],
-    photo: null,
+    // photo: null,
   });
 
   // Categories
@@ -81,6 +81,7 @@ export default function AdminTermsPage() {
     setLoadingReq(true);
     setError(null);
     try {
+      console.log(formData);
       const newTerm = await createTerm(formData);
       // console.log("cant");
       setTerms([...terms, newTerm]);
@@ -136,22 +137,23 @@ export default function AdminTermsPage() {
     setFormData({
       title: "",
       definition: "",
-      category: [],
+      categories: [],
       related_terms: [],
-      photo: null,
+      // photo: null,
     });
     setEditingTerm(null);
   };
 
   const handleOpenModal = (term?: Term) => {
+    console.log(term);
     if (term) {
       setEditingTerm(term);
       setFormData({
         title: term.title,
         definition: term.definition,
-        category: Array.from(term.category),
+        categories: Array.from(term.categories),
         related_terms: term.related_terms,
-        photo: null,
+        // photo: null,
       });
     } else {
       resetForm();
@@ -311,9 +313,9 @@ export default function AdminTermsPage() {
                     labelId="category-label"
                     className="text-white decoration-white placeholder-white outline-white ring-white "
                     id="category"
-                    value={formData.category}
+                    value={formData.categories}
                     onChange={(e: any) =>
-                      setFormData({ ...formData, category: e.target.value })
+                      setFormData({ ...formData, categories: [] })
                     }
                     label="Category"
                   >
@@ -330,7 +332,7 @@ export default function AdminTermsPage() {
                 </FormControl>
               </div>
 
-              <div>
+              {/* <div>
                 <label htmlFor="photo" className="block">
                   Upload Photo
                 </label>
@@ -346,7 +348,7 @@ export default function AdminTermsPage() {
                   }
                   className="w-full p-2 border border-gray-300 rounded"
                 />
-              </div>
+              </div> */}
 
               <div className="flex justify-end gap-2">
                 <Button

@@ -287,10 +287,17 @@ class ApiClient {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("definition", data.definition);
-    formData.append("category", data.category.toString());
+    // formData.append("categories", data.categories);
 
-    if (data.photo) {
-      formData.append("photo", data.photo);
+    // if (data.) {
+    //   formData.append("photo", data.photo);
+    // }
+    if (data.categories) {
+      if (data.categories.length > 0) {
+        data.categories.forEach((catId) => {
+          formData.append("related_terms", catId.toString());
+        });
+      }
     }
     if (data.related_terms) {
       if (data.related_terms.length > 0) {
@@ -320,8 +327,8 @@ class ApiClient {
     if (data.definition !== undefined) {
       formData.append("definition", data.definition);
     }
-    if (data.category !== undefined) {
-      formData.append("category", data.category?.toString() || "");
+    if (data.categories !== undefined) {
+      formData.append("category", data.categories?.toString() || "");
     }
     if (data.photo !== undefined) {
       if (data.photo) {

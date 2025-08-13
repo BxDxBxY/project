@@ -74,7 +74,7 @@ export interface TermTranslation {
 
 export interface CreateTermData {
   title: string;
-  photo: File | null;
+  // photo: File | null;
   definition: string;
   categories: number[];
   related_terms?: number[];
