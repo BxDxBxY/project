@@ -59,8 +59,8 @@ export const validateTerm = (term: any): term is Term => {
     typeof term.id === "number" &&
     typeof term.title === "string" &&
     typeof term.definition === "string" &&
-    Array.isArray(term.category) &&
-    Array.isArray(term.photo_id) &&
+    Array.isArray(term.categories) &&
+    // Array.isArray(term.photo_id) &&
     Array.isArray(term.related_terms) &&
     Array.isArray(term.related_countries) &&
     Array.isArray(term.sources) &&
@@ -99,7 +99,7 @@ export const filterTerms = (
   // Filter by category
   if (selectedCategory) {
     filtered = filtered.filter((term) => {
-      const categoryId = term.category;
+      const categoryId = term.categories;
       return String(categoryId) === selectedCategory;
     });
   }

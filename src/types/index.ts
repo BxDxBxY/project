@@ -57,8 +57,8 @@ export interface Term {
   definition: string;
   created_at: string;
   updated_at: string;
-  photo_id: number[];
-  category: number[];
+  // photo_id: number[];
+  categories: number[];
   related_terms: number[];
   related_countries: any[];
   sources: any[];
@@ -76,7 +76,7 @@ export interface CreateTermData {
   title: string;
   photo: File | null;
   definition: string;
-  category: number[];
+  categories: number[];
   related_terms?: number[];
 }
 
@@ -84,7 +84,7 @@ export interface UpdateTermData {
   title?: string;
   photo?: File | null;
   definition?: string;
-  category?: number[];
+  categories?: number[];
   related_terms?: number[];
 }
 
