@@ -8,17 +8,63 @@ import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 
 export default function HomePage() {
   return (
-    <div className="bg-gradient-to-br min-h-full transition-all duration-300 from-gray-50 to-gray-100">
-    {/* Hero Section */}
-    <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
+    <div className=" min-h-full  transition-all duration-300 bg-gradient-to-br from-gray-50 to-gray-100 ">
+      {/* Hero Section */}
+      {/* If you want to bring back the image, it will stack on mobile */}
+      <section className="max-w-[1920px] mx-auto container flex justify-center items-start pt-[50px] h-full px-4">
+        <div className="flex flex-col py-[50px]  items-start  justify-center text-center gap-4">
+          <p className="text-2xl md:text-3xl text-justify font-bold text-gray-700 uppercase leading-snug">
+            Diplomatik Terminlar Izohli {"Lug‘ati"}
+          </p>
+          <hr className="w-full opacity-20" />
+
+          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
+            Zamonaviy davr mutaxassislar o‘rtasida hamkorlikning yangi
+            shakllarini izlash, ma’lumotni taqdim etish, olish va tarqatishning
+            ilg‘or usullarini talab etadi. Shu munosabat bilan O‘zbekiston
+            Respublikasi Tashqi ishlar vazirligi huzuridagi Jahon iqtisodiyoti
+            va diplomatiya universitetining Diplomatik akademiyasi maxsus loyiha
+            — “Diplomatik Terminlar Izohli Lug‘ati”ni taqdim etadi.
+          </p>
+          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
+            Ushbu noyob elektron axborot resursida nafaqat xalqaro munosabatlar
+            sohasida, balki yuridik, siyosiy, iqtisodiy va boshqa yo‘nalishlarda
+            qo‘llaniladigan eng to‘liq va tizimlashtirilgan terminlar bazasi
+            jamlangan.
+          </p>
+          <hr className="w-full opacity-20" />
+
+          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
+            Loyiha doirasida Telegram-kanal ishga tushirilgan bo‘lib, unda
+            zamonaviy xalqaro diplomatik kun tartibidagi yangi va dolzarb
+            terminlar har kuni e’lon qilinadi. Hamkasblar, talabalar,
+            aspirantlar, o‘qituvchilar, olimlar va bitiruvchilarni lug‘atni
+            boyitish jarayonida faol ishtirok etishga chorlaymiz. Yangi
+            terminlar bo‘yicha fikr va takliflaringiz mamnuniyat bilan qabul
+            qilinadi.
+          </p>
+          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
+            Telegram kanalimizga obuna bo‘ling:{" "}
+            <a
+              href="https://t.me/Newdictionary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              https://t.me/Newdictionary
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
       <p className="text-3xl md:text-5xl font-bold text-gray-700 uppercase leading-snug">
         Tashqi ishlar vazirligi <br />
         Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi <br />
         Diplomatik akademiyaning Diplomatik {"Lug'ati"}
       </p>
   
-      {/* If you want to bring back the image, it will stack on mobile */}
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center">
         <Image
           src="/diplomatic-academy.jpg"
           alt="Diplomatik Akademiya"
@@ -26,13 +72,13 @@ export default function HomePage() {
           height={400}
           className="object-cover rounded-lg shadow-lg"
         />
-      </div> */}
-    </section>
-  
-    <hr className="border-gray-200" />
-  
-    {/* Partners Section */}
-    <section className="w-full py-16 px-4">
+      </div>
+    </section> */}
+
+      {/* <hr className="border-gray-200" /> */}
+
+      {/* Partners Section */}
+      {/* <section className="w-full py-16 px-4">
       <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
         Bizning Hamkorlarimiz
       </h2>
@@ -54,9 +100,8 @@ export default function HomePage() {
           </div>
         ))}
       </div>
-    </section>
-  </div>
-  
+    </section> */}
+    </div>
   );
 }
 

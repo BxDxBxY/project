@@ -409,7 +409,6 @@ export const updateCategory = (id: number, data: UpdateCategoryData) =>
 export const deleteCategory = (id: number) => apiClient.deleteCategory(id);
 
 export const fetchTermPhoto = (id: number) => apiClient.fetchTermPhoto(id);
-
 export const fetchTerms = () => apiClient.fetchTerms();
 export const fetchTerm = (id: number) => apiClient.fetchTerm(id);
 export const createTerm = (data: CreateTermData) => apiClient.createTerm(data);

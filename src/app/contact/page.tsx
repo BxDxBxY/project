@@ -125,7 +125,7 @@ export default function ContactPage() {
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
         {/* Main Content */}
         <div className="flex-1">
-          <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="max-w-6xl mx-auto px-6 py-12">
             {/* Header Section */}
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold text-[#001c3b] mb-4">

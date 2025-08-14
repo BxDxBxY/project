@@ -162,12 +162,12 @@ const DictionaryPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8">
+      <div className=" bg-gradient-to-br max-w-6xl from-blue-50 to-blue-200 p-8">
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold text-gray-900">
             Diplomatik {"Lugʻat"}
           </h1>
-          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
+          <div className="max-w-6xl bg-white rounded-lg shadow-lg p-6 text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
               <svg
                 className="w-6 h-6 text-red-600"
@@ -202,7 +202,7 @@ const DictionaryPage: React.FC = () => {
   return (
     <>
   <div className=" px-4 sm:px-8 py-8 transition-all duration-300">
-    <div className="flex flex-col items-center gap-6 max-w-[1920px] mx-auto">
+    <div className="flex flex-col items-center gap-6 max-w-6xl mx-auto">
       {/* Title */}
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center">
         Diplomatik {"Lugʻat"}
@@ -214,7 +214,7 @@ const DictionaryPage: React.FC = () => {
           value={search}
           onChange={setSearch}
           placeholder="Terminlarni qidirish..."
-          className="flex-1"
+          className="flex-1 text-gray-800"
           disabled={loading}
         />
         {/* CategoryFilter can be added back here if needed */}

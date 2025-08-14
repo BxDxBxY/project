@@ -26,22 +26,30 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  
+  
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen bg-gray-50">
           <Head>
-            {/* Move the viewport meta tag here */}
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1"
             />
           </Head>
+
+          {/* Fixed header */}
           <HeaderDefault />
 
-          <main className="flex-1 bg-gray-100 ">
+          {/* Main content with padding for fixed header */}
+          <main
+            className={`flex-1 bg-gray-100 pt-[112px]`}
+          >
             {children}
           </main>
+
+          {/* Sticky footer */}
           <FooterComponent />
         </div>
       </body>

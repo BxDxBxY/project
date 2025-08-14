@@ -9,6 +9,7 @@ import {
   BookOpen,
   Target,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -18,47 +19,107 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto items-center justify-center p-6">
           {/* Header Section */}
           <div className="text-center mb-16 items-center justify-center">
-            <h1 className="text-5xl md:text-5xl font-bold text-[#001c3b] mb-6">
-              Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi
-              <br /> Diplomatik akademiyaning faoliyati haqida
+            <h1 className="text-5xl md:text-5xl text-center font-bold text-[#001c3b] mb-6">
+              Tashqi ishlar varilgi Jahon iqtisodiyoti va diplomatiya
+              universiteti huzuridagi
+              <br /> diplomatik akademiyaning diplomatik {"lug'ati"}
             </h1>
-            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed">
-              Oʻzbekiston Respublikasi Prezidentining 2022-yil 23-iyuldagi
-              “Jahon iqtisodiyoti va diplomatiya universiteti faoliyatini
-              tizimli isloh qilish chora-tadbirlari toʻgʻrisida”gi PQ–330-sonli
-              qaroriga asosan 2022-yil sentabr oyidan Jahon iqtisodiyoti va
-              diplomatiya universiteti (JIDU) huzurida Diplomatik akademiya oʻz
-              faoliyatini boshladi. Davlat rahbari tomonidan belgilab berilgan
-              vazifalardan kelib chiqib, nisbatan qisqa vaqt ichida Diplomatik
-              akademiyaning tashkiliy-meʼyoriy hujjatlari ishlab chiqildi va
-              tasdiqlandi. Jumladan, Dipakademiya shtat jadvali, oʻquv rejalari
-              va oʻquv dasturlari, tinglovchilar tayyorgarligini baholash tizimi
-              qabul qilindi, Ilmiy kengash tarkibi shakllantirildi. Hozirgi
-              kunda Diplomatik akademiya xodimlari shtati (2022-y. shtat jadvali
-              boʻyicha) 90 foizga yetkazildi. Xodimlar va Dipakademiya oʻrtasida
-              mehnat shartnomalari tuzildi. Boʻlimlar nizomlari ishlab chiqilgan
-              va tasdiqlangan. Dipakademiyaning rasmiy veb-sayti ishga
-              tushirilgan. 2022-yil 1-noyabr kuni Diplomatik akademiyaning
-              ochilish marosimida davlat idoralari vakillari, Oʻzbekistonda
-              akkreditatsiyadan oʻtgan qator xorijiy davlatlar diplomatik
-              vakolatxonalari rahbarlari ishtirok etdilar. Zahiradagi
-              diplomatlarni tizimli tayyorlash boʻyicha Dipakademiyaning
-              “Oʻzbekiston Respublikasining tashqi siyosiy va tashqi iqtisodiy
-              faoliyati” mavzusidagi birinchi oʻquv kursiga Tashqi ishlar
-              vazirligi, Investitsiyalar va tashqi savdo vazirligi, Mudofaa
-              vazirligi va Oʻzbekiston Respublikasi Oliy Majlisi Qonunchilik
-              palatasi vakillaridan iborat 26 nafar tinglovchi qabul qilindi.
-              2022-yil 19-noyabrdan 17-dekabrga qadar Oʻzbekiston Respublikasi
-              Prezidenti Administratsiyasi xodimlari uchun “Diplomatik protokol
-              va xalqaro muzokaralar” mavzusida maxsus oʻquv kursi tashkil
-              etildi. Dipakademiya oʻquv jarayoniga xalqaro munosabatlar
-              sohasida chuqur nazariy bilim va katta amaliy tajribaga ega milliy
-              va xorijiy mutaxassislar jalb etildi. 2022-yil 27-dekabr kuni
-              yuqorida koʻrsatilgan kursni muvaffaqiyatli tamomlagan
-              tinglovchilarga Diplomatik akademiya sertifikatlari topshirildi.
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Луғат ҳозирги ўзбек тилининг халқаро муносабатларга оид соҳаси –
+              сиёсат ва дипломатияда қўлланаётган 1000га яқин термин, сўз
+              бирикмаси ва номларни ўз ичига олган. Қўлланма халқаро
+              муносабатлар, сиёсатшунослик фанлари ўқиталидиган университетлар,
+              институтлар тадқиқотчи ва талабалари, ёш дипломатлар, таржимонлар,
+              қолаверса, шу соҳа билан қизиқувчи китобхонларга мўлжалланган.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Сўзбоши Ўзбекистон Республикаси Президенти Ш.М.Мирзиёевнинг 2019
+              йил 21 октябрдаги “Ўзбек тилининг давлат тили сифатидаги нуфузи ва
+              мавқеини тубдан ошириш чора-тадбирлари тўғрисида”ги фармонига
+              мувофиқ давлат тили тўғрисидаги қонун ҳужжатларига риоя
+              қилинишини, соҳага оид муаммоларни таҳлил этиб, бу борада ягона
+              давлат сиёсати амалга оширилишини таъминлаш юзасидан Вазирлар
+              Маҳкамасида Давлат тилини ривожлантириш департаменти ташкил этилди
+              ва янги сўз ва атамаларни расмий истеъмолга киритиш борасидаги
+              ишларни тартибга соладиган Атамалар комиссияси тузилди.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Қўлингиздаги “Дипломатик терминлар изоҳли луғати” ҳам шу ушбу
+              чора-тадбирларга жавоб тариқасида соҳадаги эҳтиёжни бир мунча
+              қондиришга хизмат қилади, деган мақсадда яратилди. Китоб ўзбек
+              миллатининг халқаро соҳадаги онги ва сиёсий маданияти юксалишига,
+              сиёсий масалалар ва дипломатик жараённи ўзбек тилида ифодалаб
+              беришга хизмат қилувчи адабиётлар, жумладан луғатлар яратиш
+              соҳасига қўшилган баҳолиқудрат ҳисса бўлади, деб умид қиламиз.
+              Ушбу нашрни амалга оширишдан кўзланган яна бир мақсад сиёсат,
+              дипломатия, умуман халаро муносабатлар соҳаси мутахассислари, ЖИДУ
+              талабалари ва қолаверса, қизиқувчиларга шу соҳадаги терминлар,
+              бирикма ва номларни ўрганиш ва ўз фаолиятларида қўллаш имкониятини
+              яратиш бўлди.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Шу ўринда ҳамма соҳалар каби дипломатия тили ҳам ўз терминлари
+              тизимига эга экани, унинг луғат бойлиги дипломатик, тарихий,
+              маданий, лингвистик, ҳуқуқий ва бошқа хил иборалардан ташкил
+              топганини эслатиб ўтиш лозим.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Дипломатия тили учун узун жумлалар, иборалар, кириш сўзлари ва
+              боғловчиларнинг кўплиги хос. Дипломатик тил расмий тилдан,
+              хусусан, халқаро сиёсат тилидан, журналистика тилидан, маълум
+              даражада бадиий-адабий тилдан ҳам анча фарқ қилади.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Таъкидлаш жоизки, дипломатик атамалар асосан лотин, инглиз,
+              француз тилларида яратилган ёки улар орқали воситачи тиллар
+              сифатида кириб келган. Ҳар қандай замонавий тилда дипломатия ва
+              сиёсатга тегишли терминлар фаол ривожланмоқда, шунинг учун
+              инсоннинг дипломатия ва ташқи алоқалар билан боғлиқ ақлий фаолияти
+              натижалари терминларда ифодаланмоқда, деб тахмин қилиш мантиқан
+              тўғри.
+              {"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Луғатдаги атамаларни танлашда ўзбек тили мезонларига, тил
+              нормаларига риоя қилинди. Луғат ушбу соҳадаги дастлабки изланиш
+              сифатида уни тузишда луғатчиликнинг барча анъана ва қоидаларига
+              риоя қилишга ҳамда халқаро ҳаётда, сиёсатда қўлланаётган
+              дипломатик терминларни имкон қадар тўплашга ҳаракат қилинди.
             </p>
             <div className="w-24 h-1 bg-[#c9a96e] mx-auto mt-6"></div>
           </div>
+
+          {/* Partners Section */}
+          <section className="w-full py-16 px-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Bizning Hamkorlarimiz
+            </h2>
+
+            <div className="flex gap-8 w-full items-center justify-start md:justify-center overflow-x-auto py-4 scrollbar-hide">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 p-4 h-[160px] w-[200px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer hover:shadow-lg transition"
+                  onClick={() =>
+                    window.open("https://partner-link.com", "_blank")
+                  }
+                >
+                  <Image
+                    src={`/partner-${i + 1}.png`}
+                    alt={`Hamkor ${i + 1}`}
+                    width={150}
+                    height={75}
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Mission Statement */}
           {/* <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
