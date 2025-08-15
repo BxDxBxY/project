@@ -1,7 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { TokenManager, verifyToken } from "@/lib/api";
+import { TokenManager } from "@/lib/tokenManager";
+import { verifyToken } from "@/lib/authApi";
+// import { TokenManager, verifyToken } from "@/lib/api";
 
 export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
   children,

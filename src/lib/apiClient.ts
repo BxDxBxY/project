@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { ApiError, AuthTokens, LoginCredentials } from "@/types";
+import { TokenManager } from "./tokenManager";
 
 // Environment-based API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
@@ -9,19 +10,19 @@ interface ErrorResponse {
   message?: string;
 }
 
-class TokenManager {
-  private static getStorage(): Storage | null {
-    return typeof window !== "undefined" ? window.localStorage : null;
-  }
-  static getAccessToken() { return this.getStorage()?.getItem("accessToken") || null; }
-  static getRefreshToken() { return this.getStorage()?.getItem("refreshToken") || null; }
-  static setTokens(access: string, refresh: string) {
-    const s = this.getStorage(); if (s) { s.setItem("accessToken", access); s.setItem("refreshToken", refresh); }
-  }
-  static clearTokens() {
-    const s = this.getStorage(); if (s) { s.removeItem("accessToken"); s.removeItem("refreshToken"); }
-  }
-}
+// class TokenManager {
+//   private static getStorage(): Storage | null {
+//     return typeof window !== "undefined" ? window.localStorage : null;
+//   }
+//   static getAccessToken() { return this.getStorage()?.getItem("accessToken") || null; }
+//   static getRefreshToken() { return this.getStorage()?.getItem("refreshToken") || null; }
+//   static setTokens(access: string, refresh: string) {
+//     const s = this.getStorage(); if (s) { s.setItem("accessToken", access); s.setItem("refreshToken", refresh); }
+//   }
+//   static clearTokens() {
+//     const s = this.getStorage(); if (s) { s.removeItem("accessToken"); s.removeItem("refreshToken"); }
+//   }
+// }
 
 class ApiClient {
   private client: AxiosInstance;
@@ -82,4 +83,5 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
-export { TokenManager };
+// export { TokenManager };
+

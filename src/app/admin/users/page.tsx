@@ -1,9 +1,15 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { fetchUsers, createUser, updateUser, deleteUser } from '@/lib/api';
+// import { 
+  // fetchUsers, 
+  // createUser, 
+  // updateUser, 
+  // deleteUser 
+// } from '@/lib/api';
 import { User, CreateUserData } from '@/types';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Modal } from '@/components/ui/Modal';
+import { createUser, deleteUser, fetchUsers, updateUser } from '@/lib/usersApi';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([]);

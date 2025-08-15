@@ -2,9 +2,10 @@
 import React from "react";
 import Link from "next/link";
 import { AdminAuthGuard } from "@/components/admin/AdminAuthGuard";
-import { TokenManager } from "@/lib/api";
+// import { TokenManager } from "@/lib/api";
 import { usePathname, useRouter } from "next/navigation";
 import MiniDrawer from "@/components/ui/Drawer";
+import { TokenManager } from "@/lib/tokenManager";
 
 export default function AdminLayout({
   children,

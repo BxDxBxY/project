@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Term, Category, DictionaryState } from '@/types';
-import { fetchTerms, fetchCategories } from '@/lib/api';
+// import { fetchTerms, fetchCategories } from '@/lib/api';
 import { filterTerms, validateTermsArray, validateCategoriesArray, logger } from '@/lib/utils';
+import { fetchTerms } from '@/lib/termsApi';
+import { fetchCategories } from '@/lib/categoriesApi';
 
 interface UseDictionaryReturn extends DictionaryState {
   refreshData: () => Promise<void>;

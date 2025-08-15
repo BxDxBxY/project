@@ -2,7 +2,9 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, TokenManager, verifyToken } from "@/lib/api";
+import { login, verifyToken } from "@/lib/authApi";
+import { TokenManager } from "@/lib/tokenManager";
+// import { login, TokenManager, verifyToken } from "@/lib/api";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");

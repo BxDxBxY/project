@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Term } from "@/types";
-import { fetchTerm, fetchTermPhoto, fetchTerms } from "@/lib/api";
+// import { 
+  // fetchTerm, 
+  // fetchTermPhoto, 
+  // fetchTerms 
+// } from "@/lib/api";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LanguageSelector } from "@/components/dictionary/LanguageSelector";
 import {
@@ -16,6 +20,7 @@ import {
 import { logger } from "@/lib/utils";
 import RelatedTerm from "@/components/dictionary/RelatedTerm";
 import Image from "next/image";
+import { fetchTerm, fetchTermPhoto, fetchTerms } from "@/lib/termsApi";
 
 interface TermDetailPageProps {
   params: Promise<{ word: string }>;

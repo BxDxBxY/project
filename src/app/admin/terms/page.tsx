@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  fetchTerms,
-  createTerm,
-  updateTerm,
-  deleteTerm,
-  fetchCategories,
-} from "@/lib/api";
+// import {
+  // fetchTerms,
+  // createTerm,
+  // updateTerm,
+  // deleteTerm,
+  // fetchCategories,
+// } from "@/lib/api";
 import { Term, CreateTermData, UpdateTermData, Category } from "@/types";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import {
@@ -20,6 +20,8 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
+import { createTerm, deleteTerm, fetchTerms, updateTerm } from "@/lib/termsApi";
+import { fetchCategories } from "@/lib/categoriesApi";
 
 export default function AdminTermsPage() {
   const [terms, setTerms] = useState<Term[]>([]);
