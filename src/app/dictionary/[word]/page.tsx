@@ -1,93 +1,82 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { Term } from "@/types";
-// import { 
-  // fetchTerm, 
-  // fetchTermPhoto, 
-  // fetchTerms 
-// } from "@/lib/api";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { LanguageSelector } from "@/components/dictionary/LanguageSelector";
-import {
-  getTermTranslation,
-  getTermDescription,
-  formatDate,
-  formatDateTime,
-} from "@/lib/utils";
+import { fetchTerm, fetchTerms } from "@/lib/termsApi";
+import { fetchCategories } from "@/lib/categoriesApi";
+import { fetchCountries } from "@/lib/countriesApi";
+import { fetchSources } from "@/lib/sourcesApi";
+import { TermDetail, TermSummary, Category, Country, Source } from "@/types";
 import { logger } from "@/lib/utils";
-import RelatedTerm from "@/components/dictionary/RelatedTerm";
-import Image from "next/image";
-import { fetchTerm, fetchTermPhoto, fetchTerms } from "@/lib/termsApi";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface TermDetailPageProps {
-  params: Promise<{ word: string }>;
+  params: { word: string };
 }
 
 const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
-  const [term, setTerm] = useState<Term | null>(null);
-  const [terms, setTerms] = useState<Term[]>([]);
+  const [term, setTerm] = useState<TermDetail | null>(null);
+  const [allTerms, setAllTerms] = useState<TermSummary[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [sources, setSources] = useState<Source[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [language, setLanguage] = useState("en");
-  const [termPhotos, setTermPhotos] = useState([]);
-  const [termPhotosURL, setTermPhotosURL] = useState(null);
-  const resolvedParams = useParams();
-  const termId = resolvedParams?.word as string;
+  const router = useRouter();
+  const { word: termId } = useParams();
 
-  const fetchTermPhotos = async (termPhotos: number[]) => {
-    // termPhotos.map((item) => {
-    //   return
-    // });
-    fetchTermPhoto(2).then((data) => setTermPhotosURL(data.photo));
-  };
   useEffect(() => {
-    const loadTerm = async () => {
-      if (!termId) {
-        setError("Term ID is required");
-        setLoading(false);
-        return;
-      }
-
+    const fetchTermData = async () => {
       setLoading(true);
-      setError(null);
-
       try {
-        const termData = await fetchTerm(parseInt(termId, 10));
-        const terms = await fetchTerms();
-        setTerms(terms);
-        setTerm(termData);
-        logger.info(`Loaded term: ${termData.title}`);
-        if (termPhotos.length > 0) {
-          fetchTermPhotos(termPhotos);
+        const termIdNum = parseInt(termId as string, 10);
+        if (isNaN(termIdNum)) {
+          throw new Error("Invalid term ID");
         }
+        const [
+          termData,
+          termsData,
+          categoriesData,
+          countriesData,
+          sourcesData,
+        ] = await Promise.all([
+          fetchTerm(termIdNum),
+          fetchTerms(),
+          fetchCategories(),
+          fetchCountries(),
+          fetchSources(),
+        ]);
+        setTerm(termData);
+        setAllTerms(termsData);
+        setCategories(categoriesData);
+        setCountries(countriesData);
+        setSources(sourcesData);
+        setError(null);
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to load term";
-        setError(errorMessage);
         logger.error("Error loading term:", err);
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
     };
-
-    loadTerm();
-  }, [termId, termPhotos]);
+    fetchTermData();
+  }, [termId]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8 flex flex-col items-center justify-center">
+      <div className="pt-[128px] p-8 flex flex-col items-center justify-center">
         <LoadingSpinner size="lg" />
-        <p className="mt-4 text-gray-500">Loading term details...</p>
+        <p className="mt-4 text-gray-500">Termin yuklanmoqda...</p>
       </div>
     );
   }
 
   if (error || !term) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8 flex flex-col items-center justify-center">
+      <div className="mx-auto pt-[128px] p-8 flex flex-col items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
           <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
             <svg
@@ -105,7 +94,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Term Not Found
+            Termin topilmadi
           </h1>
           <p className="text-gray-500 mb-4">
             {error ||
@@ -115,92 +104,121 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
             href="/dictionary"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Back to Dictionary
+            Lugʻatga qaytish
           </Link>
         </div>
       </div>
     );
   }
 
-  const translatedTitle = getTermTranslation(term, language);
-  const translatedDescription = getTermDescription(term, language);
+  const getRelatedTermTitles = (ids: number[]) =>
+    allTerms.filter((t) => ids.includes(t.id)).map((t) => t.title);
+  const getCategoryNames = (ids: number[]) =>
+    categories.filter((c) => ids.includes(c.id)).map((c) => c.name);
+  const getCountryNames = (ids: number[]) =>
+    countries.filter((c) => ids.includes(c.id)).map((c) => c.name);
+  const getSourceNames = (ids: number[]) =>
+    sources.filter((s) => ids.includes(s.id)).map((s) => s.title);
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100  py-8 px-4 sm:px-8">
-    <div className="max-w-[1340px] mx-auto">
-      {/* Header */}
-      <div className="flex flex-col items-center mb-8 text-center">
-        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4 max-w-[800px] break-words">
-          {translatedTitle}
-        </h1>
-  
-        {/* Language Selector (optional) */}
-        {/* <LanguageSelector
-          currentLanguage={language}
-          onLanguageChange={setLanguage}
-          className="mb-6"
-        /> */}
-  
-        {/* Back Button */}
-        <Link
-          href="/dictionary"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+    <div className="pt-[128px] pb-8 px-4 sm:px-8">
+      <div className="max-w-[1340px] mx-auto">
+        <div className="flex flex-col items-center mb-8 text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-4 max-w-[800px] break-words">
+            {term.title}
+          </h1>
+          <Link
+            href="/dictionary"
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-          {"Lug'atga"} qaytish
-        </Link>
-      </div>
-  
-      {/* Term Details */}
-      <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
-        {/* Definition */}
-        <div className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-            Manosi
-          </h2>
-          <div className="prose max-w-none">
-            <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-              {translatedDescription}
-            </p>
-          </div>
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Lugʻatga qaytish
+          </Link>
         </div>
-  
-        {/* Photos */}
-        {/* {termPhotos.length > 0 && (
+
+        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-              Photo
+              Manosi
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {termPhotos.map((e, i) => (
-                <Image
-                  key={i}
-                  src={termPhotosURL || ""}
-                  alt={term.title}
-                  height={100}
-                  width={200}
-                  className="w-full rounded-lg shadow-md object-cover"
-                />
-              ))}
-            </div>
+            <div
+              className="prose max-w-none"
+              dangerouslySetInnerHTML={{ __html: term.definition }}
+            />
           </div>
-        )} */}
+          {term.categories.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                Kategoriyalar
+              </h2>
+              <ul className="list-disc pl-5">
+                {getCategoryNames(term.categories).map((name, index) => (
+                  <li key={index} className="text-base text-gray-700">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {term.related_terms.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                Related Terms
+              </h2>
+              <ul className="list-disc pl-5">
+                {getRelatedTermTitles(term.related_terms).map(
+                  (title, index) => (
+                    <li key={index} className="text-base text-gray-700">
+                      {title}
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          )}
+          {term.related_countries.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                Related Countries
+              </h2>
+              <ul className="list-disc pl-5">
+                {getCountryNames(term.related_countries).map((name, index) => (
+                  <li key={index} className="text-base text-gray-700">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {term.sources.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                Sources
+              </h2>
+              <ul className="list-disc pl-5">
+                {getSourceNames(term.sources).map((name, index) => (
+                  <li key={index} className="text-base text-gray-700">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-  
   );
 };
 

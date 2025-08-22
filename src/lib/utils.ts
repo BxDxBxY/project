@@ -1,4 +1,4 @@
-import { ApiError, Term, Category, Language } from "@/types";
+import { ApiError, Category, TermDetail, TermSummary } from "@/types";
 
 // Error handling utilities
 export class AppError extends Error {
@@ -52,7 +52,11 @@ export const handleApiError = (error: any): ApiError => {
 };
 
 // Data validation utilities - Updated to match Swagger
-export const validateTerm = (term: any): term is Term => {
+export const validateTermsSummary = (term: any): term is TermSummary => {
+  // console.log(term)
+  return term && typeof term.id === "number" && typeof term.title === "string";
+};
+export const validateTerm = (term: any): term is TermDetail => {
   // console.log(term)
   return (
     term &&
@@ -77,8 +81,8 @@ export const validateCategory = (category: any): category is Category => {
   );
 };
 
-export const validateTermsArray = (terms: any): terms is Term[] => {
-  return Array.isArray(terms) && terms.every(validateTerm);
+export const validateTermsArray = (terms: any): terms is TermSummary[] => {
+  return Array.isArray(terms) && terms.every(validateTermsSummary);
 };
 
 export const validateCategoriesArray = (
@@ -88,52 +92,52 @@ export const validateCategoriesArray = (
 };
 
 // Search and filtering utilities - Updated to match Swagger
-export const filterTerms = (
-  terms: Term[],
-  search: string,
-  selectedCategory: string,
-  language: string = "en"
-): Term[] => {
-  let filtered = [...terms];
+// export const filterTerms = (
+//   terms: Term[],
+//   search: string,
+//   selectedCategory: string,
+//   language: string = "en"
+// ): Term[] => {
+//   let filtered = [...terms];
 
-  // Filter by category
-  if (selectedCategory) {
-    filtered = filtered.filter((term) => {
-      const categoryId = term.categories;
-      return String(categoryId) === selectedCategory;
-    });
-  }
+//   // Filter by category
+//   if (selectedCategory) {
+//     filtered = filtered.filter((term) => {
+//       const categoryId = term.categories;
+//       return String(categoryId) === selectedCategory;
+//     });
+//   }
 
-  // Filter by search term
-  if (search.trim()) {
-    const searchLower = search.toLowerCase();
-    filtered = filtered.filter((term) => {
-      // Search in title
-      if (term.title.toLowerCase().includes(searchLower)) {
-        return true;
-      }
+//   // Filter by search term
+//   if (search.trim()) {
+//     const searchLower = search.toLowerCase();
+//     filtered = filtered.filter((term) => {
+//       // Search in title
+//       if (term.title.toLowerCase().includes(searchLower)) {
+//         return true;
+//       }
 
-      // Search in definition
-      if (term.definition.toLowerCase().includes(searchLower)) {
-        return true;
-      }
+//       // Search in definition
+//       if (term.definition.toLowerCase().includes(searchLower)) {
+//         return true;
+//       }
 
-      return false;
-    });
-  }
+//       return false;
+//     });
+//   }
 
-  // Sort alphabetically
-  return filtered.sort((a, b) => a.title.localeCompare(b.title));
-};
+//   // Sort alphabetically
+//   return filtered.sort((a, b) => a.title.localeCompare(b.title));
+// };
 
 // Language utilities - Updated to work with new structure
-export const getTermTranslation = (term: Term, language: string): string => {
+export const getTermTranslation = (term: TermSummary, language: string): string => {
   // For now, return the title since translations are not in the Swagger
   // This can be extended when translation support is added
   return term.title;
 };
 
-export const getTermDescription = (term: Term, language: string): string => {
+export const getTermDescription = (term: TermDetail, language: string): string => {
   // For now, return the definition since translations are not in the Swagger
   // This can be extended when translation support is added
   return term.definition;
@@ -255,11 +259,11 @@ export const retry = async <T>(
 };
 
 // Constants
-export const SUPPORTED_LANGUAGES: Language[] = [
-  { code: "en", label: "English" },
-  { code: "uz", label: "Uzbek" },
-  { code: "ru", label: "Русский" },
-];
+// export const SUPPORTED_LANGUAGES: Language[] = [
+//   { code: "en", label: "English" },
+//   { code: "uz", label: "Uzbek" },
+//   { code: "ru", label: "Русский" },
+// ];
 
 export const DEFAULT_LANGUAGE = "en";
 

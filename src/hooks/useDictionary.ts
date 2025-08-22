@@ -1,18 +1,12 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Term, Category, DictionaryState } from '@/types';
-// import { fetchTerms, fetchCategories } from '@/lib/api';
-import { filterTerms, validateTermsArray, validateCategoriesArray, logger } from '@/lib/utils';
-import { fetchTerms } from '@/lib/termsApi';
-import { fetchCategories } from '@/lib/categoriesApi';
+import { useState, useEffect, useCallback } from "react";
+import { TermSummary, DictionaryState } from "@/types";
+import { logger, debounce } from "@/lib/utils";
+import { fetchTerms, searchTerms } from "@/lib/termsApi";
 
 interface UseDictionaryReturn extends DictionaryState {
-  refreshData: () => Promise<void>;
+  refreshData: (search?: string) => Promise<void>;
   setSearch: (search: string) => void;
-  setSelectedCategory: (categoryId: string) => void;
-  setLanguage: (language: string) => void;
-  filteredTerms: Term[];
   totalTerms: number;
-  totalCategories: number;
 }
 
 export const useDictionary = (): UseDictionaryReturn => {
@@ -21,85 +15,59 @@ export const useDictionary = (): UseDictionaryReturn => {
     categories: [],
     loading: true,
     error: null,
-    search: '',
-    selectedCategory: '',
-    language: 'en',
+    search: "",
+    selectedCategory: "",
+    language: "en",
   });
 
-  const loadData = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+  const loadData = useCallback(async (search: string = "") => {
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
-      logger.info('Loading dictionary data...');
-      
-      const [termsData, categoriesData] = await Promise.all([
-        fetchTerms(),
-        fetchCategories(),
-      ]);
-      
-      // Validate data
-      if (!validateTermsArray(termsData)) {
-        throw new Error('Invalid terms data received from server');
-      }
+      logger.info("Loading dictionary data...");
 
-      if (!validateCategoriesArray(categoriesData)) {
-        throw new Error('Invalid categories data received from server');
-      }
+      const termsData = await searchTerms(search);
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         terms: termsData,
-        categories: categoriesData,
         loading: false,
         error: null,
       }));
 
-      logger.info(`Loaded ${termsData.length} terms and ${categoriesData.length} categories`);
+      logger.info(`Loaded ${termsData.length} terms`);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load dictionary data';
-      logger.error('Error loading dictionary data:', error);
-      
-      setState(prev => ({
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to load dictionary data";
+      logger.error("Error loading dictionary data:", error);
+
+      setState((prev) => ({
         ...prev,
         loading: false,
         error: errorMessage,
         terms: [],
-        categories: [],
       }));
     }
   }, []);
 
-  const refreshData = useCallback(async () => {
-    await loadData();
-  }, [loadData]);
+  const refreshData = useCallback(
+    async (search: string = "") => {
+      await loadData(search);
+    },
+    [loadData]
+  );
+
+  const debouncedRefresh = debounce(refreshData, 300);
 
   const setSearch = useCallback((search: string) => {
-    setState(prev => ({ ...prev, search }));
-  }, []);
+    setState((prev) => ({ ...prev, search }));
+    debouncedRefresh(search);
+  }, [debouncedRefresh]);
 
-  const setSelectedCategory = useCallback((categoryId: string) => {
-    setState(prev => ({ ...prev, selectedCategory: categoryId }));
-  }, []);
-
-  const setLanguage = useCallback((language: string) => {
-    setState(prev => ({ ...prev, language }));
-  }, []);
-
-  // Memoized filtered terms
-  const filteredTerms = useMemo(() => {
-    return filterTerms(
-      state.terms,
-      state.search,
-      state.selectedCategory,
-      state.language
-    );
-  }, [state.terms, state.search, state.selectedCategory, state.language]);
-
-  // Computed values
   const totalTerms = state.terms.length;
-  const totalCategories = state.categories.length;
 
-  // Load data on mount
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -108,10 +76,6 @@ export const useDictionary = (): UseDictionaryReturn => {
     ...state,
     refreshData,
     setSearch,
-    setSelectedCategory,
-    setLanguage,
-    filteredTerms,
     totalTerms,
-    totalCategories,
   };
-}; 
+};

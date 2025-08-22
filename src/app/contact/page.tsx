@@ -122,7 +122,7 @@ export default function ContactPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+      <div className="flex flex-col pt-[112px]">
         {/* Main Content */}
         <div className="flex-1">
           <div className="max-w-6xl mx-auto px-6 py-12">

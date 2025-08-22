@@ -35,34 +35,74 @@ export interface AuthTokens {
 export interface User {
   id: number;
   username: string;
+  password: string;
   email: string;
-  first_name: string;
-  last_name: string;
-  is_staff: boolean;
-  is_active: boolean;
-  date_joined: string;
+  full_name: string;
+  // last_name: string;
+  // is_staff: boolean;
+  // is_active: boolean;
+  // date_joined: string;
 }
 
 // Dictionary Types - Updated to match Swagger
 export interface Category {
   id: number;
   name: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export type ModalType = "add" | "edit" | "delete";
 
-export interface Term {
+
+export interface Country {
+  id: number;
+  name: string;
+  iso_code: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Source {
+  id: number;
+  title: string;
+  url: string;
+  publication_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TermSummary {
+  id: number;
+  title: string;
+}
+
+// Full term details (when opening a specific term)
+export interface TermDetail {
   id: number;
   title: string;
   definition: string;
   created_at: string;
   updated_at: string;
-  // photo_id: number[];
   categories: number[];
   related_terms: number[];
-  related_countries: any[];
-  sources: any[];
+  related_countries: Country[] | number[];
+  sources: Source[] | number[];
 }
+
+// export interface Term {
+//   id: number;
+//   title: string;
+//   definition: string;
+//   created_at: string;
+//   updated_at: string;
+//   // photo_id: number[];
+//   categories: number[];
+//   related_terms: number[];
+//   related_countries: any[];
+//   sources: any[];
+// }
 
 export interface TermTranslation {
   id: number;
@@ -98,7 +138,8 @@ export interface UpdateCategoryData {
 
 // UI State Types
 export interface DictionaryState {
-  terms: Term[];
+  terms: TermSummary[];
+  termDetail?: TermDetail;
   categories: Category[];
   loading: boolean;
   error: string | null;
@@ -114,10 +155,10 @@ export interface AdminState {
 }
 
 // Language Types
-export interface Language {
-  code: string;
-  label: string;
-}
+// export interface Language {
+//   code: string;
+//   label: string;
+// }
 
 // Error Types
 export interface ApiError {
@@ -128,20 +169,20 @@ export interface ApiError {
 
 // Component Props Types
 export interface DictionaryPageProps {
-  initialTerms?: Term[];
+  initialTerms?: TermSummary[];
   initialCategories?: Category[];
 }
 
 export interface TermCardProps {
-  term: Term;
-  language: string;
+  term: TermSummary;
+  // language: string;
 }
 
-export interface CategoryFilterProps {
-  categories: Category[];
-  selectedCategory: string;
-  onCategoryChange: (categoryId: string) => void;
-}
+// export interface CategoryFilterProps {
+//   categories: Category[];
+//   selectedCategory: string;
+//   onCategoryChange: (categoryId: string) => void;
+// }
 
 export interface SearchBarProps {
   search: string;
@@ -150,8 +191,8 @@ export interface SearchBarProps {
   disabled?: boolean;
 }
 
-export interface LanguageSelectorProps {
-  languages: Language[];
-  currentLanguage: string;
-  onLanguageChange: (language: string) => void;
-}
+// export interface LanguageSelectorProps {
+// languages: Language[];
+// currentLanguage: string;
+// onLanguageChange: (language: string) => void;
+// }

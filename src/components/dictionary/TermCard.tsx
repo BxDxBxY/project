@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Category, Term } from "@/types";
+import { Category, TermSummary } from "@/types";
 import {
   getTermTranslation,
   getTermDescription,
@@ -8,20 +8,20 @@ import {
 } from "@/lib/utils";
 
 interface TermCardProps {
-  term: Term;
-  language: string;
+  term: TermSummary;
+  // language: string;
   className?: string;
-  categories: Category[];
+  // categories: Category[];
 }
 
 export const TermCard: React.FC<TermCardProps> = ({
   term,
-  language,
-  categories,
+  // language,
+  // categories,
   className = "",
 }) => {
-  const translatedTitle = getTermTranslation(term, language);
-  const translatedDescription = getTermDescription(term, language);
+  // const translatedTitle = getTermTranslation(term, language);
+  // const translatedDescription = getTermDescription(term, language);
 
   return (
     <Link
@@ -30,7 +30,7 @@ export const TermCard: React.FC<TermCardProps> = ({
     >
       <div className="space-y-2">
         <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-          {translatedTitle}
+          {term.title}
         </h3>
         {/* <p className="text-sm text-gray-600 line-clamp-3">
           {translatedDescription}

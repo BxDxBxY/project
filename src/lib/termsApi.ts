@@ -1,17 +1,31 @@
 import { apiClient } from "./apiClient";
-import { Term, CreateTermData, UpdateTermData } from "@/types";
+import {
+  TermDetail,
+  TermSummary,
+  CreateTermData,
+  UpdateTermData,
+} from "@/types";
 
 export const fetchTerms = () =>
-  apiClient.request<Term[]>({ method: "GET", url: "/dictionary/term/" });
+  apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/term/" });
+
+export const searchTerms = (text: string) =>
+  apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/term/" });
 
 export const fetchTerm = (id: number) =>
-  apiClient.request<Term>({ method: "GET", url: `/dictionary/term/${id}/` });
+  apiClient.request<TermDetail>({
+    method: "GET",
+    url: `/dictionary/term_detailed/${id}/`,
+  });
 
 export const fetchTermPhoto = (id: number) =>
-  apiClient.request<any>({ method: "GET", url: `/dictionary/term_photo/${id}/` });
+  apiClient.request<any>({
+    method: "GET",
+    url: `/dictionary/term_photo/${id}/`,
+  });
 
 export const createTerm = (data: CreateTermData) =>
-  apiClient.request<Term>({
+  apiClient.request<TermDetail>({
     method: "POST",
     url: "/dictionary/create_term/",
     data,
@@ -19,7 +33,7 @@ export const createTerm = (data: CreateTermData) =>
   });
 
 export const updateTerm = (id: number, data: UpdateTermData) =>
-  apiClient.request<Term>({
+  apiClient.request<TermDetail>({
     method: "PUT",
     url: `/dictionary/create_term/${id}/`,
     data,
@@ -27,4 +41,7 @@ export const updateTerm = (id: number, data: UpdateTermData) =>
   });
 
 export const deleteTerm = (id: number) =>
-  apiClient.request<void>({ method: "DELETE", url: `/dictionary/create_term/${id}/` });
+  apiClient.request<void>({
+    method: "DELETE",
+    url: `/dictionary/create_term/${id}/`,
+  });

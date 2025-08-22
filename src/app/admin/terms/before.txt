@@ -1,0 +1,419 @@
+// "use client";
+// import React, { useEffect, useState } from "react";
+// // import {
+//   // fetchTerms,
+//   // createTerm,
+//   // updateTerm,
+//   // deleteTerm,
+//   // fetchCategories,
+// // } from "@/lib/api";
+// import { Term, CreateTermData, UpdateTermData, Category } from "@/types";
+// import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+// import {
+//   Select,
+//   MenuItem,
+//   FormControl,
+//   InputLabel,
+//   Button,
+//   Modal,
+//   Box,
+//   Typography,
+//   CircularProgress,
+// } from "@mui/material";
+// import { createTerm, deleteTerm, fetchTerms, updateTerm } from "@/lib/termsApi";
+// import { fetchCategories } from "@/lib/categoriesApi";
+
+// export default function AdminTermsPage() {
+//   const [terms, setTerms] = useState<Term[]>([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [errorFetching, setErrorFetching] = useState<string | null>(null);
+
+//   // Modal states
+//   const [showModal, setShowModal] = useState<boolean>(false);
+//   const [loadingReq, setLoadingReq] = useState<boolean>(false);
+//   const [editingTerm, setEditingTerm] = useState<Term | null>(null); // For editing
+//   const [formData, setFormData] = useState<CreateTermData>({
+//     title: "",
+//     definition: "",
+//     categories: [],
+//     related_terms: [],
+//     // photo: null,
+//   });
+
+//   // Categories
+//   const [categories, setCategories] = useState<Category[]>([]);
+//   const [deletingTermId, setDeletingTermId] = useState<number | null>(null); // For delete confirmation
+
+//   useEffect(() => {
+//     loadTerms();
+//     fetchCategoryList();
+//   }, []);
+
+//   // Load terms
+//   const loadTerms = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       const data = await fetchTerms();
+//       setTerms(data);
+//     } catch (err: any) {
+//       setError(err.message || "Failed to load terms");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Fetch categories
+//   const fetchCategoryList = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       const categoryData = await fetchCategories();
+//       setCategories(categoryData);
+//     } catch (err: any) {
+//       setError(err.message || "Failed to load categories");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Handle create term
+//   const handleCreateTerm = async () => {
+//     setLoadingReq(true);
+//     setError(null);
+//     try {
+//       console.log(formData);
+//       const newTerm = await createTerm(formData);
+//       // console.log("cant");
+//       setTerms([...terms, newTerm]);
+//       setShowModal(false);
+//       resetForm();
+//     } catch (err: any) {
+//       console.log(err.details.title[0]);
+//       setError("Failed to create term: " + err?.details?.title[0]);
+//     } finally {
+//       setLoadingReq(false);
+//     }
+//   };
+
+//   // Handle update term
+//   const handleUpdateTerm = async () => {
+//     if (!editingTerm) return;
+//     setLoadingReq(true);
+//     setError(null);
+//     try {
+//       const updatedTerm = await updateTerm(
+//         editingTerm.id,
+//         formData as UpdateTermData
+//       );
+//       setTerms(
+//         terms.map((term) => (term.id === editingTerm.id ? updatedTerm : term))
+//       );
+//       setShowModal(false);
+//       resetForm();
+//     } catch (err: any) {
+//       setError("Failed to create term: " + err.details.title[0]);
+//     } finally {
+//       setLoadingReq(false);
+//     }
+//   };
+
+//   // Handle delete term
+//   const handleDeleteTerm = async () => {
+//     if (deletingTermId === null) return;
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       await deleteTerm(deletingTermId);
+//       setTerms(terms.filter((term) => term.id !== deletingTermId));
+//       setDeletingTermId(null); // Reset deleting state
+//     } catch (err: any) {
+//       setError("Failed to delete term");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const resetForm = () => {
+//     setFormData({
+//       title: "",
+//       definition: "",
+//       categories: [],
+//       related_terms: [],
+//       // photo: null,
+//     });
+//     setEditingTerm(null);
+//   };
+
+//   const handleOpenModal = (term?: Term) => {
+//     console.log(term);
+//     if (term) {
+//       setEditingTerm(term);
+//       setFormData({
+//         title: term.title,
+//         definition: term.definition,
+//         categories: Array.from(term.categories),
+//         related_terms: term.related_terms,
+//         // photo: null,
+//       });
+//     } else {
+//       resetForm();
+//     }
+//     setShowModal(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     resetForm();
+//     setShowModal(false);
+//   };
+
+//   // Handle delete confirmation
+//   const handleOpenDeleteModal = (termId: number) => {
+//     setDeletingTermId(termId);
+//   };
+
+//   const handleCloseDeleteModal = () => {
+//     setDeletingTermId(null);
+//   };
+
+//   return (
+//     <div className="max-w-full box-border">
+//       <div className="mb-2 flex justify-between items-center">
+//         <h1 className="text-2xl font-bold">Terminlarni Boshqarish</h1>
+//         <Button
+//           variant="contained"
+//           color="success"
+//           size="medium"
+//           onClick={() => handleOpenModal()}
+//           className="mb-4 px-4 py-2 bg-green-600 text-white rounded"
+//         >
+//           Yangi termin yaratish
+//         </Button>
+//       </div>
+
+//       {loading ? (
+//         <CircularProgress />
+//       ) : errorFetching ? (
+//         <div className="text-red-600">{errorFetching}</div>
+//       ) : (
+//         <div className="space-y-4 max-w-full">
+//           {terms.map((term) => (
+//             <div
+//               key={term.id}
+//               className="p-4 bg-white rounded shadow flex items-center justify-between box-border "
+//             >
+//               <div className="w-full">
+//                 {/* <div className="font-semibold w-[400px]">{term.title}</div> */}
+//                 <Typography
+//                   className="font-semibold  max-w-[400px]"
+//                   sx={{
+//                     overflow: "hidden",
+//                     fontSize: "24px",
+//                     fontWeight: "bold",
+//                     textOverflow: "ellipsis",
+//                     whiteSpace: "nowrap",
+//                   }}
+//                 >
+//                   {term.title}
+//                 </Typography>
+//                 <Typography
+//                   className="text-sm max-w-[1200px] text-gray-500"
+//                   sx={{
+//                     overflow: "hidden",
+//                     textOverflow: "ellipsis",
+//                     whiteSpace: "nowrap",
+//                   }}
+//                 >
+//                   {term.definition}
+//                 </Typography>
+//               </div>
+//               <div className="flex space-x-2 gap-2">
+//                 <Button
+//                   size="small"
+//                   color="info"
+//                   variant="outlined"
+//                   onClick={() => handleOpenModal(term)}
+//                   className="px-3 py-1 bg-blue-100 text-blue-700 rounded"
+//                 >
+//                   {"O'zgartirish"}
+//                 </Button>
+//                 <Button
+//                   size="small"
+//                   color="error"
+//                   variant="contained"
+//                   onClick={() => handleOpenDeleteModal(term.id)}
+//                 >
+//                   Ochirish
+//                 </Button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* Create/Edit Term Modal */}
+//       {showModal && (
+//         <Modal
+//           open={showModal}
+//           className="w-screen h-screen flex items-center justify-center p-5  z-50"
+//         >
+//           <div className="bg-[#203e61] text-white w-screen rounded-2xl p-6 overflow-auto">
+//             <h2 className="text-2xl font-bold mb-4">
+//               {editingTerm ? "Edit Term" : "Create New Term"}
+//             </h2>
+
+//             <form
+//               onSubmit={(e) => {
+//                 e.preventDefault();
+//                 if (editingTerm) {
+//                   handleUpdateTerm();
+//                 } else {
+//                   handleCreateTerm();
+//                 }
+//               }}
+//               className="space-y-4"
+//             >
+//               <div>
+//                 <label htmlFor="title" className="block">
+//                   Title
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="title"
+//                   name="title"
+//                   value={formData.title}
+//                   onChange={(e) =>
+//                     setFormData({ ...formData, title: e.target.value })
+//                   }
+//                   className="w-full p-2 border border-gray-300 rounded"
+//                   required
+//                 />
+//                 <span className="text-red-400 text-sm">{error}</span>
+//               </div>
+
+//               <div>
+//                 <label htmlFor="definition" className="block">
+//                   Definition
+//                 </label>
+//                 <textarea
+//                   id="definition"
+//                   name="definition"
+//                   value={formData.definition}
+//                   onChange={(e) =>
+//                     setFormData({ ...formData, definition: e.target.value })
+//                   }
+//                   className="w-full p-2 border border-gray-300 min-h-[350px] max-h-[200px] rounded overflow-y-scroll"
+//                   required
+//                 />
+//               </div>
+
+//               <div>
+//                 <FormControl fullWidth>
+//                   <InputLabel id="category-label">Category</InputLabel>
+//                   <Select
+//                     labelId="category-label"
+//                     className="text-white decoration-white placeholder-white outline-white ring-white "
+//                     id="category"
+//                     value={formData.categories}
+//                     onChange={(e: any) =>
+//                       setFormData({ ...formData, categories: [] })
+//                     }
+//                     label="Category"
+//                   >
+//                     {categories.map((category) => (
+//                       <MenuItem
+//                         key={category.id}
+//                         value={category.id}
+//                         className="text-white decoration-white placeholder-white outline-white ring-white"
+//                       >
+//                         {category.name}
+//                       </MenuItem>
+//                     ))}
+//                   </Select>
+//                 </FormControl>
+//               </div>
+
+//               {/* <div>
+//                 <label htmlFor="photo" className="block">
+//                   Upload Photo
+//                 </label>
+//                 <input
+//                   type="file"
+//                   id="photo"
+//                   name="photo"
+//                   onChange={(e) =>
+//                     setFormData({
+//                       ...formData,
+//                       photo: e.target.files ? e.target.files[0] : null,
+//                     })
+//                   }
+//                   className="w-full p-2 border border-gray-300 rounded"
+//                 />
+//               </div> */}
+
+//               <div className="flex justify-end gap-2">
+//                 <Button
+//                   type="button"
+//                   size="small"
+//                   color="info"
+//                   variant="outlined"
+//                   onClick={handleCloseModal}
+//                   className="px-4 py-2 bg-gray-400 text-white rounded"
+//                 >
+//                   Cancel
+//                 </Button>
+//                 <Button
+//                   loading={loadingReq}
+//                   size="small"
+//                   color="success"
+//                   variant="contained"
+//                   type="submit"
+//                   className="px-4 py-2 bg-blue-600 text-white rounded"
+//                 >
+//                   {editingTerm ? "Update Term" : "Create Term"}
+//                 </Button>
+//               </div>
+//             </form>
+//           </div>
+//         </Modal>
+//       )}
+
+//       {/* Delete Confirmation Modal */}
+//       <Modal
+//         open={deletingTermId !== null}
+//         onClose={handleCloseDeleteModal}
+//         aria-labelledby="delete-modal-title"
+//         aria-describedby="delete-modal-description"
+//       >
+//         <Box className="bg-white p-6 rounded shadow-lg max-w-sm w-full mx-auto mt-20">
+//           <Typography id="delete-modal-title" variant="h6" component="h2">
+//             Confirm Deletion
+//           </Typography>
+//           <Typography id="delete-modal-description" className="my-4">
+//             Haqiqatan ham bu shartni oʻchirib tashlamoqchimisiz? Bunday harakat
+//             {"bo'lishi"} mumkin emas bekor qilindi.
+//           </Typography>
+//           <div className="flex justify-end gap-2">
+//             <Button
+//               variant="outlined"
+//               onClick={handleCloseDeleteModal}
+//               color="secondary"
+//               size="small"
+//             >
+//               Bekor qilish
+//             </Button>
+//             <Button
+//               size="small"
+//               variant="contained"
+//               onClick={handleDeleteTerm}
+//               color="error"
+//             >
+//               Tasdiqlash
+//             </Button>
+//           </div>
+//         </Box>
+//       </Modal>
+//     </div>
+//   );
+// }

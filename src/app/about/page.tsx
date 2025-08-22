@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-[80vh] items-center bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col justify-center overflow-y-auto">
+    <div className="pt-[112px] items-center bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col justify-center overflow-y-auto">
       {/* Main Content */}
       <div className="flex-1 items-center justify-center flex">
         <div className="max-w-7xl mx-auto items-center justify-center p-6">
@@ -95,7 +95,7 @@ export default function AboutPage() {
           </div>
 
           {/* Partners Section */}
-          <section className="w-full py-16 px-4">
+          {/* <section className="w-full py-16 px-4">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Bizning Hamkorlarimiz
             </h2>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-          </section>
+          </section> */}
 
           {/* Mission Statement */}
           {/* <div className="bg-white rounded-lg shadow-lg p-8 mb-12">

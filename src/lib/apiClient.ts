@@ -27,7 +27,10 @@ interface ErrorResponse {
 class ApiClient {
   private client: AxiosInstance;
   private isRefreshing = false;
-  private failedQueue: Array<{ resolve: (value: any) => void; reject: (error: any) => void; }> = [];
+  private failedQueue: Array<{
+    resolve: (value: any) => void;
+    reject: (error: any) => void;
+  }> = [];
 
   constructor() {
     this.client = axios.create({
@@ -41,11 +44,22 @@ class ApiClient {
   private setupInterceptors() {
     this.client.interceptors.request.use(
       (config) => {
-        const requiresAuth = ["POST", "PUT", "DELETE"].includes(config.method?.toUpperCase() || "");
-        if (requiresAuth) {
+        const requiresAuth = ["POST", "PUT", "DELETE"].includes(
+          config.method?.toUpperCase() || ""
+        );
+        const authFreeRoutes = ["/auth/token"];
+
+        const isAuthFreeRoute = authFreeRoutes.some((route) =>
+          config.url?.includes(route)
+        );
+
+        if (requiresAuth && !isAuthFreeRoute) {
           const token = TokenManager.getAccessToken();
-          if (token) config.headers.Authorization = `Bearer ${token}`;
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
         }
+
         return config;
       },
       (error) => Promise.reject(error)
@@ -58,7 +72,8 @@ class ApiClient {
 
         if (error.response?.status === 401 && !originalRequest._retry) {
           TokenManager.clearTokens();
-          if (typeof window !== "undefined") window.location.href = "/admin/login";
+          if (typeof window !== "undefined")
+            window.location.href = "/admin/login";
         }
 
         return Promise.reject(error);
@@ -73,7 +88,10 @@ class ApiClient {
     } catch (error) {
       const axiosError = error as AxiosError;
       const apiError: ApiError = {
-        message: (axiosError.response?.data as any)?.message || axiosError.message || "An error occurred",
+        message:
+          (axiosError.response?.data as any)?.message ||
+          axiosError.message ||
+          "An error occurred",
         status: axiosError.response?.status || 500,
         details: axiosError.response?.data,
       };
@@ -84,4 +102,3 @@ class ApiClient {
 
 export const apiClient = new ApiClient();
 // export { TokenManager };
-

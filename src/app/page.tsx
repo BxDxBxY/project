@@ -8,7 +8,7 @@ import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 
 export default function HomePage() {
   return (
-    <div className=" min-h-full  transition-all duration-300 bg-gradient-to-br from-gray-50 to-gray-100 ">
+    <div className=" pt-[112px]  transition-all duration-300">
       {/* Hero Section */}
       {/* If you want to bring back the image, it will stack on mobile */}
       <section className="max-w-[1920px] mx-auto container flex justify-center items-start pt-[50px] h-full px-4">
@@ -19,42 +19,46 @@ export default function HomePage() {
           <hr className="w-full opacity-20" />
 
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Zamonaviy davr mutaxassislar o‘rtasida hamkorlikning yangi
-            shakllarini izlash, ma’lumotni taqdim etish, olish va tarqatishning
-            ilg‘or usullarini talab etadi. Shu munosabat bilan O‘zbekiston
-            Respublikasi Tashqi ishlar vazirligi huzuridagi Jahon iqtisodiyoti
-            va diplomatiya universitetining Diplomatik akademiyasi maxsus loyiha
-            — “Diplomatik Terminlar Izohli Lug‘ati”ni taqdim etadi.
+            So'nggi paytlarda xalqaro munosabatlar masalalari, ya'ni jahon
+            siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq
+            sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga
+            o'tdi. Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
+            sohani imkon qadar qamrab olgan mukammal lug'at yaratildi, uning
+            kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi
+            kamchilikni bartaraf etadi.
           </p>
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Ushbu noyob elektron axborot resursida nafaqat xalqaro munosabatlar
-            sohasida, balki yuridik, siyosiy, iqtisodiy va boshqa yo‘nalishlarda
-            qo‘llaniladigan eng to‘liq va tizimlashtirilgan terminlar bazasi
-            jamlangan.
+            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan lug'atning
+            o'zbek tilida tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat
+            kasb etadi. Mazkur loyiha natijasida o'zbek diplomatik va xalqaro
+            munosabatlar tilining boyishi va jiddiy tadqiqotlar ko'payishiga
+            asos bo'ladi.
           </p>
           <hr className="w-full opacity-20" />
 
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Loyiha doirasida Telegram-kanal ishga tushirilgan bo‘lib, unda
-            zamonaviy xalqaro diplomatik kun tartibidagi yangi va dolzarb
-            terminlar har kuni e’lon qilinadi. Hamkasblar, talabalar,
-            aspirantlar, o‘qituvchilar, olimlar va bitiruvchilarni lug‘atni
-            boyitish jarayonida faol ishtirok etishga chorlaymiz. Yangi
-            terminlar bo‘yicha fikr va takliflaringiz mamnuniyat bilan qabul
-            qilinadi.
+            Lug'at o'zbek millatining xalqaro sohadagi ongi va siyosiy
+            madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni
+            o'zbek tilida ifodalashga xizmat qilishi sabab bo'ladigan birinchi
+            entsiklopedik manba bo'ladi. Lug'atdan o'rin olgan termin, ibora,
+            tushuncha va ma'lumotlarning aksariyati hozirgacha davlat tilida
+            nashr etilgan ma'lumotnomalarda mavjud bo'lmay, chet tilidagi turli
+            adabiyot, manbalardan tarjima qilib kiritildi.
           </p>
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
             Telegram kanalimizga obuna bo‘ling:{" "}
             <a
-              href="https://t.me/Newdictionary"
+              href="https://t.me/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
             >
-              https://t.me/Newdictionary
+              https://t.me/
             </a>
           </p>
         </div>
+
+        
       </section>
 
       {/* <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
