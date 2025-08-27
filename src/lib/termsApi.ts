@@ -4,16 +4,26 @@ import {
   TermSummary,
   CreateTermData,
   UpdateTermData,
+  TermDetailEdit,
 } from "@/types";
 
 export const fetchTerms = () =>
   apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/term/" });
 
-export const searchTerms = (text: string) =>
-  apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/term/" });
+export const searchTerms = (search: string) =>
+  apiClient.request<TermSummary[]>({
+    method: "GET",
+    url: "/dictionary/search_term/",
+    params: { search },
+  });
 
 export const fetchTerm = (id: number) =>
   apiClient.request<TermDetail>({
+    method: "GET",
+    url: `/dictionary/term_detailed/${id}/`,
+  });
+export const fetchTermEdit = (id: number) =>
+  apiClient.request<TermDetailEdit>({
     method: "GET",
     url: `/dictionary/term_detailed/${id}/`,
   });

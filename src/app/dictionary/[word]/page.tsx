@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { fetchTerm, fetchTerms } from "@/lib/termsApi";
-import { fetchCategories } from "@/lib/categoriesApi";
-import { fetchCountries } from "@/lib/countriesApi";
-import { fetchSources } from "@/lib/sourcesApi";
-import { TermDetail, TermSummary, Category, Country, Source } from "@/types";
+import { fetchTerm } from "@/lib/termsApi";
+import { TermDetail } from "@/types";
 import { logger } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
@@ -17,13 +14,8 @@ interface TermDetailPageProps {
 
 const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
   const [term, setTerm] = useState<TermDetail | null>(null);
-  const [allTerms, setAllTerms] = useState<TermSummary[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [sources, setSources] = useState<Source[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const { word: termId } = useParams();
 
   useEffect(() => {
@@ -34,24 +26,8 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
         if (isNaN(termIdNum)) {
           throw new Error("Invalid term ID");
         }
-        const [
-          termData,
-          termsData,
-          categoriesData,
-          countriesData,
-          sourcesData,
-        ] = await Promise.all([
-          fetchTerm(termIdNum),
-          fetchTerms(),
-          fetchCategories(),
-          fetchCountries(),
-          fetchSources(),
-        ]);
+        const [termData] = await Promise.all([fetchTerm(termIdNum)]);
         setTerm(termData);
-        setAllTerms(termsData);
-        setCategories(categoriesData);
-        setCountries(countriesData);
-        setSources(sourcesData);
         setError(null);
       } catch (err) {
         const errorMessage =
@@ -111,15 +87,6 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
     );
   }
 
-  const getRelatedTermTitles = (ids: number[]) =>
-    allTerms.filter((t) => ids.includes(t.id)).map((t) => t.title);
-  const getCategoryNames = (ids: number[]) =>
-    categories.filter((c) => ids.includes(c.id)).map((c) => c.name);
-  const getCountryNames = (ids: number[]) =>
-    countries.filter((c) => ids.includes(c.id)).map((c) => c.name);
-  const getSourceNames = (ids: number[]) =>
-    sources.filter((s) => ids.includes(s.id)).map((s) => s.title);
-
   return (
     <div className="pt-[128px] pb-8 px-4 sm:px-8">
       <div className="max-w-[1340px] mx-auto">
@@ -159,58 +126,63 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
             />
           </div>
           {term.categories.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+            <div className="mb-2">
+              <h2 className="text-[14px] sm:text-[16px] font-semibold text-gray-900 mb-2">
                 Kategoriyalar
               </h2>
-              <ul className="list-disc pl-5">
-                {getCategoryNames(term.categories).map((name, index) => (
-                  <li key={index} className="text-base text-gray-700">
-                    {name}
+              <ul className="flex flex-col ">
+                {term.categories.map((category, i) => (
+                  <li key={i} className="text-base text-gray-700">
+                    {category.name}
                   </li>
                 ))}
               </ul>
             </div>
           )}
           {term.related_terms.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                Related Terms
+            <div className="mb-2">
+              <h2 className="text-[14px] sm:text-[16px] font-semibold text-gray-900 mb-2">
+                Boshqa Terminlar
               </h2>
-              <ul className="list-disc pl-5">
-                {getRelatedTermTitles(term.related_terms).map(
-                  (title, index) => (
-                    <li key={index} className="text-base text-gray-700">
-                      {title}
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-          )}
-          {term.related_countries.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                Related Countries
-              </h2>
-              <ul className="list-disc pl-5">
-                {getCountryNames(term.related_countries).map((name, index) => (
-                  <li key={index} className="text-base text-gray-700">
-                    {name}
+              <ul className="flex flex-wrap gap-1">
+                {term.related_terms.map((term, index) => (
+                  <li
+                    key={index}
+                    className="text-base text-gray-700 inline-flex"
+                  >
+                    <Link
+                      href={`/dictionary/${term?.id}`}
+                      className="hover:border-blue-600 border-b-2 border-b-transparent transition-all duration-75 "
+                    >
+                      {term.title}
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
           )}
-          {term.sources.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                Sources
+          {/* {term.related_countries.length > 0 && (
+            <div className="mb-2">
+              <h2 className="text-[14px] sm:text-[16px] font-semibold text-gray-900 mb-2">
+                Termin Davlat
               </h2>
-              <ul className="list-disc pl-5">
-                {getSourceNames(term.sources).map((name, index) => (
+              <ul className="flex flex-col ">
+                {term.related_countries.map((country, index) => (
                   <li key={index} className="text-base text-gray-700">
-                    {name}
+                    {country.name}
+                  </li>
+                ))}
+              </ul>
+            </div>)} */}
+          {term.sources.length > 0 && (
+            <div className="mb-2">
+              <h2 className="text-[14px] sm:text-[16px] font-semibold text-gray-900 mb-2">
+                Malumot Mambalari
+              </h2>
+              <ul className="flex flex-col ">
+                {term.sources.map((source, index) => (
+                  <li key={index} className="text-base text-gray-700">
+                    <a href={source.url}>{source.title}</a>
                   </li>
                 ))}
               </ul>

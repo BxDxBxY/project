@@ -85,10 +85,21 @@ export interface TermDetail {
   definition: string;
   created_at: string;
   updated_at: string;
-  categories: number[];
-  related_terms: number[];
-  related_countries: Country[] | number[];
-  sources: Source[] | number[];
+  categories: Category[];
+  related_terms: TermSummary[];
+  related_countries: Country[];
+  sources: Source[];
+}
+export interface TermDetailEdit {
+  id: number;
+  title: string;
+  definition: string;
+  created_at?: string;
+  updated_at?: string;
+  categories?: number[];
+  related_terms?: number[];
+  related_countries?: number[];
+  sources?: number[];
 }
 
 // export interface Term {
@@ -117,7 +128,9 @@ export interface CreateTermData {
   // photo: File | null;
   definition: string;
   categories: number[];
-  related_terms?: number[];
+  related_terms: number[];
+  related_countries: number[];
+  sources: number[];
 }
 
 export interface UpdateTermData {

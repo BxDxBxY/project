@@ -9,7 +9,14 @@ import { TermCard } from "@/components/dictionary/TermCard";
 import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
 import { Modal } from "@/components/ui/Modal";
-import { fetchTerm, createTerm, updateTerm, deleteTerm, fetchTerms } from "@/lib/termsApi";
+import {
+  fetchTerm,
+  createTerm,
+  updateTerm,
+  deleteTerm,
+  fetchTerms,
+  fetchTermEdit,
+} from "@/lib/termsApi";
 import { fetchCategories } from "@/lib/categoriesApi";
 import { fetchCountries } from "@/lib/countriesApi";
 import { fetchSources } from "@/lib/sourcesApi";
@@ -20,6 +27,7 @@ import {
   Country,
   Source,
   CreateTermData,
+  TermDetailEdit,
 } from "@/types";
 import { StarterKit } from "@tiptap/starter-kit";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -33,6 +41,8 @@ import {
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { AsyncTermSelect } from "@/components/dictionary/AsyncTermSelect";
+import { SimpleMultiSelect } from "@/components/dictionary/MultiSelect";
 
 const UZBEK_ALPHABET = [
   "A",
@@ -93,35 +103,19 @@ const groupTermsByAlphabet = (
   return grouped;
 };
 
-// const TipTapEditor = ({
-//   content,
-//   onUpdate,
-// }: {
-//   content: string;
-//   onUpdate: (content: string) => void;
-// }) => {
-//   const editor = useEditor({
-//     extensions: [StarterKit],
-//     immediatelyRender: false,
-//     content,
-//     onUpdate: ({ editor }) => {
-//       onUpdate(editor.getHTML());
-//     },
-//   });
-
-//   return (
-//     <EditorContent
-//       editor={editor}
-//       className="w-full border rounded px-2 py-1 min-h-[200px]"
-//     />
-//   );
-// };
-
 const AdminTermsPage: React.FC = () => {
-  const { terms, loading, error, search, setSearch, refreshData, totalTerms } =
-    useDictionary();
+  const {
+    terms,
+    loading,
+    error,
+    search,
+    setSearch,
+    refreshData,
+    totalTerms,
+    triggerSearch,
+  } = useDictionary();
   const router = useRouter();
-  const [editTerm, setEditTerm] = useState<TermDetail | null>(null);
+  const [editTerm, setEditTerm] = useState<TermDetailEdit | null>(null);
   const [createMode, setCreateMode] = useState(false);
   const [deleteTermId, setDeleteTermId] = useState<number | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
@@ -184,7 +178,7 @@ const AdminTermsPage: React.FC = () => {
 
   const handleEdit = async (id: number) => {
     try {
-      const termDetail = await fetchTerm(id);
+      const termDetail = await fetchTermEdit(id);
       setEditTerm(termDetail);
       setFormData({
         title: termDetail.title,
@@ -328,6 +322,7 @@ const AdminTermsPage: React.FC = () => {
               placeholder="Terminlarni qidirish..."
               className="flex-1 text-gray-800"
               disabled={loading}
+              trigger={triggerSearch}
             />
           </div>
 
@@ -392,6 +387,10 @@ const AdminTermsPage: React.FC = () => {
                   fullWidth={true}
                   maxWidth={"lg"}
                   onClose={closeModals}
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.tooltip + 1,
+                  }}
                 >
                   <DialogTitle>
                     {createMode
@@ -436,7 +435,36 @@ const AdminTermsPage: React.FC = () => {
                           }
                         /> */}
                       </div>
-                      <div>
+                      <div className="space-y-4">
+                        <AsyncTermSelect
+                          value={formData.related_terms}
+                          onChange={(ids) =>
+                            setFormData({ ...formData, related_terms: ids })
+                          }
+                        />
+
+<SimpleMultiSelect
+  label="Categories"
+  options={allCategories}
+  value={formData.categories}
+  onChange={(val) => setFormData({ ...formData, categories: val })}
+/>
+
+<SimpleMultiSelect
+  label="Countries"
+  options={allCountries}
+  value={formData.related_countries}
+  onChange={(val) => setFormData({ ...formData, related_countries: val })}
+/>
+
+<SimpleMultiSelect
+  label="Sources"
+  options={allSources}
+  value={formData.sources}
+  onChange={(val) => setFormData({ ...formData, sources: val })}
+/>
+                      </div>
+                      {/* <div>
                         <label className="block text-sm font-medium">
                           Related Terms
                         </label>
@@ -531,11 +559,11 @@ const AdminTermsPage: React.FC = () => {
                         >
                           {allSources.map((source) => (
                             <option key={source.id} value={source.id}>
-                              {source.name}
+                              {source.title}
                             </option>
                           ))}
                         </select>
-                      </div>
+                      </div> */}
                       {modalError && (
                         <div className="text-red-600 text-sm">{modalError}</div>
                       )}

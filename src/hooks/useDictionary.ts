@@ -1,11 +1,13 @@
+// useDictionary.ts
 import { useState, useEffect, useCallback } from "react";
-import { TermSummary, DictionaryState } from "@/types";
-import { logger, debounce } from "@/lib/utils";
-import { fetchTerms, searchTerms } from "@/lib/termsApi";
+import { DictionaryState } from "@/types";
+import { logger } from "@/lib/utils";
+import { searchTerms } from "@/lib/termsApi";
 
 interface UseDictionaryReturn extends DictionaryState {
-  refreshData: (search?: string) => Promise<void>;
-  setSearch: (search: string) => void;
+  setSearch: (v: string) => void; // just updates state
+  triggerSearch: (q?: string) => Promise<void>; // runs API with provided or current query
+  refreshData: (q?: string) => Promise<void>;
   totalTerms: number;
 }
 
@@ -20,21 +22,17 @@ export const useDictionary = (): UseDictionaryReturn => {
     language: "en",
   });
 
-  const loadData = useCallback(async (search: string = "") => {
+  const loadData = useCallback(async (q: string = "") => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
-
     try {
-      logger.info("Loading dictionary data...");
-
-      const termsData = await searchTerms(search);
-
+      logger.info("Loading dictionary data...", { q });
+      const termsData = await searchTerms(q);
       setState((prev) => ({
         ...prev,
         terms: termsData,
         loading: false,
         error: null,
       }));
-
       logger.info(`Loaded ${termsData.length} terms`);
     } catch (error) {
       const errorMessage =
@@ -42,7 +40,6 @@ export const useDictionary = (): UseDictionaryReturn => {
           ? error.message
           : "Failed to load dictionary data";
       logger.error("Error loading dictionary data:", error);
-
       setState((prev) => ({
         ...prev,
         loading: false,
@@ -53,29 +50,31 @@ export const useDictionary = (): UseDictionaryReturn => {
   }, []);
 
   const refreshData = useCallback(
-    async (search: string = "") => {
-      await loadData(search);
-    },
-    [loadData]
+    (q?: string) => loadData(q && state.search),
+    [loadData, state.search]
   );
 
-  const debouncedRefresh = debounce(refreshData, 300);
+  const setSearch = useCallback((v: string) => {
+    setState((prev) => ({ ...prev, search: v }));
+  }, []);
 
-  const setSearch = useCallback((search: string) => {
-    setState((prev) => ({ ...prev, search }));
-    debouncedRefresh(search);
-  }, [debouncedRefresh]);
+  // IMPORTANT: accept query directly so we don't read stale state
+  const triggerSearch = useCallback(
+    async (q?: string) => {
+      const query = (q ?? state.search).trim();
+      // also keep state.search in sync with what we actually search for
+      setState((prev) => ({ ...prev, search: query }));
+      await loadData(query);
+    },
+    [loadData, state.search]
+  );
 
   const totalTerms = state.terms.length;
 
+  // Initial load (empty query or whatever you want)
   useEffect(() => {
-    loadData();
+    loadData("");
   }, [loadData]);
 
-  return {
-    ...state,
-    refreshData,
-    setSearch,
-    totalTerms,
-  };
+  return { ...state, setSearch, triggerSearch, refreshData, totalTerms };
 };
