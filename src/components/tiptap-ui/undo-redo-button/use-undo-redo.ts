@@ -1,12 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Lib ---
 import { isNodeTypeSelected } from "@/lib/tiptap-utils"
@@ -146,7 +144,6 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canExecute = canExecuteUndoRedoAction(editor, action)
 
@@ -175,19 +172,6 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
     }
     return success
   }, [editor, action, onExecuted])
-
-  useHotkeys(
-    UNDO_REDO_SHORTCUT_KEYS[action],
-    (event) => {
-      event.preventDefault()
-      handleAction()
-    },
-    {
-      enabled: isVisible && canExecute,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

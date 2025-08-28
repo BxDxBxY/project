@@ -234,7 +234,7 @@ const DictionaryPage: React.FC = () => {
                         </span>
                         <hr className="mt-1 border-gray-300 opacity-30" />
                       </div>
-                      <div className="flex flex-wrap gap-4 px-2 sm:px-4">
+                      <div className="grid grid-cols-4 gap-2 px-2 sm:px-4">
                         {groupedTerms[letter].map((term) => (
                           <div
                             key={term.id}

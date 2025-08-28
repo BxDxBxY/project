@@ -1,13 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { type Editor } from "@tiptap/react"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Lib ---
 import {
@@ -273,7 +271,6 @@ export function useHeading(config: UseHeadingConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canToggleState = canToggle(editor, level)
   const isActive = isHeadingActive(editor, level)
@@ -303,19 +300,6 @@ export function useHeading(config: UseHeadingConfig) {
     }
     return success
   }, [editor, level, onToggled])
-
-  useHotkeys(
-    HEADING_SHORTCUT_KEYS[level],
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: isVisible && canToggleState,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

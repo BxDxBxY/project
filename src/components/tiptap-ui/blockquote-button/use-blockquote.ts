@@ -3,11 +3,9 @@
 import * as React from "react"
 import type { Editor } from "@tiptap/react"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import { useHotkeys } from "react-hotkeys-hook"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Icons ---
 import { BlockquoteIcon } from "@/components/tiptap-icons/blockquote-icon"
@@ -200,7 +198,6 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
   } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canToggle = canToggleBlockquote(editor)
   const isActive = editor?.isActive("blockquote") || false
@@ -230,19 +227,6 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
     }
     return success
   }, [editor, onToggled])
-
-  useHotkeys(
-    BLOCKQUOTE_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: isVisible && canToggle,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

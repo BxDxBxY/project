@@ -2,12 +2,10 @@
 
 import * as React from "react"
 import { type Editor } from "@tiptap/react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Lib ---
 import {
@@ -207,7 +205,6 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
   } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canToggleState = canToggle(editor)
   const isActive = editor?.isActive("codeBlock") || false
@@ -237,19 +234,6 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
     }
     return success
   }, [editor, onToggled])
-
-  useHotkeys(
-    CODE_BLOCK_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: isVisible && canToggleState,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

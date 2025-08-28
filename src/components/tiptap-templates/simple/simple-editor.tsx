@@ -215,19 +215,19 @@ export function SimpleEditor() {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TaskList,
       TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
+      Highlight.configure({ multicolor: false }),
+      // Image,
       Typography,
       Superscript,
       Subscript,
       Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
+      // ImageUploadNode.configure({
+      //   accept: "image/*",
+      //   maxSize: MAX_FILE_SIZE,
+      //   limit: 3,
+      //   upload: handleImageUpload,
+      //   onError: (error) => console.error("Upload failed:", error),
+      // }),
     ],
     content,
   })
@@ -269,12 +269,14 @@ export function SimpleEditor() {
             />
           )}
         </Toolbar>
+          <div className={`tiptap-editor ${localStorage.getItem('theme') ? "dark" : "light"}`}>
 
         <EditorContent
           editor={editor}
           role="presentation"
           className="simple-editor-content"
         />
+          </div>
       </EditorContext.Provider>
     </div>
   )

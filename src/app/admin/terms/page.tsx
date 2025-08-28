@@ -32,17 +32,47 @@ import {
 import { StarterKit } from "@tiptap/starter-kit";
 import { useEditor, EditorContent } from "@tiptap/react";
 import {
+  Autocomplete,
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
+  TextField,
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { AsyncTermSelect } from "@/components/dictionary/AsyncTermSelect";
 import { SimpleMultiSelect } from "@/components/dictionary/MultiSelect";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+// Custom debounce function with cancel method
+const debounce = <T extends (...args: any[]) => void>(func: T, wait: number) => {
+  let timeout: NodeJS.Timeout | null = null;
+
+  const debounced = (...args: Parameters<T>) => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      func(...args);
+      timeout = null;
+    }, wait);
+  };
+
+  debounced.cancel = () => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced as T & { cancel: () => void };
+};
 
 const UZBEK_ALPHABET = [
   "A",
@@ -117,6 +147,7 @@ const AdminTermsPage: React.FC = () => {
   const router = useRouter();
   const [editTerm, setEditTerm] = useState<TermDetailEdit | null>(null);
   const [createMode, setCreateMode] = useState(false);
+  const [viewMode, setViewMode] = useState(false);
   const [deleteTermId, setDeleteTermId] = useState<number | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
@@ -132,6 +163,23 @@ const AdminTermsPage: React.FC = () => {
     related_countries: [],
     sources: [],
   });
+  
+
+  // Debounced setFormData function
+  const debouncedSetFormData = useMemo(
+    () =>
+      debounce((newFormData: CreateTermData) => {
+        setFormData(newFormData);
+      }, 500),
+    []
+  );
+
+  // Clean up debounce on component unmount
+  useEffect(() => {
+    return () => {
+      debouncedSetFormData.cancel();
+    };
+  }, [debouncedSetFormData]);
 
   const fetchOptions = async () => {
     try {
@@ -172,11 +220,7 @@ const AdminTermsPage: React.FC = () => {
     return groupTermsByAlphabet(sortedTerms);
   }, [terms]);
 
-  const handleTermClick = (id: number) => {
-    router.push(`/dictionary/${id}`);
-  };
-
-  const handleEdit = async (id: number) => {
+  const handleTermClick = async (id: number) => {
     try {
       const termDetail = await fetchTermEdit(id);
       setEditTerm(termDetail);
@@ -188,6 +232,28 @@ const AdminTermsPage: React.FC = () => {
         related_countries: termDetail.related_countries || [],
         sources: termDetail.sources || [],
       });
+      setViewMode(true); // 👈 open in view mode
+      setCreateMode(false);
+      setModalError(null);
+    } catch (err) {
+      setModalError("Failed to fetch term details");
+    }
+  };
+
+  const handleEdit = async (id: number) => {
+    try {
+      const termDetail = await fetchTermEdit(id);
+      setViewMode(false);
+      setEditTerm(termDetail);
+      setFormData({
+        title: termDetail.title,
+        definition: termDetail.definition,
+        categories: termDetail.categories || [],
+        related_terms: termDetail.related_terms || [],
+        related_countries: termDetail.related_countries || [],
+        sources: termDetail.sources || [],
+      });
+      console.log(termDetail.related_terms, "123");
       setCreateMode(false);
       setModalError(null);
     } catch (err) {
@@ -197,6 +263,7 @@ const AdminTermsPage: React.FC = () => {
 
   const handleCreate = () => {
     setCreateMode(true);
+    setViewMode(false);
     setFormData({
       title: "",
       definition: "",
@@ -348,53 +415,88 @@ const AdminTermsPage: React.FC = () => {
                           </span>
                           <hr className="mt-1 border-gray-300 opacity-30" />
                         </div>
-                        <div className="flex flex-wrap gap-4 px-2 sm:px-4">
+                        <div className="grid grid-cols-4  px-2 sm:px-4">
                           {groupedTerms[letter].map((term) => (
-                            <div
+                            <Box
                               key={term.id}
-                              className="relative group transition cursor-pointer"
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                cursor: "pointer",
+                                // backgroundColor: "#fff",
+                                borderRadius: "4px",
+                                overflow: "hidden",
+                                "&:hover .actions": { opacity: 1 },
+                              }}
                               onClick={() => handleTermClick(term.id)}
                             >
-                              <TermCard term={term} />
-                              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <button
-                                  className="px-2 py-1 bg-blue-600 text-white rounded text-xs"
+                              <Box sx={{ flexGrow: 1, padding: "8px" }}>
+                                <TermCard adminPanel={true} term={term} />
+                              </Box>
+                              <Box
+                                className="actions"
+                                sx={{
+                                  width: "60px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyItems: "left",
+                                  opacity: 0,
+                                  transition: "opacity 0.2s",
+                                  backgroundColor: "inherit",
+                                }}
+                              >
+                                <IconButton
+                                  size="small"
+                                  sx={{
+                                    flex: 1,
+                                    color: "#1976d2",
+                                    "&:hover": { backgroundColor: "#e0e0e0" },
+                                  }}
                                   onClick={async (e) => {
                                     e.stopPropagation();
                                     await handleEdit(term.id);
                                   }}
+                                  title="Tahrirlash"
                                 >
-                                  Tahrirlash
-                                </button>
-                                <button
-                                  className="px-2 py-1 bg-red-600 text-white rounded text-xs"
+                                  <EditIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  sx={{
+                                    flex: 1,
+                                    color: "#d32f2f",
+                                    "&:hover": { backgroundColor: "#e0e0e0" },
+                                  }}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleDelete(term.id);
                                   }}
+                                  title="Oʻchirish"
                                 >
-                                  Oʻchirish
-                                </button>
-                              </div>
-                            </div>
+                                  <DeleteIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+                            </Box>
                           ))}
                         </div>
                       </div>
                     )
                 )}
                 <Dialog
-                  open={createMode || !!editTerm}
+                  open={createMode || createMode || !!editTerm}
                   fullWidth={true}
                   maxWidth={"lg"}
                   onClose={closeModals}
                   sx={{
                     color: "#fff",
-                    zIndex: (theme) => theme.zIndex.tooltip + 1,
+                    // zIndex: (theme) => theme.zIndex.tooltip + 1,
                   }}
                 >
                   <DialogTitle>
                     {createMode
                       ? "Yangi termin yaratish"
+                      : viewMode
+                      ? "Atama tafsilotlari" // 👈 different title for view
                       : "Atamani tahrirlash"}
                   </DialogTitle>
                   <DialogContent>
@@ -415,6 +517,7 @@ const AdminTermsPage: React.FC = () => {
                           }
                           className="w-full border rounded px-2 py-1"
                           required
+                          disabled={viewMode}
                         />
                       </div>
                       <div>
@@ -423,158 +526,71 @@ const AdminTermsPage: React.FC = () => {
                         </label>
                         <EditorComponent
                           value={formData.definition}
-                          editable={true}
+                          editable={!viewMode}
+                          disabled={viewMode}
                           onChange={(content) =>
-                            setFormData({ ...formData, definition: content })
+                            debouncedSetFormData({
+                              ...formData,
+                              definition: content,
+                            })
                           }
                         />
                         {/* <SimpleEditor 
-                          value={formData.definition}
-                          onChange={(content) =>
-                            setFormData({ ...formData, definition: content })
-                          }
+                          // value={formData.definition}
+                          // onChange={(content) =>
+                          //   setFormData({ ...formData, definition: content })
+                          // }
                         /> */}
                       </div>
                       <div className="space-y-4">
                         <AsyncTermSelect
-                          value={formData.related_terms}
+                          value={formData.related_terms} // Array of selected term IDs
                           onChange={(ids) =>
                             setFormData({ ...formData, related_terms: ids })
                           }
+                          disabled={viewMode}
                         />
 
-<SimpleMultiSelect
-  label="Categories"
-  options={allCategories}
-  value={formData.categories}
-  onChange={(val) => setFormData({ ...formData, categories: val })}
-/>
+                        {/* <SimpleMultiSelect
+                          label="Categories"
+                          options={allCategories}
+                          value={formData.categories}
+                          onChange={(val) =>
+                            setFormData({ ...formData, categories: val })
+                          }
+                        />
 
-<SimpleMultiSelect
-  label="Countries"
-  options={allCountries}
-  value={formData.related_countries}
-  onChange={(val) => setFormData({ ...formData, related_countries: val })}
-/>
+                        <SimpleMultiSelect
+                          label="Countries"
+                          options={allCountries}
+                          value={formData.related_countries}
+                          onChange={(val) =>
+                            setFormData({ ...formData, related_countries: val })
+                          }
+                        />
 
-<SimpleMultiSelect
-  label="Sources"
-  options={allSources}
-  value={formData.sources}
-  onChange={(val) => setFormData({ ...formData, sources: val })}
-/>
-                      </div>
-                      {/* <div>
-                        <label className="block text-sm font-medium">
-                          Related Terms
-                        </label>
-                        <select
-                          multiple
-                          value={formData.related_terms.map(String)}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              related_terms: Array.from(
-                                e.target.selectedOptions,
-                                (option) => Number(option.value)
-                              ),
-                            })
+                        <SimpleMultiSelect
+                          label="Sources"
+                          options={allSources}
+                          value={formData.sources}
+                          onChange={(val) =>
+                            setFormData({ ...formData, sources: val })
                           }
-                          className="w-full border rounded px-2 py-1"
-                        >
-                          {allTerms.map((t) => (
-                            <option key={t.id} value={t.id}>
-                              {t.title}
-                            </option>
-                          ))}
-                        </select>
+                        /> */}
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Categories
-                        </label>
-                        <select
-                          multiple
-                          value={formData.categories.map(String)}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              categories: Array.from(
-                                e.target.selectedOptions,
-                                (option) => Number(option.value)
-                              ),
-                            })
-                          }
-                          className="w-full border rounded px-2 py-1"
-                        >
-                          {allCategories.map((c) => (
-                            <option key={c.id} value={c.id}>
-                              {c.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Related Countries
-                        </label>
-                        <select
-                          multiple
-                          value={formData.related_countries.map(String)}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              related_countries: Array.from(
-                                e.target.selectedOptions,
-                                (option) => Number(option.value)
-                              ),
-                            })
-                          }
-                          className="w-full border rounded px-2 py-1"
-                        >
-                          {allCountries.map((country) => (
-                            <option key={country.id} value={country.id}>
-                              {country.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Sources
-                        </label>
-                        <select
-                          multiple
-                          value={formData.sources.map(String)}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              sources: Array.from(
-                                e.target.selectedOptions,
-                                (option) => Number(option.value)
-                              ),
-                            })
-                          }
-                          className="w-full border rounded px-2 py-1"
-                        >
-                          {allSources.map((source) => (
-                            <option key={source.id} value={source.id}>
-                              {source.title}
-                            </option>
-                          ))}
-                        </select>
-                      </div> */}
                       {modalError && (
                         <div className="text-red-600 text-sm">{modalError}</div>
                       )}
                     </form>
                   </DialogContent>
+
                   <DialogActions>
                     <Button onClick={closeModals}>Bekor qilish</Button>
                     <Button
                       type="submit"
                       disabled={modalLoading}
                       form="term-create-form"
+                      className={`${viewMode ? "!hidden" : "flex"}`}
                     >
                       {modalLoading
                         ? "Saqlanmoqda..."

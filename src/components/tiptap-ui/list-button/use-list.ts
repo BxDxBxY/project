@@ -2,12 +2,10 @@
 
 import * as React from "react"
 import { type Editor } from "@tiptap/react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Icons ---
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
@@ -268,7 +266,6 @@ export function useList(config: UseListConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canToggle = canToggleList(editor, type)
   const isActive = isListActive(editor, type)
@@ -298,19 +295,6 @@ export function useList(config: UseListConfig) {
     }
     return success
   }, [editor, type, onToggled])
-
-  useHotkeys(
-    LIST_SHORTCUT_KEYS[type],
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: isVisible && canToggle,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,

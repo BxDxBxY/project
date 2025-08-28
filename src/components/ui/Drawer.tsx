@@ -142,7 +142,7 @@ export default function MiniDrawer({
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{zIndex: (theme) => theme.zIndex.tooltip + 2 }}>
         <Toolbar>
           <IconButton
             color="inherit"

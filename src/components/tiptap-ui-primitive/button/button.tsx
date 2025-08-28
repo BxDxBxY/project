@@ -62,7 +62,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (!tooltip || !showTooltip) {
       return (
         <button
-          className={cn("tiptap-button", className)}
+          className={cn("tiptap-button hover:!bg-sky-300", className)}
           ref={ref}
           aria-label={ariaLabel}
           {...props}

@@ -56,9 +56,37 @@ body,
 
 .simple-editor-wrapper {
   width: 100%;
-  // height: ;
+  height: 100%;
   overflow: auto;
 }
+
+.tiptap-editor {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-height: 200px;
+}
+
+/* Light mode (default) */
+.tiptap-editor.light {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Dark mode */
+.tiptap-editor.dark {
+  background-color: #1e1e1e; /* dark gray */
+  color: #f5f5f5; /* light text */
+}
+
+.tiptap-editor.dark a {
+  color: #4da6ff;
+}
+
+.tiptap-editor.dark strong {
+  color: #fff;
+}
+
 
 .simple-editor-content {
   max-width: 648px;

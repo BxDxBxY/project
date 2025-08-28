@@ -39,7 +39,7 @@ export const createTerm = (data: CreateTermData) =>
     method: "POST",
     url: "/dictionary/create_term/",
     data,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { "Content-Type": "application/json" },
   });
 
 export const updateTerm = (id: number, data: UpdateTermData) =>
@@ -47,7 +47,7 @@ export const updateTerm = (id: number, data: UpdateTermData) =>
     method: "PUT",
     url: `/dictionary/create_term/${id}/`,
     data,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { "Content-Type": "application/json" },
   });
 
 export const deleteTerm = (id: number) =>

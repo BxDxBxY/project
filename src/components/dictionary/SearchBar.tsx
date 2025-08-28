@@ -71,16 +71,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <>
       {/* Backdrop */}
-      <Backdrop
+      {/* <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={focused}
         onClick={() => {
           setFocused(false);
           inputRef.current?.blur();
         }}
-      />
+      /> */}
 
-      <div className={`relative flex items-center z-[1400] ${className}`}>
+      <div className={`relative flex items-center  ${className}`}>
         {/* search icon */}
         <div className="absolute left-0 pl-3 z-10 flex items-center pointer-events-none">
           <svg

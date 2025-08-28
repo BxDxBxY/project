@@ -1,13 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import type { ChainedCommands } from "@tiptap/react"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 // --- Lib ---
 import {
@@ -184,7 +182,6 @@ export function useTextAlign(config: UseTextAlignConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
   const canAlign = canSetTextAlign(editor, align)
   const isActive = isTextAlignActive(editor, align)
@@ -214,19 +211,6 @@ export function useTextAlign(config: UseTextAlignConfig) {
     }
     return success
   }, [editor, align, onAligned])
-
-  useHotkeys(
-    TEXT_ALIGN_SHORTCUT_KEYS[align],
-    (event) => {
-      event.preventDefault()
-      handleTextAlign()
-    },
-    {
-      enabled: isVisible && canAlign,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    }
-  )
 
   return {
     isVisible,
