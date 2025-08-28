@@ -45,13 +45,16 @@ import {
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
-import { AsyncTermSelect } from "@/components/dictionary/AsyncTermSelect";
+import AsyncTermSelect from "@/components/dictionary/AsyncTermSelect";
 import { SimpleMultiSelect } from "@/components/dictionary/MultiSelect";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // Custom debounce function with cancel method
-const debounce = <T extends (...args: any[]) => void>(func: T, wait: number) => {
+const debounce = <T extends (...args: any[]) => void>(
+  func: T,
+  wait: number
+) => {
   let timeout: NodeJS.Timeout | null = null;
 
   const debounced = (...args: Parameters<T>) => {
@@ -163,7 +166,6 @@ const AdminTermsPage: React.FC = () => {
     related_countries: [],
     sources: [],
   });
-  
 
   // Debounced setFormData function
   const debouncedSetFormData = useMemo(

@@ -22,7 +22,7 @@ interface AsyncTermSelectProps {
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
+const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
   ({ value, onChange, disabled }) => {
     const [options, setOptions] = useState<TermSummary[]>([]);
     const [selectedTerms, setSelectedTerms] = useState<TermSummary[]>([]);
@@ -244,3 +244,5 @@ export const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
     );
   }
 );
+
+export default AsyncTermSelect
