@@ -28,18 +28,24 @@ import {
   TermDetailEdit,
 } from "@/types";
 import {
+  Alert,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fab,
   IconButton,
+  Snackbar,
+  Zoom,
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
 import AsyncTermSelect from "@/components/dictionary/AsyncTermSelect";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { UZBEK_ALPHABET } from "@/constants/alphabet";
 
 // Custom debounce function with cancel method
 const debounce = <T extends (...args: any[]) => void>(
@@ -67,38 +73,6 @@ const debounce = <T extends (...args: any[]) => void>(
 
   return debounced as T & { cancel: () => void };
 };
-
-const UZBEK_ALPHABET = [
-  "A",
-  "B",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "X",
-  "Y",
-  "Z",
-  "Oʻ",
-  "Gʻ",
-  "Sh",
-  "Ch",
-  "Ng",
-];
 
 const groupTermsByAlphabet = (
   terms: TermSummary[]
@@ -149,6 +123,10 @@ const AdminTermsPage: React.FC = () => {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [allCountries, setAllCountries] = useState<Country[]>([]);
   const [allSources, setAllSources] = useState<Source[]>([]);
+  const [showSuccess, setShowSuccess] = useState<boolean>(true);
+  const [successMsg, setSuccessMsg] = useState<string>(
+    "Muvaffaqiyatli bajarildi!"
+  );
   const [formData, setFormData] = useState<CreateTermData>({
     title: "",
     definition: "",
@@ -274,8 +252,10 @@ const AdminTermsPage: React.FC = () => {
   const closeModals = () => {
     setEditTerm(null);
     setCreateMode(false);
+    setViewMode(false);
     setDeleteTermId(null);
     setModalError(null);
+
     setFormData({
       title: "",
       definition: "",
@@ -292,7 +272,10 @@ const AdminTermsPage: React.FC = () => {
     setModalError(null);
     try {
       if (createMode) {
-        await createTerm(formData);
+        const res = await createTerm(formData);
+        if (res){
+          setShowSuccess(true)
+        }
       } else if (editTerm) {
         await updateTerm(editTerm.id, formData);
       }
@@ -322,13 +305,27 @@ const AdminTermsPage: React.FC = () => {
     }
   };
 
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 p-8 flex flex-col items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
-          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-200 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="max-w-sm sm:max-w-md w-full bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4 sm:mb-6">
             <svg
-              className="w-6 h-6 text-red-600"
+              className="w-6 h-6 sm:w-7 sm:h-7 text-red-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -341,13 +338,15 @@ const AdminTermsPage: React.FC = () => {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 tracking-tight">
             Xatolik yuz berdi
           </h1>
-          <p className="text-gray-500 mb-4">{error}</p>
+          <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6">
+            {error}
+          </p>
           <button
             onClick={handleRefresh}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm sm:text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Qayta urinish
           </button>
@@ -357,11 +356,11 @@ const AdminTermsPage: React.FC = () => {
   }
 
   return (
-    <div className="mr-auto py-8 px-4 sm:px-8">
-      <div className="max-w-[1340px] mx-auto">
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex justify-between items-center w-full">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center">
+    <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col items-center gap-6 sm:gap-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center tracking-tight">
               Admin: Diplomatik Lugʻat
             </h1>
             <Button
@@ -369,46 +368,48 @@ const AdminTermsPage: React.FC = () => {
               color="success"
               size="medium"
               onClick={handleCreate}
-              className="px-4 py-2 bg-green-600 text-white rounded"
+              className="!px-4 !py-2 !bg-green-600 !text-white !rounded-lg !text-sm sm:!text-base !font-medium hover:!bg-green-700"
             >
               Yangi termin yaratish
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full max-w-2xl">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6 w-full max-w-xl sm:max-w-2xl">
             <SearchBar
               value={search}
               onChange={setSearch}
               placeholder="Terminlarni qidirish..."
-              className="flex-1 text-gray-800"
+              className="flex-1 text-gray-800 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               disabled={loading}
               trigger={triggerSearch}
             />
           </div>
 
-          <div className="w-full max-w-2xl text-sm text-gray-600 flex justify-between mb-4">
+          <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex justify-between mb-4 sm:mb-6">
             <span>{totalTerms} termin koʻrsatilmoqda</span>
           </div>
 
           <div className="w-full">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-12">
+              <div className="flex flex-col items-center justify-center py-12 sm:py-16">
                 <LoadingSpinner size="lg" />
-                <p className="mt-4 text-gray-500">Lugʻat yuklanmoqda...</p>
+                <p className="mt-4 text-sm sm:text-base text-gray-500">
+                  Lugʻat yuklanmoqda...
+                </p>
               </div>
             ) : (
               <>
                 {UZBEK_ALPHABET.map(
                   (letter) =>
                     groupedTerms[letter]?.length > 0 && (
-                      <div key={letter} className="mb-8">
+                      <div key={letter} className="mb-8 sm:mb-10">
                         <div className="mb-4 px-2 sm:px-4">
-                          <span className="text-3xl sm:text-[46px] font-extrabold text-zinc-700">
+                          <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-zinc-700">
                             {letter}
                           </span>
-                          <hr className="mt-1 border-gray-300 opacity-30" />
+                          <hr className="mt-2 border-gray-300 opacity-30" />
                         </div>
-                        <div className="grid grid-cols-4  px-2 sm:px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-2 sm:gap-3 px-2 sm:px-4">
                           {groupedTerms[letter].map((term) => (
                             <Box
                               key={term.id}
@@ -416,8 +417,7 @@ const AdminTermsPage: React.FC = () => {
                                 display: "flex",
                                 alignItems: "center",
                                 cursor: "pointer",
-                                // backgroundColor: "#fff",
-                                borderRadius: "4px",
+                                borderRadius: "8px",
                                 overflow: "hidden",
                                 "&:hover .actions": { opacity: 1 },
                               }}
@@ -429,7 +429,7 @@ const AdminTermsPage: React.FC = () => {
                               <Box
                                 className="actions"
                                 sx={{
-                                  width: "60px",
+                                  width: { xs: "48px", sm: "60px" },
                                   display: "flex",
                                   alignItems: "center",
                                   justifyItems: "left",
@@ -476,30 +476,37 @@ const AdminTermsPage: React.FC = () => {
                     )
                 )}
                 <Dialog
-                  open={createMode || createMode || !!editTerm}
+                  open={createMode || viewMode || !!editTerm}
                   fullWidth={true}
-                  maxWidth={"lg"}
+                  maxWidth="lg"
                   onClose={closeModals}
-                  sx={{
-                    color: "#fff",
-                    // zIndex: (theme) => theme.zIndex.tooltip + 1,
-                  }}
+                  // sx={{
+                  //   "& .MuiDialog-paper": {
+                  //     padding: { xs: "16px", sm: "24px" },
+                  //     borderRadius: "12px",
+                  //   },
+                  // }}
                 >
-                  <DialogTitle>
+                  <DialogTitle
+                    sx={{
+                      fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
+                      fontWeight: 600,
+                    }}
+                  >
                     {createMode
                       ? "Yangi termin yaratish"
                       : viewMode
-                      ? "Atama tafsilotlari" // 👈 different title for view
+                      ? "Atama tafsilotlari"
                       : "Atamani tahrirlash"}
                   </DialogTitle>
                   <DialogContent>
                     <form
                       onSubmit={handleFormSubmit}
-                      className="space-y-4 "
+                      className="space-y-4 sm:space-y-6"
                       id="term-create-form"
                     >
                       <div>
-                        <label className="block text-sm font-medium">
+                        <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
                           Termin Nomi
                         </label>
                         <input
@@ -508,13 +515,13 @@ const AdminTermsPage: React.FC = () => {
                           onChange={(e) =>
                             setFormData({ ...formData, title: e.target.value })
                           }
-                          className="w-full border rounded px-2 py-1"
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                           required
                           disabled={viewMode}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium">
+                        <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
                           Taʼrif
                         </label>
                         <EditorComponent
@@ -528,62 +535,37 @@ const AdminTermsPage: React.FC = () => {
                             })
                           }
                         />
-                        {/* <SimpleEditor 
-                          // value={formData.definition}
-                          // onChange={(content) =>
-                          //   setFormData({ ...formData, definition: content })
-                          // }
-                        /> */}
                       </div>
-                      <div className="space-y-4">
+                      <div className="space-y-4 sm:space-y-6">
                         <AsyncTermSelect
-                          value={formData.related_terms} // Array of selected term IDs
+                          value={formData.related_terms}
                           onChange={(ids) =>
                             setFormData({ ...formData, related_terms: ids })
                           }
                           disabled={viewMode}
                         />
-
-                        {/* <SimpleMultiSelect
-                          label="Categories"
-                          options={allCategories}
-                          value={formData.categories}
-                          onChange={(val) =>
-                            setFormData({ ...formData, categories: val })
-                          }
-                        />
-
-                        <SimpleMultiSelect
-                          label="Countries"
-                          options={allCountries}
-                          value={formData.related_countries}
-                          onChange={(val) =>
-                            setFormData({ ...formData, related_countries: val })
-                          }
-                        />
-
-                        <SimpleMultiSelect
-                          label="Sources"
-                          options={allSources}
-                          value={formData.sources}
-                          onChange={(val) =>
-                            setFormData({ ...formData, sources: val })
-                          }
-                        /> */}
                       </div>
                       {modalError && (
-                        <div className="text-red-600 text-sm">{modalError}</div>
+                        <div className="text-red-600 text-sm sm:text-base">
+                          {modalError}
+                        </div>
                       )}
                     </form>
                   </DialogContent>
-
                   <DialogActions>
-                    <Button onClick={closeModals}>Bekor qilish</Button>
+                    <Button
+                      onClick={closeModals}
+                      className="!text-sm sm:!text-base !text-gray-700 !rounded-lg"
+                    >
+                      Bekor qilish
+                    </Button>
                     <Button
                       type="submit"
                       disabled={modalLoading}
                       form="term-create-form"
-                      className={`${viewMode ? "!hidden" : "flex"}`}
+                      className={`!text-sm sm:!text-base !text-white !bg-blue-600 !rounded-lg !px-4 !py-2 !font-medium hover:!bg-blue-700 ${
+                        viewMode ? "!hidden" : "!flex"
+                      }`}
                     >
                       {modalLoading
                         ? "Saqlanmoqda..."
@@ -593,41 +575,76 @@ const AdminTermsPage: React.FC = () => {
                     </Button>
                   </DialogActions>
                 </Dialog>
-
                 <Modal
                   open={!!deleteTermId}
                   onClose={closeModals}
-                  title="Atamani oʻchirish"
+                  // sx={{
+                  //   display: "flex",
+                  //   alignItems: "center",
+                  //   justifyContent: "center",
+                  // }}
                 >
-                  <div className="mb-4">
-                    Ushbu atamani oʻchirishga ishonchingiz komilmi?
-                  </div>
-                  {modalError && (
-                    <div className="text-red-600 text-sm mb-2">
-                      {modalError}
+                  <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm sm:max-w-md w-full">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                      Atamani oʻchirish
+                    </h2>
+                    <div className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-6">
+                      Ushbu atamani oʻchirishga ishonchingiz komilmi?
                     </div>
-                  )}
-                  <div className="flex justify-end gap-2">
-                    <button
-                      type="button"
-                      onClick={closeModals}
-                      className="px-3 py-1 bg-gray-200 rounded text-gray-800"
-                    >
-                      Bekor qilish
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleDeleteConfirm}
-                      className="px-3 py-1 bg-red-600 text-white rounded"
-                      disabled={modalLoading}
-                    >
-                      {modalLoading ? "Oʻchirilmoqda..." : "Oʻchirish"}
-                    </button>
+                    {modalError && (
+                      <div className="text-red-600 text-sm sm:text-base mb-4">
+                        {modalError}
+                      </div>
+                    )}
+                    <div className="flex justify-end gap-2 sm:gap-3">
+                      <button
+                        type="button"
+                        onClick={closeModals}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-200 rounded-lg text-gray-800 text-sm sm:text-base"
+                      >
+                        Bekor qilish
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDeleteConfirm}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-600 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-red-700"
+                        disabled={modalLoading}
+                      >
+                        {modalLoading ? "Oʻchirilmoqda..." : "Oʻchirish"}
+                      </button>
+                    </div>
                   </div>
                 </Modal>
               </>
             )}
           </div>
+          {/* Scroll to Top Button */}
+          <Zoom in={showScrollTop}>
+            <Fab
+              color="primary"
+              aria-label="scroll to top"
+              onClick={scrollToTop}
+              className="!fixed !bottom-6 !right-6 !bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg"
+              sx={{ width: 48, height: 48 }}
+            >
+              <ArrowUpwardIcon />
+            </Fab>
+          </Zoom>
+          {/* Success Snackbar */}
+          <Snackbar
+            open={showSuccess}
+            autoHideDuration={6000}
+            onClose={() => setShowSuccess(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              onClose={() => setShowSuccess(false)}
+              severity="success"
+              sx={{ width: "100%", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+            >
+              {successMsg || "Muvaffaqiyatli Bajarildi!"}
+            </Alert>
+          </Snackbar>
         </div>
       </div>
     </div>

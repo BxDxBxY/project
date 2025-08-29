@@ -1,60 +1,48 @@
 "use client";
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import XIcon from "@mui/icons-material/X";
-import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
+
 
 export default function HomePage() {
   return (
-    <div className=" pt-[112px]  transition-all duration-300">
+    <div className="pt-20 sm:pt-24 md:pt-28 transition-all duration-300">
       {/* Hero Section */}
-      {/* If you want to bring back the image, it will stack on mobile */}
-      <section className="max-w-[1920px] mx-auto container flex justify-center items-start pt-[50px] h-full px-4">
-        <div className="flex flex-col py-[50px]  items-start  justify-center text-center gap-4">
-          <p className="text-2xl md:text-3xl text-justify font-bold text-gray-700 uppercase leading-snug">
+      <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
+        <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full max-w-6xl">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-700 uppercase leading-snug tracking-tight">
             Diplomatik Terminlar Izohli {"Lug‘ati"}
-          </p>
-          <hr className="w-full opacity-20" />
+          </h1>
+          <hr className="w-full  border-gray-400 opacity-20" />
 
-          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
-            jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro
-            huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
-            qatoriga
-            {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
-            sohani imkon qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning
-            kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi
-            kamchilikni bartaraf etadi.
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"} jahon siyosati, diplomatiya, xalqaro
+            iqtisodiy munosabatlar, xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
+            qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu sohani imkon
+            qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning kitob va raqamli (elektron) shaklini
+            tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.
           </p>
-          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
-            {"lug'atning"}
-            {"o'zbek"} tilida tayyorlanishi va nashr etilishi muhim ilmiy
-            ahamiyat kasb etadi. Mazkur loyiha natijasida {"o'zbek"} diplomatik
-            va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar{" "}
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan {"lug'atning"} {"o'zbek"} tilida
+            tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
+            {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar
             {"ko'payishiga"} asos {"bo'ladi."}
           </p>
-          <hr className="w-full opacity-20" />
+          <hr className="w-full border-gray-400 opacity-20" />
 
-          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
-            madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni
-            {"o'zbek"} tilida ifodalashga xizmat qilishi sabab {"bo'ladigan"}{" "}
-            birinchi entsiklopedik manba {"bo'ladi."} {"Lug'atdan"} {"o'rin"}{" "}
-            olgan termin, ibora, tushuncha va {"ma'lumotlarning"} aksariyati
-            hozirgacha davlat tilida nashr etilgan {"ma'lumotnomalarda"} mavjud{" "}
-            {"bo'lmay"}, chet tilidagi turli adabiyot, manbalardan tarjima qilib
-            kiritildi.
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy madaniyati yuqorilashiga,
+            siyosiy masalalar va diplomatik jarayonni {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
+            {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."} {"Lug'atdan"} {"o'rin"} olgan
+            termin, ibora, tushuncha va {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
+            etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi turli adabiyot, manbalardan
+            tarjima qilib kiritildi.
           </p>
-          <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
             Telegram kanalimizga obuna bo‘ling:{" "}
             <a
               href="https://t.me/diplugat"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 hover:underline font-medium"
             >
               https://t.me/diplugat
             </a>

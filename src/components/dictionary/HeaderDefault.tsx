@@ -1,13 +1,23 @@
 "use client";
+import { IconButton } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+//////////////////////////////////////////
+import { Drawer } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const HeaderDefault = () => {
   const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,52 +50,52 @@ export const HeaderDefault = () => {
         pathname.startsWith("/admin") ? "hidden" : ""
       } fixed top-0 left-0 w-full z-50 py-2 transition-transform duration-500 ${
         hidden ? "-translate-y-full" : "translate-y-0"
-      }  bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] `}
+      } bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]`}
     >
-      {/* Фон с градиентом и фото */}
+      {/* Background with gradient and photo */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]" />
         <div className="absolute inset-0 bg-black/10" />
         <Image
-          src="/mid-uzb2.jpg" // поставь сюда фото колонн/здания МИД
+          src="/mid-uzb2.jpg"
           alt="Diplomatik fon"
           fill
           className="object-cover object-[50%_30%] opacity-20"
           priority
         />
-        {/* Золотая линия */}
+        {/* Golden line */}
         <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 shadow-md" />
       </div>
 
-      <div className="max-w-6xl mx-auto flex justify-between items-center  py-2">
-        {/* Лого + Название */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-2">
+        {/* Logo + Title */}
         <div className="flex items-center">
           <Link href="/">
             <Image
               src="/logo.png"
               alt="Diplomatik Akademiya Logotipi"
-              width={80}
-              height={80}
-              className="rounded-full border-2 border-white shadow-md"
+              width={60}
+              height={60}
+              className="rounded-full border-2 border-white shadow-md sm:w-16 sm:h-16 md:w-20 md:h-20"
             />
           </Link>
-          <div className="ml-4">
-            <h1 className="uppercase text-2xl font-bold text-white drop-shadow-lg tracking-wide">
+          <div className="ml-3 sm:ml-4">
+            <h1 className="uppercase text-lg sm:text-xl md:text-2xl font-bold text-white drop-shadow-lg tracking-wide">
               Diplomatik {"Lug‘at"}
             </h1>
-            <p className="text-sm text-white/90 font-light drop-shadow-md">
+            <p className="text-xs sm:text-sm text-white/90 font-light drop-shadow-md">
               Rasmiy va birinchi onlayn {"lug‘at"}
             </p>
           </div>
         </div>
 
-        {/* Навигация */}
-        <nav className="flex space-x-4">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex space-x-4">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className={`px-3 py-1 rounded-md text-white font-medium transition-colors ${
+              className={`px-3 py-1 rounded-md text-white text-center content-center font-medium transition-colors ${
                 pathname === href
                   ? "bg-black/40 shadow-md"
                   : "hover:bg-black/20"
@@ -95,7 +105,60 @@ export const HeaderDefault = () => {
             </Link>
           ))}
         </nav>
+
+        {/* Mobile Hamburger Menu */}
+        <div className="md:hidden">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            className="!text-white"
+          >
+            <MenuIcon />
+          </IconButton>
+        </div>
       </div>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better performance on mobile
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: "75%",
+            maxWidth: "300px",
+            backgroundColor: "rgba(0, 153, 181, 0.95)", // Match header gradient start
+            color: "white",
+          },
+        }}
+      >
+        <div className="flex justify-end p-4">
+          <IconButton onClick={handleDrawerToggle} className="!text-white">
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <nav className="flex flex-col space-y-4 px-4">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={handleDrawerToggle}
+              className={`px-3 py-2 rounded-md text-white font-medium transition-colors ${
+                pathname === href
+                  ? "bg-black/40 shadow-md"
+                  : "hover:bg-black/20"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </Drawer>
     </header>
   );
 };

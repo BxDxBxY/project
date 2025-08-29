@@ -16,7 +16,9 @@ import { fetchTerm } from "@/lib/termsApi";
 import { fetchCategories } from "@/lib/categoriesApi";
 import { StarterKit } from "@tiptap/starter-kit";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { Button } from "@mui/material";
+import { Button, Fab, Zoom } from "@mui/material";
+import { UZBEK_ALPHABET } from "@/constants/alphabet";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 // Assume fetchCountries and fetchSources are defined similarly
 // In lib/countriesApi.ts
@@ -28,39 +30,6 @@ import { Button } from "@mui/material";
 // Import them
 // import { fetchCountries } from "@/lib/countriesApi";
 // import { fetchSources } from "@/lib/sourcesApi";
-
-// Define the Uzbek alphabet
-const UZBEK_ALPHABET = [
-  "A",
-  "B",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "X",
-  "Y",
-  "Z",
-  "Oʻ",
-  "Gʻ",
-  "Sh",
-  "Ch",
-  "Ng",
-];
 
 const groupTermsByAlphabet = (
   terms: TermSummary[]
@@ -145,6 +114,21 @@ const DictionaryPage: React.FC = () => {
   //   }
   // }, [adminMode]);
 
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (error) {
     return (
       <div className="max-w-8xl mx-auto p-8 pt-[112px]">
@@ -188,22 +172,22 @@ const DictionaryPage: React.FC = () => {
   }
 
   return (
-    <div className="px-4 sm:px-8 transition-all duration-300 pt-[128px]">
-      <div className="flex flex-col items-center gap-6 max-w-6xl mx-auto">
+    <div className="px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
+      <div className="flex flex-col items-center gap-6 sm:gap-8 max-w-6xl mx-auto">
         <h1
-          className="text-2xl cursor-pointer sm:text-3xl font-bold text-gray-900 text-center"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center cursor-pointer tracking-tight"
           onClick={handleRefresh}
         >
           Diplomatik Lugʻat
         </h1>
 
-        {/* search bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full max-w-4xl">
+        {/* Search Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-3xl sm:max-w-4xl">
           <SearchBar
             value={search}
             onChange={setSearch}
             placeholder="Terminlarni qidirish..."
-            className="flex-1 text-gray-800"
+            className="flex-1 text-gray-800 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             disabled={loading}
             trigger={triggerSearch}
           />
@@ -211,14 +195,16 @@ const DictionaryPage: React.FC = () => {
 
         {/* LOADING */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-12">
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
             <LoadingSpinner size="lg" />
-            <p className="mt-4 text-gray-500">Lugʻat yuklanmoqda...</p>
+            <p className="mt-4 text-sm sm:text-base text-gray-500">
+              Lugʻat yuklanmoqda...
+            </p>
           </div>
         ) : terms.length > 0 ? (
           /* HAS RESULTS */
           <>
-            <div className="w-full max-w-2xl text-sm text-gray-600 flex justify-between mb-4">
+            <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex justify-between items-center mb-4 sm:mb-6">
               <span>
                 {totalTerms > 0 && `${totalTerms} termin koʻrsatilmoqda`}
               </span>
@@ -227,18 +213,18 @@ const DictionaryPage: React.FC = () => {
               {UZBEK_ALPHABET.map(
                 (letter) =>
                   groupedTerms[letter]?.length > 0 && (
-                    <div key={letter} className="mb-8">
+                    <div key={letter} className="mb-8 sm:mb-10">
                       <div className="mb-4 px-2 sm:px-4">
-                        <span className="text-3xl sm:text-[46px] font-extrabold text-zinc-700">
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-zinc-700">
                           {letter}
                         </span>
-                        <hr className="mt-1 border-gray-300 opacity-30" />
+                        <hr className="mt-2 border-gray-300 opacity-30" />
                       </div>
-                      <div className="grid grid-cols-4 gap-2 px-2 sm:px-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 px-2 sm:px-4">
                         {groupedTerms[letter].map((term) => (
                           <div
                             key={term.id}
-                            className="relative group transition cursor-pointer"
+                            className="relative group transition cursor-pointer rounded-lg "
                             onClick={() => handleTermClick(term.id)}
                           >
                             <TermCard term={term} />
@@ -249,15 +235,28 @@ const DictionaryPage: React.FC = () => {
                   )
               )}
             </div>
+            {/* Scroll to Top Button */}
+            <Zoom in={showScrollTop}>
+              <Fab
+                color="primary"
+                aria-label="scroll to top"
+                onClick={scrollToTop}
+                className="!fixed !bottom-6 !right-6 !bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg "
+                size="small"
+                // sx={{ width: 48, height: 48 }}
+              >
+                <ArrowUpwardIcon />
+              </Fab>
+            </Zoom>
           </>
         ) : (
           /* NO RESULTS */
-          <div className="w-full max-w-2xl text-sm text-gray-600 flex items-center justify-between mb-4">
+          <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 sm:mb-6">
             <span>Maʼlumot topilmadi</span>
             <Button
               variant="contained"
               onClick={handleRefresh}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm sm:text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Terminlarni koʻrsatish
             </Button>

@@ -122,56 +122,55 @@ export default function ContactPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col pt-[112px]">
+      <div className="flex flex-col pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 transition-all duration-300">
         {/* Main Content */}
         <div className="flex-1">
-          <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
             {/* Header Section */}
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-[#001c3b] mb-4">
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] mb-3 sm:mb-4 tracking-tight">
                 Diplomatik Akademiya
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
                 Diplomatik {"ta'lim"} va xalqaro munosabatlarning mukammalligi
               </p>
-              <div className="w-24 h-1 bg-[#c9a96e] mx-auto mt-6"></div>
+              <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-4 sm:mt-6"></div>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
               {/* Contact Information */}
               <div className="lg:col-span-1">
-                <div className="bg-[#001c3b] text-white p-8 rounded-lg shadow-lg h-fit">
-                  <h2 className="text-2xl font-semibold mb-6">
+                <div className="bg-[#001c3b] text-white p-6 sm:p-8 rounded-xl shadow-lg h-fit">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6">
                     Kontakt Malumotlar
                   </h2>
 
-                  <div className="space-y-6">
-                    <div className="flex items-start space-x-4">
-                      <MapPin className="w-5 h-5 text-[#c9a96e] mt-1 flex-shrink-0" />
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="flex items-start space-x-3 sm:space-x-4">
+                      <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium mb-1">Manzil</h3>
-                        <p className="text-gray-300 text-sm leading-relaxed">
-                          100007, <br /> {"Oʻzbekiston"}, Toshkent, <br />{" "}
-                          Mustaqillik shoh {"koʻchasi"}, 54.
+                        <h3 className="font-medium text-sm sm:text-base mb-1">Manzil</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                          100007, <br /> {"Oʻzbekiston"}, Toshkent, <br /> Mustaqillik shoh {"koʻchasi"}, 54.
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start space-x-4">
-                      <Phone className="w-5 h-5 text-[#c9a96e] mt-1 flex-shrink-0" />
+                    <div className="flex items-start space-x-3 sm:space-x-4">
+                      <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium mb-1">Telefon</h3>
-                        <p className="text-gray-300 text-sm">
+                        <h3 className="font-medium text-sm sm:text-base mb-1">Telefon</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm">
                           (+998 71) 267-07-06 (232)
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start space-x-4">
-                      <Mail className="w-5 h-5 text-[#c9a96e] mt-1 flex-shrink-0" />
+                    <div className="flex items-start space-x-3 sm:space-x-4">
+                      <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium mb-1">Pochta</h3>
-                        <p className="text-gray-300 text-sm">info@da-uwed.uz</p>
+                        <h3 className="font-medium text-sm sm:text-base mb-1">Pochta</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm">info@da-uwed.uz</p>
                       </div>
                     </div>
                   </div>
@@ -180,16 +179,16 @@ export default function ContactPage() {
 
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <div className="bg-white p-8 rounded-lg shadow-lg">
-                  <h2 className="text-2xl font-semibold text-[#001c3b] mb-6">
+                <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#001c3b] mb-4 sm:mb-6">
                     Biz bilan {"bog'laning"}
                   </h2>
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                     <div>
                       <TextField
                         fullWidth
-                        label="Toliq Ismingiz"
+                        label="Toʻliq Ismingiz"
                         value={formData.fullName}
                         onChange={handleInputChange("fullName")}
                         error={!!errors.fullName}
@@ -205,8 +204,14 @@ export default function ContactPage() {
                               borderColor: "#001c3b",
                             },
                           },
+                          "& .MuiInputLabel-root": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                          },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
+                          },
+                          "& .MuiInputBase-input": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
                           },
                         }}
                       />
@@ -232,8 +237,14 @@ export default function ContactPage() {
                               borderColor: "#001c3b",
                             },
                           },
+                          "& .MuiInputLabel-root": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                          },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
+                          },
+                          "& .MuiInputBase-input": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
                           },
                         }}
                       />
@@ -260,8 +271,14 @@ export default function ContactPage() {
                               borderColor: "#001c3b",
                             },
                           },
+                          "& .MuiInputLabel-root": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                          },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
+                          },
+                          "& .MuiInputBase-input": {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
                           },
                         }}
                       />
@@ -273,14 +290,14 @@ export default function ContactPage() {
                         variant="contained"
                         size="large"
                         disabled={isSubmitting}
-                        startIcon={<Send className="w-4 h-4" />}
+                        startIcon={<Send className="w-4 h-4 sm:w-5 sm:h-5" />}
                         sx={{
                           backgroundColor: "#001c3b",
-                          py: 1.5,
-                          px: 4,
-                          fontSize: "1.1rem",
+                          py: { xs: 1, sm: 1.5 },
+                          px: { xs: 3, sm: 4 },
+                          fontSize: { xs: '0.875rem', sm: '1rem' },
                           fontWeight: 600,
-                          textTransform: "none",
+                          textTransform: 'none',
                           borderRadius: 2,
                           "&:hover": {
                             backgroundColor: "#000a1a",
@@ -300,9 +317,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Footer */}
-        {/* <Footer /> */}
-
         {/* Success Snackbar */}
         <Snackbar
           open={showSuccess}
@@ -313,7 +327,7 @@ export default function ContactPage() {
           <Alert
             onClose={() => setShowSuccess(false)}
             severity="success"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", fontSize: { xs: '0.875rem', sm: '1rem' } }}
           >
             Thank you for your message! We will get back to you shortly.
           </Alert>
@@ -322,3 +336,6 @@ export default function ContactPage() {
     </ThemeProvider>
   );
 }
+
+// {/* Footer */}
+//         {/* <Footer /> */}

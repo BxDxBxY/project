@@ -6,9 +6,9 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAdminRoute = pathname.startsWith("/admin");
 
-  console.log("Middleware triggered for:", pathname);
-  console.log("Access token:", access ? "present" : "missing");
-  console.log("Refresh token:", refresh ? "present" : "missing");
+  // console.log("Middleware triggered for:", pathname);
+  // console.log("Access token:", access ? "present" : "missing");
+  // console.log("Refresh token:", refresh ? "present" : "missing");
 
   // Allow non-admin routes and /admin/login without checks
   if (!isAdminRoute || pathname === "/admin/login") {
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Tokens present, allow access to admin routes
-  console.log("Tokens present, proceeding to admin route");
+  // console.log("Tokens present, proceeding to admin route");
   return NextResponse.next();
 }
 

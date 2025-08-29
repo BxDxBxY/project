@@ -11,30 +11,39 @@ export default function FooterComponent() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="w-full bg-gray-800 text-white py-6">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 px-6">
+    <footer className="w-full bg-gray-800 text-white py-6 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8">
         {/* Footer Links */}
-        <nav className="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-          <Link href="/terms" className="hover:underline">
+        <nav className="flex flex-col sm:flex-row items-center flex-wrap justify-center sm:justify-start gap-4 sm:gap-6 text-xs sm:text-sm">
+          <Link
+            href="/terms"
+            className="hover:underline hover:text-blue-400 transition-colors"
+          >
             Shartlar va Qoidalar
           </Link>
-          <Link href="/privacy" className="hover:underline">
+          <Link
+            href="/privacy"
+            className="hover:underline hover:text-blue-400 transition-colors"
+          >
             Maxfiylik siyosati
           </Link>
-          <Link href="/contact" className="hover:underline">
+          <Link
+            href="/contact"
+            className="hover:underline hover:text-blue-400 transition-colors"
+          >
             Kontakt
           </Link>
         </nav>
 
         {/* Social Media Links */}
-        <div className="flex space-x-4">
+        <div className="flex w-full sm:w-auto items-center justify-evenly sm:justify-center space-x-4 sm:space-x-6">
           <a
             href="https://twitter.com/dipacademy"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
           >
-            <XIcon fontSize="small" />
+            <XIcon fontSize="small" className="w-5 h-5 sm:w-6 sm:h-6" />
           </a>
           <a
             href="https://linkedin.com/company/dipacademy"
@@ -42,12 +51,12 @@ export default function FooterComponent() {
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
           >
-            <LinkedInIcon fontSize="small" />
+            <LinkedInIcon fontSize="small" className="w-5 h-5 sm:w-6 sm:h-6" />
           </a>
         </div>
       </div>
 
-      <div className="mt-4 text-center text-sm text-gray-300">
+      <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-300">
         &copy; «Diplomatic Academy» — Barcha huquqlar himoyalangan
       </div>
     </footer>
