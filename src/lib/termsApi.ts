@@ -9,6 +9,8 @@ import {
 
 export const fetchTerms = () =>
   apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/term/" });
+export const fetchAdminTerms = () =>
+  apiClient.request<TermSummary[]>({ method: "GET", url: "/dictionary/create_term/" });
 
 export const searchTerms = (search: string) =>
   apiClient.request<TermSummary[]>({

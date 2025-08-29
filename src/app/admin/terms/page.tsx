@@ -10,7 +10,6 @@ import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
 import { Modal } from "@/components/ui/Modal";
 import {
-  fetchTerm,
   createTerm,
   updateTerm,
   deleteTerm,
@@ -21,7 +20,6 @@ import { fetchCategories } from "@/lib/categoriesApi";
 import { fetchCountries } from "@/lib/countriesApi";
 import { fetchSources } from "@/lib/sourcesApi";
 import {
-  TermDetail,
   TermSummary,
   Category,
   Country,
@@ -29,24 +27,17 @@ import {
   CreateTermData,
   TermDetailEdit,
 } from "@/types";
-import { StarterKit } from "@tiptap/starter-kit";
-import { useEditor, EditorContent } from "@tiptap/react";
 import {
-  Autocomplete,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
-  TextField,
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import AsyncTermSelect from "@/components/dictionary/AsyncTermSelect";
-import { SimpleMultiSelect } from "@/components/dictionary/MultiSelect";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 

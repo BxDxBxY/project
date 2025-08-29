@@ -19,46 +19,47 @@ export default function HomePage() {
           <hr className="w-full opacity-20" />
 
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            So'nggi paytlarda xalqaro munosabatlar masalalari, ya'ni jahon
-            siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq
-            sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga
-            o'tdi. Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
-            sohani imkon qadar qamrab olgan mukammal lug'at yaratildi, uning
+            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
+            jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro
+            huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
+            qatoriga
+            {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
+            sohani imkon qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning
             kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi
             kamchilikni bartaraf etadi.
           </p>
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan lug'atning
-            o'zbek tilida tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat
-            kasb etadi. Mazkur loyiha natijasida o'zbek diplomatik va xalqaro
-            munosabatlar tilining boyishi va jiddiy tadqiqotlar ko'payishiga
-            asos bo'ladi.
+            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
+            {"lug'atning"}
+            {"o'zbek"} tilida tayyorlanishi va nashr etilishi muhim ilmiy
+            ahamiyat kasb etadi. Mazkur loyiha natijasida {"o'zbek"} diplomatik
+            va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar{" "}
+            {"ko'payishiga"} asos {"bo'ladi."}
           </p>
           <hr className="w-full opacity-20" />
 
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
-            Lug'at o'zbek millatining xalqaro sohadagi ongi va siyosiy
+            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
             madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni
-            o'zbek tilida ifodalashga xizmat qilishi sabab bo'ladigan birinchi
-            entsiklopedik manba bo'ladi. Lug'atdan o'rin olgan termin, ibora,
-            tushuncha va ma'lumotlarning aksariyati hozirgacha davlat tilida
-            nashr etilgan ma'lumotnomalarda mavjud bo'lmay, chet tilidagi turli
-            adabiyot, manbalardan tarjima qilib kiritildi.
+            {"o'zbek"} tilida ifodalashga xizmat qilishi sabab {"bo'ladigan"}{" "}
+            birinchi entsiklopedik manba {"bo'ladi."} {"Lug'atdan"} {"o'rin"}{" "}
+            olgan termin, ibora, tushuncha va {"ma'lumotlarning"} aksariyati
+            hozirgacha davlat tilida nashr etilgan {"ma'lumotnomalarda"} mavjud{" "}
+            {"bo'lmay"}, chet tilidagi turli adabiyot, manbalardan tarjima qilib
+            kiritildi.
           </p>
           <p className="max-w-6xl  whitespace-pre-line text-justify   md:text-lg text-gray-600 leading-relaxed">
             Telegram kanalimizga obuna bo‘ling:{" "}
             <a
-              href="https://t.me/"
+              href="https://t.me/diplugat"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
             >
-              https://t.me/
+              https://t.me/diplugat
             </a>
           </p>
         </div>
-
-        
       </section>
 
       {/* <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">

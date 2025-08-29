@@ -9,3 +9,18 @@ export const refreshToken = (refresh: string) =>
 
 export const verifyToken = (token: string) =>
   apiClient.request<{ detail?: string; code?: string }>({ method: "POST", url: "/auth/token/verify/", data: { token } });
+
+export const withRetry = async <T>(fn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      if (attempt === retries || !err.message.includes("Network Error")) {
+        throw err;
+      }
+      console.log(`Retry ${attempt}/${retries} for API call`);
+      await new Promise((resolve) => setTimeout(resolve, delay * attempt));
+    }
+  }
+  throw new Error("Max retries reached");
+};

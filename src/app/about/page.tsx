@@ -20,76 +20,84 @@ export default function AboutPage() {
           {/* Header Section */}
           <div className="text-center mb-16 items-center justify-center">
             <h1 className="text-5xl md:text-5xl text-center font-bold text-[#001c3b] mb-6">
-              Tashqi ishlar varilgi Jahon iqtisodiyoti va diplomatiya
+              Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya
               universiteti huzuridagi
               <br /> diplomatik akademiyaning diplomatik {"lug'ati"}
             </h1>
             <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Луғат ҳозирги ўзбек тилининг халқаро муносабатларга оид соҳаси –
-              сиёсат ва дипломатияда қўлланаётган 1000га яқин термин, сўз
-              бирикмаси ва номларни ўз ичига олган. Қўлланма халқаро
-              муносабатлар, сиёсатшунослик фанлари ўқиталидиган университетлар,
-              институтлар тадқиқотчи ва талабалари, ёш дипломатлар, таржимонлар,
-              қолаверса, шу соҳа билан қизиқувчи китобхонларга мўлжалланган.
+              {"Lug'at"} hozirgi {"o'zbek"} tilining xalqaro munosabatlarga oid
+              sohasi – siyosat va diplomatiyada {"qo'llanayotgan"} 1000ga yaqin
+              termin, {"so'z"}
+              birikmasi va nomlarni {"o'z"} ichiga olgan. {"Qo'llanma"} xalqaro
+              munosabatlar, siyosatshunoslik fanlari {"o'qitiladigan"}{" "}
+              universitetlar, institutlar tadqiqotchi va talabalari, yosh
+              diplomatlar, tarjumonlar, qolaversa, shu soha bilan qiziqquvchi
+              kitobxonlarga {"mo'ljallangan"}.{"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              {"So'zboshi"} {"O'zbekiston"} Respublikasi Prezidenti
+              Sh.M.Mirziyoyevning 2019 yil 21 oktyabrda {"“O'zbek"} tilining
+              davlat tili sifatidagi nufuzi va mavqeini tubdan oshirish
+              chora-tadbirlari {"to'g'risida”gi"} farmoniga muvofiq davlat tili{" "}
+              {"to'g'risidagi"} qonun hujjatlariga rioya qilinishini, sohaga oid
+              muammolarni tahlil etib, bu borada yagona davlat siyosati amalga
+              oshirilishini {"ta'minlash"} yuzasidan Vazirlar Mahkamasida Davlat
+              tilini rivojlantirish departamenti tashkil etildi va yangi{" "}
+              {"so'z"} va atamalarni rasmiy {"iste'molga"} kiritish borasidagi
+              ishlarni tartibga soladigan Atamalar komissiyasi tuzildi.
               {"\n"}
             </p>
             <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Сўзбоши Ўзбекистон Республикаси Президенти Ш.М.Мирзиёевнинг 2019
-              йил 21 октябрдаги “Ўзбек тилининг давлат тили сифатидаги нуфузи ва
-              мавқеини тубдан ошириш чора-тадбирлари тўғрисида”ги фармонига
-              мувофиқ давлат тили тўғрисидаги қонун ҳужжатларига риоя
-              қилинишини, соҳага оид муаммоларни таҳлил этиб, бу борада ягона
-              давлат сиёсати амалга оширилишини таъминлаш юзасидан Вазирлар
-              Маҳкамасида Давлат тилини ривожлантириш департаменти ташкил этилди
-              ва янги сўз ва атамаларни расмий истеъмолга киритиш борасидаги
-              ишларни тартибга соладиган Атамалар комиссияси тузилди.
+              {"Qo'lingizdagi"} {"“Diplomatik"} terminlar izohli {"lug'ati”"}{" "}
+              ham shu ushbu chora-tadbirlarga javob tariqasida sohadagi
+              ehtiyojni bir muncha qondirishga xizmat qiladi, degan maqsadda
+              yaratildi. Kitob {"o'zbek"}
+              millatining xalqaro sohadagi ongi va siyosiy madaniyati
+              yuksalishiga, siyosiy masalalar va diplomatik jarayonni {
+                "o'zbek"
+              }{" "}
+              tilida ifodalab berishga xizmat qiluvchi adabiyotlar, jumladan{" "}
+              {"lug'atlar"} yaratish sohasiga {"qo'shilgan"} baholiqadrat hissa{" "}
+              {"bo'ladi"}, deb umid qilamiz. Ushbu nashrni amalga oshirishdan{" "}
+              {"ko'zlangan"} yana bir maqsad siyosat, diplomatiya, umuman
+              xalqaro munosabatlar sohasi mutaxassislari, JIDU talabalari va
+              qolaversa, qiziqquvchilarga shu sohadagi terminlar, birikma va
+              nomlarni {"o'rganish"} va {"o'z"} faoliyatlarida {"qo'llash"}{" "}
+              imkoniyatini yaratish {"bo'ldi"}.{"\n"}
+            </p>
+            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
+              Shu {"o'rinda"} hamma sohalarda kabi diplomatiya tili ham {"o'z"}{" "}
+              terminlari tizimiga ega ekani, uning {"lug'at"} boyligi
+              diplomatik, tarixiy, madaniy, lingvistik, huquqiy va boshqa xil
+              iboralardan tashkil topganini eslatib {"o'tish"} lozim.
               {"\n"}
             </p>
             <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Қўлингиздаги “Дипломатик терминлар изоҳли луғати” ҳам шу ушбу
-              чора-тадбирларга жавоб тариқасида соҳадаги эҳтиёжни бир мунча
-              қондиришга хизмат қилади, деган мақсадда яратилди. Китоб ўзбек
-              миллатининг халқаро соҳадаги онги ва сиёсий маданияти юксалишига,
-              сиёсий масалалар ва дипломатик жараённи ўзбек тилида ифодалаб
-              беришга хизмат қилувчи адабиётлар, жумладан луғатлар яратиш
-              соҳасига қўшилган баҳолиқудрат ҳисса бўлади, деб умид қиламиз.
-              Ушбу нашрни амалга оширишдан кўзланган яна бир мақсад сиёсат,
-              дипломатия, умуман халаро муносабатлар соҳаси мутахассислари, ЖИДУ
-              талабалари ва қолаверса, қизиқувчиларга шу соҳадаги терминлар,
-              бирикма ва номларни ўрганиш ва ўз фаолиятларида қўллаш имкониятини
-              яратиш бўлди.
+              Diplomatiya tili uchun uzun jumlalar, iboralar, kirish{" "}
+              {"so'zlari"} va
+              {"bog'lovchilarning"}
+              {" ko'pligi "}xos. Diplomatik til rasmiy tildan, xususan, xalqaro
+              siyosat tilidan, jurnalistika tilidan, {"ma'lum"}
+              darajada badiiy-adabiy tildan ham ancha farq qiladi.
               {"\n"}
             </p>
             <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Шу ўринда ҳамма соҳалар каби дипломатия тили ҳам ўз терминлари
-              тизимига эга экани, унинг луғат бойлиги дипломатик, тарихий,
-              маданий, лингвистик, ҳуқуқий ва бошқа хил иборалардан ташкил
-              топганини эслатиб ўтиш лозим.
-              {"\n"}
+              {"Ta'kidlash"} joizki, diplomatik atamalar asosan lotin, ingliz,
+              frantsuz tillarida yaratilgan yoki ular orqali vositachi tillar
+              sifatida kirib kelgan. Har qanday zamonaviy tilda diplomatiya va
+              siyosatga tegishli terminlar faol rivojlanmoqda, shuning uchun
+              insonning diplomatiya va tashqi aloqalar bilan {"bog'liq"} aqliy
+              faoliyati natijalari terminlarda ifodalanmoqda, deb taxmin qilish
+              mantiqan
+              {"to'g'ri"}.{"\n"}
             </p>
             <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Дипломатия тили учун узун жумлалар, иборалар, кириш сўзлари ва
-              боғловчиларнинг кўплиги хос. Дипломатик тил расмий тилдан,
-              хусусан, халқаро сиёсат тилидан, журналистика тилидан, маълум
-              даражада бадиий-адабий тилдан ҳам анча фарқ қилади.
-              {"\n"}
-            </p>
-            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Таъкидлаш жоизки, дипломатик атамалар асосан лотин, инглиз,
-              француз тилларида яратилган ёки улар орқали воситачи тиллар
-              сифатида кириб келган. Ҳар қандай замонавий тилда дипломатия ва
-              сиёсатга тегишли терминлар фаол ривожланмоқда, шунинг учун
-              инсоннинг дипломатия ва ташқи алоқалар билан боғлиқ ақлий фаолияти
-              натижалари терминларда ифодаланмоқда, деб тахмин қилиш мантиқан
-              тўғри.
-              {"\n"}
-            </p>
-            <p className="text-xl text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-              Луғатдаги атамаларни танлашда ўзбек тили мезонларига, тил
-              нормаларига риоя қилинди. Луғат ушбу соҳадаги дастлабки изланиш
-              сифатида уни тузишда луғатчиликнинг барча анъана ва қоидаларига
-              риоя қилишга ҳамда халқаро ҳаётда, сиёсатда қўлланаётган
-              дипломатик терминларни имкон қадар тўплашга ҳаракат қилинди.
+              {"Lug'atdagi"} atamalarni tanlashda {"o'zbek"} tili mezonlariga,
+              til normalariga rioya qilindi. {"Lug'at"} ushbu sohadagi dastlabki
+              izlanish sifatida uni tuzishda {"lug'atchilikning"} barcha{" "}
+              {"an'ana"} va qoidalariga rioya qilishga hamda xalqaro hayotda,
+              siyosatda {"qo'llanayotgan"}
+              diplomatik terminlarni imkon qadar {"to'plashga"} harakat qilindi.
             </p>
             <div className="w-24 h-1 bg-[#c9a96e] mx-auto mt-6"></div>
           </div>

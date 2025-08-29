@@ -9,14 +9,16 @@ import { logger } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface TermDetailPageProps {
-  params: { word: string };
+  params: Promise<{ word: string }>;
 }
 
-const TermDetailPage: React.FC<TermDetailPageProps> = ({ params }) => {
+const TermDetailPage: React.FC<TermDetailPageProps> = ({
+  params,
+}: TermDetailPageProps) => {
   const [term, setTerm] = useState<TermDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { word: termId } = useParams();
+  const { word: termId } = React.use(params);
 
   useEffect(() => {
     const fetchTermData = async () => {

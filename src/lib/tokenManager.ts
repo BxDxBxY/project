@@ -1,32 +1,29 @@
+import Cookies from "js-cookie";
+
 export class TokenManager {
-  private static getStorage(): Storage | null {
-    if (typeof window !== "undefined") {
-      return window.localStorage;
-    }
-    return null;
+  static getAccessToken(): string | undefined {
+    return Cookies.get("access_token");
   }
 
-  static getAccessToken(): string | null {
-    return this.getStorage()?.getItem("accessToken") || null;
-  }
-
-  static getRefreshToken(): string | null {
-    return this.getStorage()?.getItem("refreshToken") || null;
+  static getRefreshToken(): string | undefined {
+    return Cookies.get("refresh_token");
   }
 
   static setTokens(access: string, refresh: string): void {
-    const storage = this.getStorage();
-    if (storage) {
-      storage.setItem("accessToken", access);
-      storage.setItem("refreshToken", refresh);
-    }
+    Cookies.set("access_token", access, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+    Cookies.set("refresh_token", refresh, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
   }
 
   static clearTokens(): void {
-    const storage = this.getStorage();
-    if (storage) {
-      storage.removeItem("accessToken");
-      storage.removeItem("refreshToken");
-    }
+    Cookies.remove("access_token", { path: "/" });
+    Cookies.remove("refresh_token", { path: "/" });
   }
 }

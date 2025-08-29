@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "foreign affairs",
     "international relations",
   ],
-  authors: [{ name: "Diplomatic Dictionary Team" }],
+  authors: [{ name: "Diplomatic Academy" }],
   // Do not include viewport here anymore
 };
 

@@ -50,7 +50,8 @@ import FormatAlignJustify from "@mui/icons-material/FormatAlignJustify";
 import HighlightIcon from "@mui/icons-material/Highlight";
 import FormatColorText from "@mui/icons-material/FormatColorText";
 import FormatClear from "@mui/icons-material/FormatClear";
-import { Level } from "../tiptap-ui/heading-button";
+
+type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TipTapEditorProps = {
   value?: string; // initial HTML
@@ -542,5 +543,7 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
     </Card>
   );
 };
+
+EditorComponent.displayName = "EditorComponent";
 
 export default EditorComponent;

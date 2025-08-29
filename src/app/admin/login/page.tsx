@@ -1,6 +1,6 @@
 // Copied from src/app/admin/login.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, verifyToken } from "@/lib/authApi";
 import { TokenManager } from "@/lib/tokenManager";
@@ -11,18 +11,25 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const accessToken = TokenManager.getAccessToken();
+  const [accessToken, setAccessToken] = useState<string | undefined>(
+    TokenManager.getAccessToken()
+  );
 
-  // If already logged in, redirect to /admin/terms
-  React.useEffect(() => {
+  const router = useRouter();
+
+  // If already logged in → redirect
+  useEffect(() => {
     if (accessToken) {
-      verifyToken(accessToken)
-        // .then((res) => console.log("123"))
-        // .catch((err) => console.log("err"));
-      router.replace("/admin/terms");
+      verifyToken(accessToken).then((res) => {
+        if (!res.code && !res.detail) {
+          router.replace("/admin/terms");
+        } else {
+          TokenManager.clearTokens();
+          setAccessToken(undefined);
+        }
+      });
     }
-  }, [router, accessToken]);
+  }, [accessToken, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +37,8 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       const tokens = await login({ username, password });
-      console.log("TOKENS", tokens)
       TokenManager.setTokens(tokens.access, tokens.refresh);
+      setAccessToken(tokens.access); // ✅ обновляем state
       router.replace("/admin/terms");
     } catch (err: any) {
       setError(err.message || "Login failed");
@@ -47,7 +54,7 @@ export default function AdminLoginPage() {
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         <h1 className="text-2xl font-bold text-center text-blue-700 mb-6">
-          Admin Login
+          Login
         </h1>
         {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
         <div className="mb-4">

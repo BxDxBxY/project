@@ -244,5 +244,7 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
     );
   }
 );
+AsyncTermSelect.displayName = "AsyncTermSelect";
+
 
 export default AsyncTermSelect
