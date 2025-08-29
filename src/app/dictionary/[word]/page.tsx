@@ -123,7 +123,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
             Manosi
           </h2>
           <div
-            className="prose prose-sm sm:prose-base max-w-none text-gray-700 leading-relaxed"
+            className="prose prose-sm sm:prose-base max-w-none !text-gray-700 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: term.definition }}
           />
         </div>
