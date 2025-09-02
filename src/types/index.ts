@@ -54,7 +54,6 @@ export interface Category {
 
 export type ModalType = "add" | "edit" | "delete";
 
-
 export interface Country {
   id: number;
   name: string;

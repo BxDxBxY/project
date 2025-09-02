@@ -65,7 +65,7 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
           setLoading(true);
           try {
             const terms = await Promise.all(
-              missingIds.map((id) => fetchTerm(id))
+              missingIds.map((id) => fetchTerm(id)),
             );
             setSelectedTerms((prev) => [...prev, ...terms]);
           } catch (error) {
@@ -110,7 +110,7 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
           (term: any) =>
             term &&
             typeof term.id === "number" &&
-            typeof term.title === "string"
+            typeof term.title === "string",
         );
         setOptions(validTerms);
       } catch (error) {
@@ -242,9 +242,8 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
         }}
       />
     );
-  }
+  },
 );
 AsyncTermSelect.displayName = "AsyncTermSelect";
 
-
-export default AsyncTermSelect
+export default AsyncTermSelect;

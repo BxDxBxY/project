@@ -19,10 +19,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
-import ClassTwoToneIcon from "@mui/icons-material/ClassTwoTone";
-import DrawTwoToneIcon from "@mui/icons-material/DrawTwoTone";
-import GroupTwoToneIcon from "@mui/icons-material/GroupTwoTone";
-import LocalPostOfficeTwoToneIcon from '@mui/icons-material/LocalPostOfficeTwoTone';
+import LocalPostOfficeTwoToneIcon from "@mui/icons-material/LocalPostOfficeTwoTone";
 import Link from "next/link";
 import { Button, useMediaQuery } from "@mui/material";
 
@@ -115,7 +112,11 @@ export default function MiniDrawer({
     { text: "Terminlar", icon: <FormatColorTextIcon />, url: "/admin/terms" },
     // { text: "Kategoriyalar", icon: <ClassTwoToneIcon />, url: "/admin/categories" },
     // { text: "Foydalanuvchilar", icon: <GroupTwoToneIcon />, url: "/admin/users" },
-    { text: "Xatlar", icon: <LocalPostOfficeTwoToneIcon />, url: "/admin/contacts" },
+    {
+      text: "Xatlar",
+      icon: <LocalPostOfficeTwoToneIcon />,
+      url: "/admin/contacts",
+    },
     // { text: "Drafts", icon: <DrawTwoToneIcon />, url: "#" },
   ];
 
@@ -131,10 +132,17 @@ export default function MiniDrawer({
           <div className="w-8 h-8 rounded-full bg-[#001c3b] flex items-center justify-center text-white font-bold">
             A
           </div>
+          <Button variant="text" size="medium" onClick={handleLogout}>
+            Logout
+          </Button>
         </div>
         {!isMobile && (
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         )}
       </DrawerHeader>
@@ -177,7 +185,10 @@ export default function MiniDrawer({
       <CssBaseline />
       {/* AppBar */}
       <AppBar position="fixed" open={open && !isMobile}>
-        <Toolbar className="flex justify-between" sx={{backgroundColor:"#001c3b"}}>
+        <Toolbar
+          className="flex justify-between"
+          sx={{ backgroundColor: "#001c3b" }}
+        >
           <div className="flex items-center gap-2">
             <IconButton
               color="inherit"
@@ -210,7 +221,10 @@ export default function MiniDrawer({
           onClose={toggleMobileDrawer}
           ModalProps={{ keepMounted: true }}
           sx={{
-            "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
         >
           {drawerContent}
@@ -230,55 +244,54 @@ export default function MiniDrawer({
   );
 }
 
-
-        // <List>
-        //   {["All mail", "Trash", "Spam"].map((text, index) => (
-        //     <ListItem key={text} disablePadding sx={{ display: "block" }}>
-        //       <ListItemButton
-        //         sx={[
-        //           {
-        //             minHeight: 48,
-        //             px: 2.5,
-        //           },
-        //           open
-        //             ? {
-        //                 justifyContent: "initial",
-        //               }
-        //             : {
-        //                 justifyContent: "center",
-        //               },
-        //         ]}
-        //       >
-        //         <ListItemIcon
-        //           sx={[
-        //             {
-        //               minWidth: 0,
-        //               justifyContent: "center",
-        //             },
-        //             open
-        //               ? {
-        //                   mr: 3,
-        //                 }
-        //               : {
-        //                   mr: "auto",
-        //                 },
-        //           ]}
-        //         >
-        //           {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-        //         </ListItemIcon>
-        //         <ListItemText
-        //           primary={text}
-        //           sx={[
-        //             open
-        //               ? {
-        //                   opacity: 1,
-        //                 }
-        //               : {
-        //                   opacity: 0,
-        //                 },
-        //           ]}
-        //         />
-        //       </ListItemButton>
-        //     </ListItem>
-        //   ))}
-        // </List>
+// <List>
+//   {["All mail", "Trash", "Spam"].map((text, index) => (
+//     <ListItem key={text} disablePadding sx={{ display: "block" }}>
+//       <ListItemButton
+//         sx={[
+//           {
+//             minHeight: 48,
+//             px: 2.5,
+//           },
+//           open
+//             ? {
+//                 justifyContent: "initial",
+//               }
+//             : {
+//                 justifyContent: "center",
+//               },
+//         ]}
+//       >
+//         <ListItemIcon
+//           sx={[
+//             {
+//               minWidth: 0,
+//               justifyContent: "center",
+//             },
+//             open
+//               ? {
+//                   mr: 3,
+//                 }
+//               : {
+//                   mr: "auto",
+//                 },
+//           ]}
+//         >
+//           {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+//         </ListItemIcon>
+//         <ListItemText
+//           primary={text}
+//           sx={[
+//             open
+//               ? {
+//                   opacity: 1,
+//                 }
+//               : {
+//                   opacity: 0,
+//                 },
+//           ]}
+//         />
+//       </ListItemButton>
+//     </ListItem>
+//   ))}
+// </List>

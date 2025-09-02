@@ -113,7 +113,7 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
         alignments: ["left", "center", "right", "justify"],
       }),
     ],
-    [placeholder]
+    [placeholder],
   );
 
   const editor = useEditor({

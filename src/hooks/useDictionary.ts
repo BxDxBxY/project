@@ -51,7 +51,7 @@ export const useDictionary = (): UseDictionaryReturn => {
 
   const refreshData = useCallback(
     (q?: string) => loadData(q && state.search),
-    [loadData, state.search]
+    [loadData, state.search],
   );
 
   const setSearch = useCallback((v: string) => {
@@ -66,7 +66,7 @@ export const useDictionary = (): UseDictionaryReturn => {
       setState((prev) => ({ ...prev, search: query }));
       await loadData(query);
     },
-    [loadData, state.search]
+    [loadData, state.search],
   );
 
   const totalTerms = state.terms.length;

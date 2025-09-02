@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-
 export default function HomePage() {
   return (
     <div className="pt-20 sm:pt-24 md:pt-28 transition-all duration-300">
@@ -14,27 +13,33 @@ export default function HomePage() {
           <hr className="w-full  border-gray-400 opacity-20" />
 
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"} jahon siyosati, diplomatiya, xalqaro
-            iqtisodiy munosabatlar, xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
-            qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu sohani imkon
-            qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning kitob va raqamli (elektron) shaklini
-            tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.
+            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
+            jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro
+            huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
+            qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik
+            akademiyada shu sohani imkon qadar qamrab olgan mukammal {"lug'at"}{" "}
+            yaratildi, uning kitob va raqamli (elektron) shaklini tayyorlanishi
+            bu sohadagi kamchilikni bartaraf etadi.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan {"lug'atning"} {"o'zbek"} tilida
-            tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
-            {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar
+            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
+            {"lug'atning"} {"o'zbek"} tilida tayyorlanishi va nashr etilishi
+            muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
+            {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va
+            jiddiy tadqiqotlar
             {"ko'payishiga"} asos {"bo'ladi."}
           </p>
           <hr className="w-full border-gray-400 opacity-20" />
 
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy madaniyati yuqorilashiga,
-            siyosiy masalalar va diplomatik jarayonni {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
-            {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."} {"Lug'atdan"} {"o'rin"} olgan
-            termin, ibora, tushuncha va {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
-            etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi turli adabiyot, manbalardan
-            tarjima qilib kiritildi.
+            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
+            madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni{" "}
+            {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
+            {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."}{" "}
+            {"Lug'atdan"} {"o'rin"} olgan termin, ibora, tushuncha va{" "}
+            {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
+            etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi
+            turli adabiyot, manbalardan tarjima qilib kiritildi.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
             Telegram kanalimizga obuna bo‘ling:{" "}

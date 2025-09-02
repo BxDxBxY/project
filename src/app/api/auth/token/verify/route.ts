@@ -14,6 +14,9 @@ export async function POST(req: Request) {
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
     console.error("Error in /api/auth/token/verify:", error);
-    return NextResponse.json({ detail: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { detail: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

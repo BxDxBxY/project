@@ -9,13 +9,7 @@ import { TermCard } from "@/components/dictionary/TermCard";
 import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
 import { useMemo, useState, useEffect } from "react";
-import { Modal } from "@/components/ui/Modal";
-import { updateTerm, deleteTerm, fetchTerms } from "@/lib/termsApi";
-import { TermDetail, TermSummary, Category, Country, Source } from "@/types";
-import { fetchTerm } from "@/lib/termsApi";
-import { fetchCategories } from "@/lib/categoriesApi";
-import { StarterKit } from "@tiptap/starter-kit";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { TermSummary } from "@/types";
 import { Button, Fab, Zoom } from "@mui/material";
 import { UZBEK_ALPHABET } from "@/constants/alphabet";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -32,7 +26,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 // import { fetchSources } from "@/lib/sourcesApi";
 
 const groupTermsByAlphabet = (
-  terms: TermSummary[]
+  terms: TermSummary[],
 ): Record<string, TermSummary[]> => {
   const grouped: Record<string, TermSummary[]> = {};
   UZBEK_ALPHABET.forEach((letter) => {
@@ -52,7 +46,7 @@ const groupTermsByAlphabet = (
   });
   UZBEK_ALPHABET.forEach((letter) => {
     grouped[letter].sort((a: TermSummary, b: TermSummary) =>
-      a.title.localeCompare(b.title, "uz")
+      a.title.localeCompare(b.title, "uz"),
     );
   });
   return grouped;
@@ -82,7 +76,7 @@ const DictionaryPage: React.FC = () => {
 
   const groupedTerms = useMemo(() => {
     const sortedTerms = [...terms].sort((a, b) =>
-      a.title.localeCompare(b.title, "uz")
+      a.title.localeCompare(b.title, "uz"),
     );
     return groupTermsByAlphabet(sortedTerms);
   }, [terms]);
@@ -232,7 +226,7 @@ const DictionaryPage: React.FC = () => {
                         ))}
                       </div>
                     </div>
-                  )
+                  ),
               )}
             </div>
             {/* Scroll to Top Button */}

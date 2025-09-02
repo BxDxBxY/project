@@ -12,6 +12,9 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {
-    return NextResponse.json({ message: "Failed to send contact form" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to send contact form" },
+      { status: 500 },
+    );
   }
 }

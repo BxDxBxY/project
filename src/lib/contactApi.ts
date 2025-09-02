@@ -27,7 +27,7 @@ export interface AdminContact {
 }
 
 export async function submitContact(
-  data: ContactPayload
+  data: ContactPayload,
 ): Promise<ContactResponse> {
   return apiClient.request<ContactResponse>({
     url: "/dictionary/contact/",

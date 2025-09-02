@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, Select, MenuItem, OutlinedInput } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+} from "@mui/material";
 
 interface SimpleMultiSelectProps {
   label: string;
@@ -7,7 +13,12 @@ interface SimpleMultiSelectProps {
   onChange: (ids: number[]) => void;
 }
 
-export const SimpleMultiSelect: React.FC<SimpleMultiSelectProps> = ({ label, options, value, onChange }) => {
+export const SimpleMultiSelect: React.FC<SimpleMultiSelectProps> = ({
+  label,
+  options,
+  value,
+  onChange,
+}) => {
   return (
     <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>

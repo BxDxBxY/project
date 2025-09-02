@@ -17,8 +17,14 @@ export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
       const access = TokenManager.getAccessToken();
       const refresh = TokenManager.getRefreshToken();
 
-      console.log("AdminAuthGuard: Access token:", access ? "present" : "missing");
-      console.log("AdminAuthGuard: Refresh token:", refresh ? "present" : "missing");
+      console.log(
+        "AdminAuthGuard: Access token:",
+        access ? "present" : "missing",
+      );
+      console.log(
+        "AdminAuthGuard: Refresh token:",
+        refresh ? "present" : "missing",
+      );
 
       if (!access && !refresh) {
         console.log("No tokens, redirecting to login");
@@ -63,7 +69,9 @@ export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
           stack: err.stack,
         });
         if (err.message.includes("Network Error")) {
-          setError("Authentication server unavailable. Please try again later.");
+          setError(
+            "Authentication server unavailable. Please try again later.",
+          );
         } else {
           TokenManager.clearTokens();
           router.replace("/admin/login");

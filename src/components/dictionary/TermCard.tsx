@@ -1,11 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Category, TermSummary } from "@/types";
-import {
-  getTermTranslation,
-  getTermDescription,
-  formatDate,
-} from "@/lib/utils";
+import { TermSummary } from "@/types";
 
 interface TermCardProps {
   term: TermSummary;

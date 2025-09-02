@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
@@ -11,18 +11,18 @@ import {
   createTerm,
   updateTerm,
   deleteTerm,
-  fetchTerms,
+  // fetchTerms,
   fetchTermEdit,
   fetchAdminTerms,
 } from "@/lib/termsApi";
-import { fetchCategories } from "@/lib/categoriesApi";
-import { fetchCountries } from "@/lib/countriesApi";
-import { fetchSources } from "@/lib/sourcesApi";
+// import { fetchCategories } from "@/lib/categoriesApi";
+// import { fetchCountries } from "@/lib/countriesApi";
+// import { fetchSources } from "@/lib/sourcesApi";
 import {
   TermSummary,
-  Category,
-  Country,
-  Source,
+  // Category,
+  // Country,
+  // Source,
   CreateTermData,
   TermDetailEdit,
 } from "@/types";
@@ -55,12 +55,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { UZBEK_ALPHABET } from "@/constants/alphabet";
 
 // Custom debounce function with cancel method
 const debounce = <T extends (...args: any[]) => void>(
   func: T,
-  wait: number
+  wait: number,
 ) => {
   let timeout: NodeJS.Timeout | null = null;
 
@@ -95,7 +94,7 @@ const AdminTermsPage: React.FC = () => {
     totalTerms,
     triggerSearch,
   } = useDictionary();
-  const router = useRouter();
+  // const router = useRouter();
   const [editTerm, setEditTerm] = useState<TermDetailEdit | null>(null);
   const [createMode, setCreateMode] = useState(false);
   const [viewMode, setViewMode] = useState(false);
@@ -103,12 +102,12 @@ const AdminTermsPage: React.FC = () => {
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
   const [allTerms, setAllTerms] = useState<TermSummary[]>([]);
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
-  const [allCountries, setAllCountries] = useState<Country[]>([]);
-  const [allSources, setAllSources] = useState<Source[]>([]);
+  // const [allCategories, setAllCategories] = useState<Category[]>([]);
+  // const [allCountries, setAllCountries] = useState<Country[]>([]);
+  // const [allSources, setAllSources] = useState<Source[]>([]);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>(
-    "Muvaffaqiyatli bajarildi!"
+    "Muvaffaqiyatli bajarildi!",
   );
   const [formData, setFormData] = useState<CreateTermData>({
     title: "",
@@ -133,7 +132,7 @@ const AdminTermsPage: React.FC = () => {
       debounce((newFormData: CreateTermData) => {
         setFormData(newFormData);
       }, 500),
-    []
+    [],
   );
 
   // Clean up debounce on component unmount
@@ -145,17 +144,11 @@ const AdminTermsPage: React.FC = () => {
 
   const fetchOptions = async () => {
     try {
-      const [termsData, categoriesData, countriesData, sourcesData] =
-        await Promise.all([
-          fetchAdminTerms(),
-          fetchCategories(),
-          fetchCountries(),
-          fetchSources(),
-        ]);
+      const [termsData] = await Promise.all([fetchAdminTerms()]);
       setAllTerms(termsData);
-      setAllCategories(categoriesData);
-      setAllCountries(countriesData);
-      setAllSources(sourcesData);
+      // setAllCategories(categoriesData);
+      // setAllCountries(countriesData);
+      // setAllSources(sourcesData);
     } catch (err) {
       logger.error("Failed to fetch options:", err);
       setModalError("Failed to load options for editing");
@@ -177,11 +170,11 @@ const AdminTermsPage: React.FC = () => {
 
   const sortedTerms = useMemo(() => {
     const sortedTerms = [...terms].sort((a, b) =>
-      a.title.localeCompare(b.title, "uz")
+      a.title.localeCompare(b.title, "uz"),
     );
     const paginatedTerms = sortedTerms.slice(
       page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
+      page * rowsPerPage + rowsPerPage,
     );
     return paginatedTerms;
   }, [terms, page, rowsPerPage]);
@@ -289,7 +282,7 @@ const AdminTermsPage: React.FC = () => {
       closeModals();
     } catch (err: any) {
       setModalError(
-        err.details?.title?.[0] || err.message || "Failed to save term"
+        err.details?.title?.[0] || err.message || "Failed to save term",
       );
     } finally {
       setModalLoading(false);
@@ -426,7 +419,7 @@ const AdminTermsPage: React.FC = () => {
                       {sortedTerms.map((term) => (
                         <TableRow
                           key={term.id}
-                          className="hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-none !flex  !justify-between"
+                          className="hover:bg-blue-50 transition-colors border-b border-gray-200 !flex  !justify-between"
                         >
                           <TableCell className="px-4 py-3 text-sm sm:text-base text-gray-900">
                             {term.title}
@@ -516,8 +509,8 @@ const AdminTermsPage: React.FC = () => {
                     {createMode
                       ? "Yangi termin yaratish"
                       : viewMode
-                      ? "Atama tafsilotlari"
-                      : "Atamani tahrirlash"}
+                        ? "Atama tafsilotlari"
+                        : "Atamani tahrirlash"}
                   </DialogTitle>
                   <DialogContent>
                     <form
@@ -590,8 +583,8 @@ const AdminTermsPage: React.FC = () => {
                       {modalLoading
                         ? "Saqlanmoqda..."
                         : createMode
-                        ? "Yaratish"
-                        : "Saqlash"}
+                          ? "Yaratish"
+                          : "Saqlash"}
                     </Button>
                   </DialogActions>
                 </Dialog>

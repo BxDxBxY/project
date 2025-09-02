@@ -1,5 +1,5 @@
 // Example `tailwind.config.js` file
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   theme: {
@@ -12,24 +12,24 @@ module.exports = {
       darkMode: "class",
     },
     fontFamily: {
-      sans: ['Graphik', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
+      sans: ["Graphik", "sans-serif"],
+      serif: ["Merriweather", "serif"],
     },
     extend: {
       spacing: {
-        '128': '32rem',
-        '144': '36rem',
+        128: "32rem",
+        144: "36rem",
       },
       borderRadius: {
-        '4xl': '2rem',
-      }
-    }
+        "4xl": "2rem",
+      },
+    },
   },
   darkMode: "class",
   variants: {
     extend: {
-      borderColor: ['focus-visible'],
-      opacity: ['disabled'],
-    }
-  }
-}
+      borderColor: ["focus-visible"],
+      opacity: ["disabled"],
+    },
+  },
+};

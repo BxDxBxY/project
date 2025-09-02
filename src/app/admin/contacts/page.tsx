@@ -27,12 +27,12 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { Visibility, Delete } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import {
   fetchAdminContacts,
   fetchAdminContact,
-  deleteAdminContact,
+  // deleteAdminContact,
   AdminContact,
 } from "@/lib/contactApi";
 
@@ -68,7 +68,7 @@ export default function AdminContactsPage() {
         const data = await fetchAdminContacts();
         const sorted = [...data].sort(
           (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         );
         setContacts(sorted);
       } catch (e) {
@@ -79,11 +79,6 @@ export default function AdminContactsPage() {
       }
     })();
   }, []);
-
-  const paginated = contacts.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
 
   const handleChangePage = (_: unknown, newPage: number) => setPage(newPage);
   const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,25 +101,25 @@ export default function AdminContactsPage() {
     }
   };
 
-  const onDelete = async (id: number) => {
-    if (!confirm("Delete this message?")) return;
-    try {
-      await deleteAdminContact(id);
-      setContacts((prev) => prev.filter((c) => c.id !== id));
-      setToast({ open: true, msg: "Message deleted.", sev: "success" });
-      // keep pagination sane if last item on the page removed
-      const newTotal = contacts.length - 1;
-      const maxPage = Math.max(0, Math.ceil(newTotal / rowsPerPage) - 1);
-      if (page > maxPage) setPage(maxPage);
-    } catch (e) {
-      setToast({ open: true, msg: "Failed to delete message.", sev: "error" });
-      console.error(e);
-    }
-  };
+  // const onDelete = async (id: number) => {
+  //   if (!confirm("Delete this message?")) return;
+  //   try {
+  //     await deleteAdminContact(id);
+  //     setContacts((prev) => prev.filter((c) => c.id !== id));
+  //     setToast({ open: true, msg: "Message deleted.", sev: "success" });
+  //     // keep pagination sane if last item on the page removed
+  //     const newTotal = contacts.length - 1;
+  //     const maxPage = Math.max(0, Math.ceil(newTotal / rowsPerPage) - 1);
+  //     if (page > maxPage) setPage(maxPage);
+  //   } catch (e) {
+  //     setToast({ open: true, msg: "Failed to delete message.", sev: "error" });
+  //     console.error(e);
+  //   }
+  // };
 
   const paginatedContacts = contacts.slice(
     page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
+    page * rowsPerPage + rowsPerPage,
   );
 
   return (

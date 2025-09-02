@@ -1,49 +1,49 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react"; // useEffect, useState
 // import {
 // fetchUsers,
 // createUser,
 // updateUser,
 // deleteUser
 // } from '@/lib/api';
-import { User, CreateUserData } from "@/types";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Modal } from "@/components/ui/Modal";
-import { createUser, deleteUser, fetchUsers, updateUser } from "@/lib/usersApi";
+// import { User, CreateUserData } from "@/types";
+// import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+// import { Modal } from "@/components/ui/Modal";
+// import { createUser, deleteUser, fetchUsers, updateUser } from "@/lib/usersApi";
 
 export default function AdminUsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [editUser, setEditUser] = useState<User | null>(null);
-  const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
-  const [modalLoading, setModalLoading] = useState(false);
-  const [modalError, setModalError] = useState<string | null>(null);
+  // const [users, setUsers] = useState<User[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const [editUser, setEditUser] = useState<User | null>(null);
+  // const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
+  // const [modalLoading, setModalLoading] = useState(false);
+  // const [modalError, setModalError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
+  // useEffect(() => {
+  //   loadUsers();
+  // }, []);
 
-  const loadUsers = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchUsers();
-      setUsers(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to load users");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const loadUsers = async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const data = await fetchUsers();
+  //     setUsers(data);
+  //   } catch (err: any) {
+  //     setError(err.message || "Failed to load users");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const handleEdit = (user: User) => setEditUser(user);
-  const handleDelete = (id: number) => setDeleteUserId(id);
-  const closeModals = () => {
-    setEditUser(null);
-    setDeleteUserId(null);
-    setModalError(null);
-  };
+  // const handleEdit = (user: User) => setEditUser(user);
+  // const handleDelete = (id: number) => setDeleteUserId(id);
+  // const closeModals = () => {
+  //   setEditUser(null);
+  //   setDeleteUserId(null);
+  //   setModalError(null);
+  // };
 
   // const handleEditSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -67,20 +67,20 @@ export default function AdminUsersPage() {
   //   }
   // };
 
-  const handleDeleteConfirm = async () => {
-    if (!deleteUserId) return;
-    setModalLoading(true);
-    setModalError(null);
-    try {
-      await deleteUser(deleteUserId);
-      await loadUsers();
-      closeModals();
-    } catch (err: any) {
-      setModalError(err.message || "Failed to delete user");
-    } finally {
-      setModalLoading(false);
-    }
-  };
+  // const handleDeleteConfirm = async () => {
+  //   if (!deleteUserId) return;
+  //   setModalLoading(true);
+  //   setModalError(null);
+  //   try {
+  //     await deleteUser(deleteUserId);
+  //     await loadUsers();
+  //     closeModals();
+  //   } catch (err: any) {
+  //     setModalError(err.message || "Failed to delete user");
+  //   } finally {
+  //     setModalLoading(false);
+  //   }
+  // };
 
   return <>This Page is under development</>;
 }

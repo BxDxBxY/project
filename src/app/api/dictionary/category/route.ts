@@ -4,11 +4,16 @@ const BACKEND_URL = process.env.BACKEND_URL!;
 
 export async function GET() {
   try {
-    const res = await fetch(`${BACKEND_URL}/dictionary/category/`, { cache: "no-store" });
+    const res = await fetch(`${BACKEND_URL}/dictionary/category/`, {
+      cache: "no-store",
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {
-    return NextResponse.json({ message: "Failed to fetch categories" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to fetch categories" },
+      { status: 500 },
+    );
   }
 }
 
@@ -23,6 +28,9 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {
-    return NextResponse.json({ message: "Failed to create category" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to create category" },
+      { status: 500 },
+    );
   }
 }

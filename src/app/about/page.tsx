@@ -1,15 +1,6 @@
 "use client";
 
 import React from "react";
-import {
-  GraduationCap,
-  Globe,
-  Users,
-  Award,
-  BookOpen,
-  Target,
-} from "lucide-react";
-import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -18,28 +9,74 @@ export default function AboutPage() {
         {/* Header Section */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight">
-            Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi diplomatik akademiyaning diplomatik {"lug'ati"}
+            Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya
+            universiteti huzuridagi diplomatik akademiyaning diplomatik{" "}
+            {"lug'ati"}
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-            {"Lug'at"} hozirgi {"o'zbek"} tilining xalqaro munosabatlarga oid sohasi – siyosat va diplomatiyada {"qo'llanayotgan"} 1000ga yaqin termin, {"so'z"} birikmasi va nomlarni {"o'z"} ichiga olgan. {"Qo'llanma"} xalqaro munosabatlar, siyosatshunoslik fanlari {"o'qitiladigan"} universitetlar, institutlar tadqiqotchi va talabalari, yosh diplomatlar, tarjumonlar, qolaversa, shu soha bilan qiziqquvchi kitobxonlarga {"mo'ljallangan"}.
+            {"Lug'at"} hozirgi {"o'zbek"} tilining xalqaro munosabatlarga oid
+            sohasi – siyosat va diplomatiyada {"qo'llanayotgan"} 1000ga yaqin
+            termin, {"so'z"} birikmasi va nomlarni {"o'z"} ichiga olgan.{" "}
+            {"Qo'llanma"} xalqaro munosabatlar, siyosatshunoslik fanlari{" "}
+            {"o'qitiladigan"} universitetlar, institutlar tadqiqotchi va
+            talabalari, yosh diplomatlar, tarjumonlar, qolaversa, shu soha bilan
+            qiziqquvchi kitobxonlarga {"mo'ljallangan"}.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {"So'zboshi"} {"O'zbekiston"} Respublikasi Prezidenti Sh.M.Mirziyoyevning 2019 yil 21 oktyabrda {"“O'zbek"} tilining davlat tili sifatidagi nufuzi va mavqeini tubdan oshirish chora-tadbirlari {"to'g'risida”gi"} farmoniga muvofiq davlat tili {"to'g'risidagi"} qonun hujjatlariga rioya qilinishini, sohaga oid muammolarni tahlil etib, bu borada yagona davlat siyosati amalga oshirilishini {"ta'minlash"} yuzasidan Vazirlar Mahkamasida Davlat tilini rivojlantirish departamenti tashkil etildi va yangi {"so'z"} va atamalarni rasmiy {"iste'molga"} kiritish borasidagi ishlarni tartibga soladigan Atamalar komissiyasi tuzildi.
+            {"So'zboshi"} {"O'zbekiston"} Respublikasi Prezidenti
+            Sh.M.Mirziyoyevning 2019 yil 21 oktyabrda {"“O'zbek"} tilining
+            davlat tili sifatidagi nufuzi va mavqeini tubdan oshirish
+            chora-tadbirlari {"to'g'risida”gi"} farmoniga muvofiq davlat tili{" "}
+            {"to'g'risidagi"} qonun hujjatlariga rioya qilinishini, sohaga oid
+            muammolarni tahlil etib, bu borada yagona davlat siyosati amalga
+            oshirilishini {"ta'minlash"} yuzasidan Vazirlar Mahkamasida Davlat
+            tilini rivojlantirish departamenti tashkil etildi va yangi {"so'z"}{" "}
+            va atamalarni rasmiy {"iste'molga"} kiritish borasidagi ishlarni
+            tartibga soladigan Atamalar komissiyasi tuzildi.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {"Qo'lingizdagi"} {"“Diplomatik"} terminlar izohli {"lug'ati”"} ham shu ushbu chora-tadbirlarga javob tariqasida sohadagi ehtiyojni bir muncha qondirishga xizmat qiladi, degan maqsadda yaratildi. Kitob {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy madaniyati yuksalishiga, siyosiy masalalar va diplomatik jarayonni {"o'zbek"} tilida ifodalab berishga xizmat qiluvchi adabiyotlar, jumladan {"lug'atlar"} yaratish sohasiga {"qo'shilgan"} baholiqadrat hissa {"bo'ladi"}, deb umid qilamiz. Ushbu nashrni amalga oshirishdan {"ko'zlangan"} yana bir maqsad siyosat, diplomatiya, umuman xalqaro munosabatlar sohasi mutaxassislari, JIDU talabalari va qolaversa, qiziqquvchilarga shu sohadagi terminlar, birikma va nomlarni {"o'rganish"} va {"o'z"} faoliyatlarida {"qo'llash"} imkoniyatini yaratish {"bo'ldi"}.
+            {"Qo'lingizdagi"} {"“Diplomatik"} terminlar izohli {"lug'ati”"} ham
+            shu ushbu chora-tadbirlarga javob tariqasida sohadagi ehtiyojni bir
+            muncha qondirishga xizmat qiladi, degan maqsadda yaratildi. Kitob{" "}
+            {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy madaniyati
+            yuksalishiga, siyosiy masalalar va diplomatik jarayonni {"o'zbek"}{" "}
+            tilida ifodalab berishga xizmat qiluvchi adabiyotlar, jumladan{" "}
+            {"lug'atlar"} yaratish sohasiga {"qo'shilgan"} baholiqadrat hissa{" "}
+            {"bo'ladi"}, deb umid qilamiz. Ushbu nashrni amalga oshirishdan{" "}
+            {"ko'zlangan"} yana bir maqsad siyosat, diplomatiya, umuman xalqaro
+            munosabatlar sohasi mutaxassislari, JIDU talabalari va qolaversa,
+            qiziqquvchilarga shu sohadagi terminlar, birikma va nomlarni{" "}
+            {"o'rganish"} va {"o'z"} faoliyatlarida {"qo'llash"} imkoniyatini
+            yaratish {"bo'ldi"}.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            Shu {"o'rinda"} hamma sohalarda kabi diplomatiya tili ham {"o'z"} terminlari tizimiga ega ekani, uning {"lug'at"} boyligi diplomatik, tarixiy, madaniy, lingvistik, huquqiy va boshqa xil iboralardan tashkil topganini eslatib {"o'tish"} lozim.
+            Shu {"o'rinda"} hamma sohalarda kabi diplomatiya tili ham {"o'z"}{" "}
+            terminlari tizimiga ega ekani, uning {"lug'at"} boyligi diplomatik,
+            tarixiy, madaniy, lingvistik, huquqiy va boshqa xil iboralardan
+            tashkil topganini eslatib {"o'tish"} lozim.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            Diplomatiya tili uchun uzun jumlalar, iboralar, kirish {"so'zlari"} va {"bog'lovchilarning"} {"ko'pligi"} xos. Diplomatik til rasmiy tildan, xususan, xalqaro siyosat tilidan, jurnalistika tilidan, {"ma'lum"} darajada badiiy-adabiy tildan ham ancha farq qiladi.
+            Diplomatiya tili uchun uzun jumlalar, iboralar, kirish {"so'zlari"}{" "}
+            va {"bog'lovchilarning"} {"ko'pligi"} xos. Diplomatik til rasmiy
+            tildan, xususan, xalqaro siyosat tilidan, jurnalistika tilidan,{" "}
+            {"ma'lum"} darajada badiiy-adabiy tildan ham ancha farq qiladi.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {"Ta'kidlash"} joizki, diplomatik atamalar asosan lotin, ingliz, frantsuz tillarida yaratilgan yoki ular orqali vositachi tillar sifatida kirib kelgan. Har qanday zamonaviy tilda diplomatiya va siyosatga tegishli terminlar faol rivojlanmoqda, shuning uchun insonning diplomatiya va tashqi aloqalar bilan {"bog'liq"} aqliy faoliyati natijalari terminlarda ifodalanmoqda, deb taxmin qilish mantiqan {"to'g'ri"}.
+            {"Ta'kidlash"} joizki, diplomatik atamalar asosan lotin, ingliz,
+            frantsuz tillarida yaratilgan yoki ular orqali vositachi tillar
+            sifatida kirib kelgan. Har qanday zamonaviy tilda diplomatiya va
+            siyosatga tegishli terminlar faol rivojlanmoqda, shuning uchun
+            insonning diplomatiya va tashqi aloqalar bilan {"bog'liq"} aqliy
+            faoliyati natijalari terminlarda ifodalanmoqda, deb taxmin qilish
+            mantiqan {"to'g'ri"}.
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {"Lug'atdagi"} atamalarni tanlashda {"o'zbek"} tili mezonlariga, til normalariga rioya qilindi. {"Lug'at"} ushbu sohadagi dastlabki izlanish sifatida uni tuzishda {"lug'atchilikning"} barcha {"an'ana"} va qoidalariga rioya qilishga hamda xalqaro hayotda, siyosatda {"qo'llanayotgan"} diplomatik terminlarni imkon qadar {"to'plashga"} harakat qilindi.
+            {"Lug'atdagi"} atamalarni tanlashda {"o'zbek"} tili mezonlariga, til
+            normalariga rioya qilindi. {"Lug'at"} ushbu sohadagi dastlabki
+            izlanish sifatida uni tuzishda {"lug'atchilikning"} barcha{" "}
+            {"an'ana"} va qoidalariga rioya qilishga hamda xalqaro hayotda,
+            siyosatda {"qo'llanayotgan"} diplomatik terminlarni imkon qadar{" "}
+            {"to'plashga"} harakat qilindi.
           </p>
           <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-6 sm:mt-8"></div>
         </div>

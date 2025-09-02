@@ -1,17 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
 // import {
-  // fetchCategories,
-  // createCategory,
-  // updateCategory,
-  // deleteCategory,
+// fetchCategories,
+// createCategory,
+// updateCategory,
+// deleteCategory,
 // } from "@/lib/api";
 import { Category, ModalType } from "@/types";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Modal } from "@/components/ui/Modal";
 import { Button, CircularProgress } from "@mui/material";
 import { CategoryModal } from "@/components/ui/CategoryModal";
-import { createCategory, deleteCategory, fetchCategories, updateCategory } from "@/lib/categoriesApi";
+import {
+  createCategory,
+  deleteCategory,
+  fetchCategories,
+  updateCategory,
+} from "@/lib/categoriesApi";
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -124,7 +127,7 @@ export default function AdminCategoriesPage() {
           color="success"
           size="medium"
         >
-         { "+ Kategoriya qo'shish"}
+          {"+ Kategoriya qo'shish"}
         </Button>
       </div>
 

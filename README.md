@@ -15,12 +15,14 @@ A comprehensive TypeScript-based web application for browsing and searching dipl
 ## 🛠️ Technical Improvements
 
 ### Complete TypeScript Migration
+
 - Converted all JavaScript files to TypeScript
 - Added comprehensive type definitions
 - Implemented strict TypeScript configuration
 - Added proper type checking and validation
 
 ### Enhanced API Layer
+
 - Robust error handling with custom error classes
 - Automatic token refresh mechanism
 - Request/response interceptors
@@ -28,12 +30,14 @@ A comprehensive TypeScript-based web application for browsing and searching dipl
 - Proper HTTP status code handling
 
 ### Modern React Patterns
+
 - Custom hooks for state management
 - Error boundaries for graceful error handling
 - Memoized components for performance
 - Proper component composition
 
 ### Improved User Experience
+
 - Loading states with spinners
 - Error states with retry functionality
 - Debounced search for better performance
@@ -60,29 +64,34 @@ src/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd diplomatic-dictionary
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```bash
 # Create .env.local file
 NEXT_PUBLIC_API_URL=http://your-api-url:8000
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -100,13 +109,16 @@ npm run dev
 ## 🔧 Configuration
 
 ### TypeScript Configuration
+
 The project uses strict TypeScript configuration with:
+
 - Strict mode enabled
 - Path mapping for clean imports
 - Next.js TypeScript plugin
 - Proper module resolution
 
 ### API Configuration
+
 - Environment-based API URL configuration
 - Automatic token management
 - Request/response interceptors
@@ -115,6 +127,7 @@ The project uses strict TypeScript configuration with:
 ## 🎨 UI Components
 
 ### Base Components
+
 - `LoadingSpinner` - Reusable loading indicator
 - `ErrorBoundary` - Error boundary wrapper
 - `SearchBar` - Debounced search input
@@ -123,6 +136,7 @@ The project uses strict TypeScript configuration with:
 - `TermCard` - Term display card
 
 ### Custom Hooks
+
 - `useDictionary` - Dictionary data management
 - Error handling and loading states
 - Search and filtering logic
@@ -139,6 +153,7 @@ The project uses strict TypeScript configuration with:
 ## 📱 Responsive Design
 
 The application is fully responsive and works on:
+
 - Desktop computers
 - Tablets
 - Mobile phones
@@ -178,12 +193,14 @@ The application is fully responsive and works on:
 ## 🔧 Development
 
 ### Code Quality
+
 - ESLint configuration
 - Prettier formatting
 - TypeScript strict mode
 - Component documentation
 
 ### Testing
+
 - Unit test setup ready
 - Integration test structure
 - E2E test framework

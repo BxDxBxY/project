@@ -50,7 +50,7 @@ import { UZBEK_ALPHABET } from "@/constants/alphabet";
 // Custom debounce function with cancel method
 const debounce = <T extends (...args: any[]) => void>(
   func: T,
-  wait: number
+  wait: number,
 ) => {
   let timeout: NodeJS.Timeout | null = null;
 
@@ -75,7 +75,7 @@ const debounce = <T extends (...args: any[]) => void>(
 };
 
 const groupTermsByAlphabet = (
-  terms: TermSummary[]
+  terms: TermSummary[],
 ): Record<string, TermSummary[]> => {
   const grouped: Record<string, TermSummary[]> = {};
   UZBEK_ALPHABET.forEach((letter) => {
@@ -95,7 +95,7 @@ const groupTermsByAlphabet = (
   });
   UZBEK_ALPHABET.forEach((letter) => {
     grouped[letter].sort((a: TermSummary, b: TermSummary) =>
-      a.title.localeCompare(b.title, "uz")
+      a.title.localeCompare(b.title, "uz"),
     );
   });
   return grouped;
@@ -125,7 +125,7 @@ const AdminTermsPage: React.FC = () => {
   const [allSources, setAllSources] = useState<Source[]>([]);
   const [showSuccess, setShowSuccess] = useState<boolean>(true);
   const [successMsg, setSuccessMsg] = useState<string>(
-    "Muvaffaqiyatli bajarildi!"
+    "Muvaffaqiyatli bajarildi!",
   );
   const [formData, setFormData] = useState<CreateTermData>({
     title: "",
@@ -142,7 +142,7 @@ const AdminTermsPage: React.FC = () => {
       debounce((newFormData: CreateTermData) => {
         setFormData(newFormData);
       }, 500),
-    []
+    [],
   );
 
   // Clean up debounce on component unmount
@@ -186,7 +186,7 @@ const AdminTermsPage: React.FC = () => {
 
   const groupedTerms = useMemo(() => {
     const sortedTerms = [...terms].sort((a, b) =>
-      a.title.localeCompare(b.title, "uz")
+      a.title.localeCompare(b.title, "uz"),
     );
     return groupTermsByAlphabet(sortedTerms);
   }, [terms]);
@@ -273,8 +273,8 @@ const AdminTermsPage: React.FC = () => {
     try {
       if (createMode) {
         const res = await createTerm(formData);
-        if (res){
-          setShowSuccess(true)
+        if (res) {
+          setShowSuccess(true);
         }
       } else if (editTerm) {
         await updateTerm(editTerm.id, formData);
@@ -283,7 +283,7 @@ const AdminTermsPage: React.FC = () => {
       closeModals();
     } catch (err: any) {
       setModalError(
-        err.details?.title?.[0] || err.message || "Failed to save term"
+        err.details?.title?.[0] || err.message || "Failed to save term",
       );
     } finally {
       setModalLoading(false);
@@ -423,7 +423,15 @@ const AdminTermsPage: React.FC = () => {
                               }}
                               onClick={() => handleTermClick(term.id)}
                             >
-                              <Box sx={{ flexGrow: 1, padding: "0px", width:"100%", overflow:"hidden", height:"100%" }}>
+                              <Box
+                                sx={{
+                                  flexGrow: 1,
+                                  padding: "0px",
+                                  width: "100%",
+                                  overflow: "hidden",
+                                  height: "100%",
+                                }}
+                              >
                                 <TermCard adminPanel={true} term={term} />
                               </Box>
                               <Box
@@ -473,7 +481,7 @@ const AdminTermsPage: React.FC = () => {
                           ))}
                         </div>
                       </div>
-                    )
+                    ),
                 )}
                 <Dialog
                   open={createMode || viewMode || !!editTerm}
@@ -496,8 +504,8 @@ const AdminTermsPage: React.FC = () => {
                     {createMode
                       ? "Yangi termin yaratish"
                       : viewMode
-                      ? "Atama tafsilotlari"
-                      : "Atamani tahrirlash"}
+                        ? "Atama tafsilotlari"
+                        : "Atamani tahrirlash"}
                   </DialogTitle>
                   <DialogContent>
                     <form
@@ -570,8 +578,8 @@ const AdminTermsPage: React.FC = () => {
                       {modalLoading
                         ? "Saqlanmoqda..."
                         : createMode
-                        ? "Yaratish"
-                        : "Saqlash"}
+                          ? "Yaratish"
+                          : "Saqlash"}
                     </Button>
                   </DialogActions>
                 </Dialog>

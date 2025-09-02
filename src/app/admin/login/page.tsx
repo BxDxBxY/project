@@ -12,7 +12,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | undefined>(
-    TokenManager.getAccessToken()
+    TokenManager.getAccessToken(),
   );
 
   const router = useRouter();

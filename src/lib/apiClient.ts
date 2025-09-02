@@ -1,14 +1,14 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { ApiError, AuthTokens, LoginCredentials } from "@/types";
+import { ApiError } from "@/types";
 import { TokenManager } from "./tokenManager";
 
 // Environment-based API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
-interface ErrorResponse {
-  code?: string;
-  message?: string;
-}
+// interface ErrorResponse {
+//   code?: string;
+//   message?: string;
+// }
 
 // class TokenManager {
 //   private static getStorage(): Storage | null {
@@ -26,11 +26,11 @@ interface ErrorResponse {
 
 class ApiClient {
   private client: AxiosInstance;
-  private isRefreshing = false;
-  private failedQueue: Array<{
-    resolve: (value: any) => void;
-    reject: (error: any) => void;
-  }> = [];
+  // private isRefreshing = false;
+  // private failedQueue: Array<{
+  //   resolve: (value: any) => void;
+  //   reject: (error: any) => void;
+  // }> = [];
 
   constructor() {
     this.client = axios.create({
@@ -45,7 +45,7 @@ class ApiClient {
     this.client.interceptors.request.use(
       (config) => {
         const requiresAuth = ["POST", "PUT", "DELETE"].includes(
-          config.method?.toUpperCase() || ""
+          config.method?.toUpperCase() || "",
         );
         const authFreeRoutes = ["/auth/token", "/dictionary/contact"];
         const isContactAdminGet =
@@ -74,7 +74,7 @@ class ApiClient {
 
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     this.client.interceptors.response.use(
@@ -89,7 +89,7 @@ class ApiClient {
         }
 
         return Promise.reject(error);
-      }
+      },
     );
   }
 

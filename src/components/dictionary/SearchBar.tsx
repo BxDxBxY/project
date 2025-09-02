@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Backdrop from "@mui/material/Backdrop";
 import { Button } from "@mui/material";
 
 interface SearchBarProps {
@@ -22,7 +21,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   liveSearch = false,
 }) => {
   const [localValue, setLocalValue] = useState(value);
-  const [focused, setFocused] = useState(false);
+  // const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -49,14 +48,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     if (e.key === "Enter") {
       e.preventDefault();
       handleSubmit();
-      setFocused(false);
       inputRef.current?.blur();
     }
     if (e.key === "Escape") {
       e.preventDefault();
       setLocalValue("");
       onChange("");
-      setFocused(false);
       inputRef.current?.blur();
     }
   };
@@ -105,7 +102,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           value={localValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          onFocus={() => setFocused(true)}
           placeholder={placeholder}
           disabled={disabled}
           className="block w-full pl-10 pr-20 py-2 border-b-2 border-transparent  

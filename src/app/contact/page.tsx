@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { TextField, Button, Alert, Snackbar } from "@mui/material";
 import { Send, Phone, Mail, MapPin } from "lucide-react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Footer from "@/components/dictionary/FooterComponent";
+// import Footer from "@/components/dictionary/FooterComponent";
 import { submitContact } from "@/lib/contactApi";
 
 // Create custom theme with diplomatic colors
@@ -30,11 +30,6 @@ interface ContactForm {
   fullName: string;
   email: string;
   message: string;
-}
-
-interface StoredContact extends ContactForm {
-  id: string;
-  timestamp: string;
 }
 
 export default function ContactPage() {
@@ -79,35 +74,13 @@ export default function ContactPage() {
       }
     };
 
-  const saveToLocalStorage = (data: ContactForm) => {
-    try {
-      const existingContacts = JSON.parse(
-        localStorage.getItem("diplomaticContacts") || "[]"
-      );
-      const newContact: StoredContact = {
-        ...data,
-        id: crypto.randomUUID(),
-        timestamp: new Date().toISOString(),
-      };
-      existingContacts.push(newContact);
-      localStorage.setItem(
-        "diplomaticContacts",
-        JSON.stringify(existingContacts)
-      );
-      return true;
-    } catch (error) {
-      console.error("Error saving to localStorage:", error);
-      return false;
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-  
+
     if (!validateForm()) {
       return;
     }
-  
+
     setIsSubmitting(true);
     try {
       await submitContact({
@@ -115,7 +88,7 @@ export default function ContactPage() {
         email_address: formData.email,
         message: formData.message,
       });
-  
+
       setFormData({ fullName: "", email: "", message: "" });
       setShowSuccess(true);
     } catch (error) {

@@ -86,7 +86,7 @@ export const validateTermsArray = (terms: any): terms is TermSummary[] => {
 };
 
 export const validateCategoriesArray = (
-  categories: any
+  categories: any,
 ): categories is Category[] => {
   return Array.isArray(categories) && categories.every(validateCategory);
 };
@@ -131,13 +131,19 @@ export const validateCategoriesArray = (
 // };
 
 // Language utilities - Updated to work with new structure
-export const getTermTranslation = (term: TermSummary, language: string): string => {
+export const getTermTranslation = (
+  term: TermSummary,
+  // language: string,
+): string => {
   // For now, return the title since translations are not in the Swagger
   // This can be extended when translation support is added
   return term.title;
 };
 
-export const getTermDescription = (term: TermDetail, language: string): string => {
+export const getTermDescription = (
+  term: TermDetail,
+  // language: string,
+): string => {
   // For now, return the definition since translations are not in the Swagger
   // This can be extended when translation support is added
   return term.definition;
@@ -225,7 +231,7 @@ export const safeLocalStorage = {
 // Debounce utility for search
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  wait: number,
 ): ((...args: Parameters<T>) => void) => {
   let timeout: NodeJS.Timeout;
   return (...args: Parameters<T>) => {
@@ -238,7 +244,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 export const retry = async <T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  delay: number = 1000
+  delay: number = 1000,
 ): Promise<T> => {
   let lastError: Error;
 
@@ -249,7 +255,7 @@ export const retry = async <T>(
       lastError = error as Error;
       if (i < maxRetries - 1) {
         await new Promise((resolve) =>
-          setTimeout(resolve, delay * Math.pow(2, i))
+          setTimeout(resolve, delay * Math.pow(2, i)),
         );
       }
     }
