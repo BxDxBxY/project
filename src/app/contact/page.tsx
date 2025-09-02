@@ -5,6 +5,7 @@ import { TextField, Button, Alert, Snackbar } from "@mui/material";
 import { Send, Phone, Mail, MapPin } from "lucide-react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "@/components/dictionary/FooterComponent";
+import { submitContact } from "@/lib/contactApi";
 
 // Create custom theme with diplomatic colors
 const theme = createTheme({
@@ -102,22 +103,27 @@ export default function ContactPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     if (!validateForm()) {
       return;
     }
-
+  
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const saved = saveToLocalStorage(formData);
-
-    if (saved) {
+    try {
+      await submitContact({
+        full_name: formData.fullName,
+        email_address: formData.email,
+        message: formData.message,
+      });
+  
       setFormData({ fullName: "", email: "", message: "" });
       setShowSuccess(true);
+    } catch (error) {
+      console.error("Failed to submit contact form:", error);
+      // Optionally show error Snackbar
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -149,9 +155,12 @@ export default function ContactPage() {
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium text-sm sm:text-base mb-1">Manzil</h3>
+                        <h3 className="font-medium text-sm sm:text-base mb-1">
+                          Manzil
+                        </h3>
                         <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                          100007, <br /> {"Oʻzbekiston"}, Toshkent, <br /> Mustaqillik shoh {"koʻchasi"}, 54.
+                          100007, <br /> {"Oʻzbekiston"}, Toshkent, <br />{" "}
+                          Mustaqillik shoh {"koʻchasi"}, 54.
                         </p>
                       </div>
                     </div>
@@ -159,7 +168,9 @@ export default function ContactPage() {
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium text-sm sm:text-base mb-1">Telefon</h3>
+                        <h3 className="font-medium text-sm sm:text-base mb-1">
+                          Telefon
+                        </h3>
                         <p className="text-gray-300 text-xs sm:text-sm">
                           (+998 71) 267-07-06 (232)
                         </p>
@@ -169,8 +180,12 @@ export default function ContactPage() {
                     <div className="flex items-start space-x-3 sm:space-x-4">
                       <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
-                        <h3 className="font-medium text-sm sm:text-base mb-1">Pochta</h3>
-                        <p className="text-gray-300 text-xs sm:text-sm">info@da-uwed.uz</p>
+                        <h3 className="font-medium text-sm sm:text-base mb-1">
+                          Pochta
+                        </h3>
+                        <p className="text-gray-300 text-xs sm:text-sm">
+                          info@da-uwed.uz
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -184,7 +199,10 @@ export default function ContactPage() {
                     Biz bilan {"bog'laning"}
                   </h2>
 
-                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4 sm:space-y-6"
+                  >
                     <div>
                       <TextField
                         fullWidth
@@ -205,13 +223,13 @@ export default function ContactPage() {
                             },
                           },
                           "& .MuiInputLabel-root": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
                           },
                           "& .MuiInputBase-input": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                         }}
                       />
@@ -238,13 +256,13 @@ export default function ContactPage() {
                             },
                           },
                           "& .MuiInputLabel-root": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
                           },
                           "& .MuiInputBase-input": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                         }}
                       />
@@ -272,13 +290,13 @@ export default function ContactPage() {
                             },
                           },
                           "& .MuiInputLabel-root": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "#001c3b",
                           },
                           "& .MuiInputBase-input": {
-                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            fontSize: { xs: "0.875rem", sm: "1rem" },
                           },
                         }}
                       />
@@ -295,9 +313,9 @@ export default function ContactPage() {
                           backgroundColor: "#001c3b",
                           py: { xs: 1, sm: 1.5 },
                           px: { xs: 3, sm: 4 },
-                          fontSize: { xs: '0.875rem', sm: '1rem' },
+                          fontSize: { xs: "0.875rem", sm: "1rem" },
                           fontWeight: 600,
-                          textTransform: 'none',
+                          textTransform: "none",
                           borderRadius: 2,
                           "&:hover": {
                             backgroundColor: "#000a1a",
@@ -327,7 +345,7 @@ export default function ContactPage() {
           <Alert
             onClose={() => setShowSuccess(false)}
             severity="success"
-            sx={{ width: "100%", fontSize: { xs: '0.875rem', sm: '1rem' } }}
+            sx={{ width: "100%", fontSize: { xs: "0.875rem", sm: "1rem" } }}
           >
             Thank you for your message! We will get back to you shortly.
           </Alert>

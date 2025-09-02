@@ -409,7 +409,7 @@ const AdminTermsPage: React.FC = () => {
                           </span>
                           <hr className="mt-2 border-gray-300 opacity-30" />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-2 sm:gap-3 px-2 sm:px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-[2px] sm:gap-3 px-2 sm:px-4">
                           {groupedTerms[letter].map((term) => (
                             <Box
                               key={term.id}
@@ -418,12 +418,12 @@ const AdminTermsPage: React.FC = () => {
                                 alignItems: "center",
                                 cursor: "pointer",
                                 borderRadius: "8px",
-                                overflow: "hidden",
+                                // overflow: "hidden",
                                 "&:hover .actions": { opacity: 1 },
                               }}
                               onClick={() => handleTermClick(term.id)}
                             >
-                              <Box sx={{ flexGrow: 1, padding: "8px" }}>
+                              <Box sx={{ flexGrow: 1, padding: "0px" }}>
                                 <TermCard adminPanel={true} term={term} />
                               </Box>
                               <Box

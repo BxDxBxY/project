@@ -22,6 +22,7 @@ import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import ClassTwoToneIcon from "@mui/icons-material/ClassTwoTone";
 import DrawTwoToneIcon from "@mui/icons-material/DrawTwoTone";
 import GroupTwoToneIcon from "@mui/icons-material/GroupTwoTone";
+import LocalPostOfficeTwoToneIcon from '@mui/icons-material/LocalPostOfficeTwoTone';
 import Link from "next/link";
 import { Button, useMediaQuery } from "@mui/material";
 
@@ -112,9 +113,10 @@ export default function MiniDrawer({
 
   const navigationPanelInfo = [
     { text: "Terminlar", icon: <FormatColorTextIcon />, url: "/admin/terms" },
-    { text: "Kategoriyalar", icon: <ClassTwoToneIcon />, url: "/admin/categories" },
-    { text: "Foydalanuvchilar", icon: <GroupTwoToneIcon />, url: "/admin/users" },
-    { text: "Drafts", icon: <DrawTwoToneIcon />, url: "#" },
+    // { text: "Kategoriyalar", icon: <ClassTwoToneIcon />, url: "/admin/categories" },
+    // { text: "Foydalanuvchilar", icon: <GroupTwoToneIcon />, url: "/admin/users" },
+    { text: "Xatlar", icon: <LocalPostOfficeTwoToneIcon />, url: "/admin/contacts" },
+    // { text: "Drafts", icon: <DrawTwoToneIcon />, url: "#" },
   ];
 
   const handleDrawerOpen = () => setOpen(true);

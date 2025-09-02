@@ -47,14 +47,19 @@ class ApiClient {
         const requiresAuth = ["POST", "PUT", "DELETE"].includes(
           config.method?.toUpperCase() || ""
         );
-        const authFreeRoutes = ["/auth/token"];
+        const authFreeRoutes = ["/auth/token", "/dictionary/contact"];
+        const isContactAdminGet =
+          config.method?.toUpperCase() === "GET" &&
+          config.url?.includes("/dictionary/contact_admin");
 
-        const isAuthFreeRoute = authFreeRoutes.some((route) =>
-          config.url?.includes(route)
-        );
+        const isAuthFreeRoute = authFreeRoutes.some((route) => {
+          console.log(true);
+          return config.url?.includes(route);
+        });
 
-        if (requiresAuth && !isAuthFreeRoute) {
+        if ((requiresAuth && !isAuthFreeRoute) || isContactAdminGet) {
           const token = TokenManager.getAccessToken();
+          console.log("token exists", token);
           if (token) {
             config.headers.Authorization = `Bearer ${token}`;
           }
