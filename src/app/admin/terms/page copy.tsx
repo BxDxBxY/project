@@ -1,9 +1,11 @@
 "use client";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
+import { TermCard } from "@/components/dictionary/TermCard";
 import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
 import { Modal } from "@/components/ui/Modal";
@@ -13,7 +15,6 @@ import {
   deleteTerm,
   fetchTerms,
   fetchTermEdit,
-  fetchAdminTerms,
 } from "@/lib/termsApi";
 import { fetchCategories } from "@/lib/categoriesApi";
 import { fetchCountries } from "@/lib/countriesApi";
@@ -38,22 +39,11 @@ import {
   IconButton,
   Snackbar,
   Zoom,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TablePagination,
-  TableFooter,
-  TablePaginationActions,
 } from "@mui/material";
 import EditorComponent from "@/components/dictionary/EditorComponent";
 import AsyncTermSelect from "@/components/dictionary/AsyncTermSelect";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { UZBEK_ALPHABET } from "@/constants/alphabet";
 
@@ -84,6 +74,33 @@ const debounce = <T extends (...args: any[]) => void>(
   return debounced as T & { cancel: () => void };
 };
 
+const groupTermsByAlphabet = (
+  terms: TermSummary[]
+): Record<string, TermSummary[]> => {
+  const grouped: Record<string, TermSummary[]> = {};
+  UZBEK_ALPHABET.forEach((letter) => {
+    grouped[letter] = [];
+  });
+  terms.forEach((term: TermSummary) => {
+    const firstLetter = (term.title[0] || "").toUpperCase();
+    let normalizedLetter = firstLetter;
+    if (firstLetter === "Oʻ" || firstLetter === "oʻ") normalizedLetter = "Oʻ";
+    if (firstLetter === "Gʻ" || firstLetter === "gʻ") normalizedLetter = "Gʻ";
+    if (firstLetter === "S" || firstLetter === "s") normalizedLetter = "Sh";
+    if (firstLetter === "C" || firstLetter === "c") normalizedLetter = "Ch";
+    if (firstLetter === "N" || firstLetter === "n") normalizedLetter = "Ng";
+    if (grouped[normalizedLetter]) {
+      grouped[normalizedLetter].push(term);
+    }
+  });
+  UZBEK_ALPHABET.forEach((letter) => {
+    grouped[letter].sort((a: TermSummary, b: TermSummary) =>
+      a.title.localeCompare(b.title, "uz")
+    );
+  });
+  return grouped;
+};
+
 const AdminTermsPage: React.FC = () => {
   const {
     terms,
@@ -106,7 +123,7 @@ const AdminTermsPage: React.FC = () => {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [allCountries, setAllCountries] = useState<Country[]>([]);
   const [allSources, setAllSources] = useState<Source[]>([]);
-  const [showSuccess, setShowSuccess] = useState<boolean>(false);
+  const [showSuccess, setShowSuccess] = useState<boolean>(true);
   const [successMsg, setSuccessMsg] = useState<string>(
     "Muvaffaqiyatli bajarildi!"
   );
@@ -118,14 +135,6 @@ const AdminTermsPage: React.FC = () => {
     related_countries: [],
     sources: [],
   });
-  // pagination states
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const handleChangePage = (_: unknown, newPage: number) => setPage(newPage);
-  const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(e.target.value, 10));
-    setPage(0);
-  };
 
   // Debounced setFormData function
   const debouncedSetFormData = useMemo(
@@ -147,7 +156,7 @@ const AdminTermsPage: React.FC = () => {
     try {
       const [termsData, categoriesData, countriesData, sourcesData] =
         await Promise.all([
-          fetchAdminTerms(),
+          fetchTerms(),
           fetchCategories(),
           fetchCountries(),
           fetchSources(),
@@ -175,16 +184,12 @@ const AdminTermsPage: React.FC = () => {
     }
   };
 
-  const sortedTerms = useMemo(() => {
+  const groupedTerms = useMemo(() => {
     const sortedTerms = [...terms].sort((a, b) =>
       a.title.localeCompare(b.title, "uz")
     );
-    const paginatedTerms = sortedTerms.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
-    return paginatedTerms;
-  }, [terms, page, rowsPerPage]);
+    return groupTermsByAlphabet(sortedTerms);
+  }, [terms]);
 
   const handleTermClick = async (id: number) => {
     try {
@@ -245,11 +250,11 @@ const AdminTermsPage: React.FC = () => {
   const handleDelete = (id: number) => setDeleteTermId(id);
 
   const closeModals = () => {
+    setEditTerm(null);
+    setCreateMode(false);
+    setViewMode(false);
     setDeleteTermId(null);
     setModalError(null);
-    setCreateMode(false);
-    setEditTerm(null);
-    setViewMode(false);
 
     setFormData({
       title: "",
@@ -261,29 +266,18 @@ const AdminTermsPage: React.FC = () => {
     });
   };
 
-  const validateFormData = () => {
-    const valid = formData.title !== "" && formData.definition !== "";
-    return valid;
-  };
-
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateFormData()) return;
     setModalLoading(true);
     setModalError(null);
     try {
       if (createMode) {
         const res = await createTerm(formData);
-        if (res) {
-          setShowSuccess(true);
-          setSuccessMsg("Muvaffaqiyatli yaratildi!");
+        if (res){
+          setShowSuccess(true)
         }
       } else if (editTerm) {
-        const res = await updateTerm(editTerm.id, formData);
-        if (res) {
-          setShowSuccess(true);
-          setSuccessMsg("Muvaffaqiyatli o'zgartirildi!");
-        }
+        await updateTerm(editTerm.id, formData);
       }
       await refreshData();
       closeModals();
@@ -304,8 +298,6 @@ const AdminTermsPage: React.FC = () => {
       await deleteTerm(deleteTermId);
       await refreshData();
       closeModals();
-      setShowSuccess(true);
-      setSuccessMsg("Muvaffaqiyatli o'chirildi!");
     } catch (err: any) {
       setModalError(err.message || "Failed to delete term");
     } finally {
@@ -366,8 +358,8 @@ const AdminTermsPage: React.FC = () => {
   return (
     <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center gap-6 sm:gap-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-2">
+        <div className="flex flex-col items-center gap-6 sm:gap-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center tracking-tight">
               Admin: Diplomatik Lugʻat
             </h1>
@@ -382,7 +374,7 @@ const AdminTermsPage: React.FC = () => {
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-2 sm:mb-2 w-full max-w-xl sm:max-w-2xl">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6 w-full max-w-xl sm:max-w-2xl">
             <SearchBar
               value={search}
               onChange={setSearch}
@@ -393,7 +385,7 @@ const AdminTermsPage: React.FC = () => {
             />
           </div>
 
-          <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex justify-between mb-2 sm:mb-6">
+          <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex justify-between mb-4 sm:mb-6">
             <span>{totalTerms} termin koʻrsatilmoqda</span>
           </div>
 
@@ -407,94 +399,82 @@ const AdminTermsPage: React.FC = () => {
               </div>
             ) : (
               <>
-                <TableContainer
-                  component={Paper}
-                  className="shadow-lg rounded-xl overflow-hidden"
-                >
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-gray-100 !flex  !justify-between ">
-                        <TableCell className="font-bold text-gray-900 px-4 py-3 text-sm sm:text-base">
-                          Termin Nomi
-                        </TableCell>
-                        <TableCell className="font-bold text-gray-900 px-4 py-3 w-[140px] !text-center text-sm sm:text-base">
-                          Amallar
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {sortedTerms.map((term) => (
-                        <TableRow
-                          key={term.id}
-                          className="hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-none !flex  !justify-between"
-                        >
-                          <TableCell className="px-4 py-3 text-sm sm:text-base text-gray-900">
-                            {term.title}
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            <Box className="flex gap-2">
-                              <IconButton
-                                size="small"
-                                className="text-blue-600 hover:text-blue-800"
-                                onClick={() => handleTermClick(term.id)}
-                                title="Ko'rish"
+                {UZBEK_ALPHABET.map(
+                  (letter) =>
+                    groupedTerms[letter]?.length > 0 && (
+                      <div key={letter} className="mb-8 sm:mb-10">
+                        <div className="mb-4 px-2 sm:px-4">
+                          <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-zinc-700">
+                            {letter}
+                          </span>
+                          <hr className="mt-2 border-gray-300 opacity-30" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-[2px] sm:gap-3 px-2 sm:px-4">
+                          {groupedTerms[letter].map((term) => (
+                            <Box
+                              key={term.id}
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                cursor: "pointer",
+                                borderRadius: "8px",
+                                overflow: "hidden",
+                                "&:hover .actions": { opacity: 1 },
+                              }}
+                              onClick={() => handleTermClick(term.id)}
+                            >
+                              <Box sx={{ flexGrow: 1, padding: "0px", width:"100%", overflow:"hidden", height:"100%" }}>
+                                <TermCard adminPanel={true} term={term} />
+                              </Box>
+                              <Box
+                                className="actions"
+                                sx={{
+                                  width: { xs: "48px", sm: "60px" },
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyItems: "left",
+                                  opacity: 0,
+                                  transition: "opacity 0.2s",
+                                  backgroundColor: "inherit",
+                                }}
                               >
-                                <VisibilityIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                className="text-green-600 hover:text-green-800"
-                                onClick={() => handleEdit(term.id)}
-                                title="Tahrirlash"
-                              >
-                                <EditIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                className="text-red-600 hover:text-red-800"
-                                onClick={() => handleDelete(term.id)}
-                                title="O'chirish"
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </IconButton>
+                                <IconButton
+                                  size="small"
+                                  sx={{
+                                    flex: 1,
+                                    color: "#1976d2",
+                                    "&:hover": { backgroundColor: "#e0e0e0" },
+                                  }}
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await handleEdit(term.id);
+                                  }}
+                                  title="Tahrirlash"
+                                >
+                                  <EditIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  sx={{
+                                    flex: 1,
+                                    color: "#d32f2f",
+                                    "&:hover": { backgroundColor: "#e0e0e0" },
+                                  }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(term.id);
+                                  }}
+                                  title="Oʻchirish"
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
                             </Box>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TablePagination
-                          rowsPerPageOptions={[
-                            5,
-                            10,
-                            25,
-                            50,
-                            { label: "All", value: -1 },
-                          ]}
-                          colSpan={4}
-                          count={allTerms.length}
-                          rowsPerPage={rowsPerPage}
-                          page={page}
-                          slotProps={{
-                            select: {
-                              inputProps: {
-                                "aria-label": "rows per page",
-                              },
-                              native: true,
-                            },
-                          }}
-                          onPageChange={handleChangePage}
-                          onRowsPerPageChange={handleChangeRowsPerPage}
-                          ActionsComponent={TablePaginationActions}
-                          showLastButton={true}
-                          showFirstButton={true}
-                        />
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                </TableContainer>
-
+                          ))}
+                        </div>
+                      </div>
+                    )
+                )}
                 <Dialog
                   open={createMode || viewMode || !!editTerm}
                   fullWidth={true}

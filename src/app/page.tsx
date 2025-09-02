@@ -8,7 +8,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
         <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full max-w-6xl">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-700 uppercase leading-snug tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
             Diplomatik Terminlar Izohli {"Lug‘ati"}
           </h1>
           <hr className="w-full  border-gray-400 opacity-20" />

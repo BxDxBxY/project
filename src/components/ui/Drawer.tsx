@@ -65,7 +65,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.snackbar + 1, // ensures snackbars show above
+  zIndex: theme.zIndex.drawer + 1, // ensures snackbars show above
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -128,18 +128,9 @@ export default function MiniDrawer({
     <div className="h-full flex flex-col">
       <DrawerHeader>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-bold">
+          <div className="w-8 h-8 rounded-full bg-[#001c3b] flex items-center justify-center text-white font-bold">
             A
           </div>
-          <Button
-            variant="text"
-            size="small"
-            color="primary"
-            className="text-sm text-blue-600 hover:underline"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
         </div>
         {!isMobile && (
           <IconButton onClick={handleDrawerClose}>
@@ -186,7 +177,7 @@ export default function MiniDrawer({
       <CssBaseline />
       {/* AppBar */}
       <AppBar position="fixed" open={open && !isMobile}>
-        <Toolbar className="flex justify-between">
+        <Toolbar className="flex justify-between" sx={{backgroundColor:"#001c3b"}}>
           <div className="flex items-center gap-2">
             <IconButton
               color="inherit"

@@ -51,13 +51,20 @@ class ApiClient {
         const isContactAdminGet =
           config.method?.toUpperCase() === "GET" &&
           config.url?.includes("/dictionary/contact_admin");
+        const isTerminsAdminGet =
+          config.method?.toUpperCase() === "GET" &&
+          config.url?.includes("/dictionary/create_term");
 
         const isAuthFreeRoute = authFreeRoutes.some((route) => {
           console.log(true);
           return config.url?.includes(route);
         });
 
-        if ((requiresAuth && !isAuthFreeRoute) || isContactAdminGet) {
+        if (
+          (requiresAuth && !isAuthFreeRoute) ||
+          isContactAdminGet ||
+          isTerminsAdminGet
+        ) {
           const token = TokenManager.getAccessToken();
           console.log("token exists", token);
           if (token) {

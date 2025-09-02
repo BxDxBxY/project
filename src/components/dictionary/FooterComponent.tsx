@@ -11,7 +11,7 @@ export default function FooterComponent() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="w-full bg-gray-800 text-white py-6 sm:py-8">
+    <footer className="w-full bg-[#001c3b] text-white py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8">
         {/* Footer Links */}
         <nav className="flex flex-col sm:flex-row items-center flex-wrap justify-center sm:justify-start gap-4 sm:gap-6 text-xs sm:text-sm">
