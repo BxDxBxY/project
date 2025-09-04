@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Autocomplete,
   TextField,
@@ -22,52 +22,75 @@ interface AsyncTermSelectProps {
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+/**
+ * Small custom debounce hook
+ */
+function useDebounce<T>(value: T, delay = 600): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debounced;
+}
+
 const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
   ({ value, onChange, disabled }) => {
     const [options, setOptions] = useState<TermSummary[]>([]);
     const [selectedTerms, setSelectedTerms] = useState<TermSummary[]>([]);
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const [debouncedInput, setDebouncedInput] = useState("");
 
-    // 🔹 Normalize incoming value to ids
-    const valueIds = value.map((v) => (typeof v === "number" ? v : v.id));
+    const debouncedInput = useDebounce(inputValue);
 
-    // 🔹 Load selected terms (from ids or objects)
+    // Normalize incoming value to ids
+    const valueIds = useMemo(
+      () => value.map((v) => (typeof v === "number" ? v : v.id)),
+      [value],
+    );
+
+    /**
+     * Keep selected terms in sync with incoming `value`
+     */
     useEffect(() => {
-      const loadSelectedTerms = async () => {
-        const missingIds: number[] = [];
-        const providedObjects: TermSummary[] = [];
+      const syncSelected = async () => {
+        const known = [...options, ...selectedTerms];
+        const provided = value.filter(
+          (v): v is TermSummary => typeof v !== "number",
+        );
 
-        value.forEach((v) => {
-          if (typeof v === "number") {
-            if (
-              !selectedTerms.some((t) => t.id === v) &&
-              !options.some((t) => t.id === v)
-            ) {
-              missingIds.push(v);
-            }
-          } else {
-            if (
-              !selectedTerms.some((t) => t.id === v.id) &&
-              !options.some((t) => t.id === v.id)
-            ) {
-              providedObjects.push(v);
-            }
-          }
-        });
-
-        if (providedObjects.length > 0) {
-          setSelectedTerms((prev) => [...prev, ...providedObjects]);
+        // Add provided objects
+        if (provided.length > 0) {
+          setSelectedTerms((prev) => {
+            const updated = [...prev];
+            provided.forEach((term) => {
+              if (!updated.some((t) => t.id === term.id)) {
+                updated.push(term);
+              }
+            });
+            return updated;
+          });
         }
 
-        if (missingIds.length > 0) {
+        // Find missing IDs not already known
+        const missing = valueIds.filter(
+          (id) => !known.some((t) => t.id === id),
+        );
+
+        if (missing.length > 0) {
           setLoading(true);
           try {
-            const terms = await Promise.all(
-              missingIds.map((id) => fetchTerm(id)),
-            );
-            setSelectedTerms((prev) => [...prev, ...terms]);
+            // TODO: replace with batch API if available
+            const terms = await Promise.all(missing.map(fetchTerm));
+            setSelectedTerms((prev) => {
+              const updated = [...prev];
+              terms.forEach((term) => {
+                if (!updated.some((t) => t.id === term.id)) {
+                  updated.push(term);
+                }
+              });
+              return updated;
+            });
           } catch (error) {
             console.error("Failed to load selected terms:", error);
           } finally {
@@ -75,55 +98,45 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
           }
         }
       };
-      loadSelectedTerms();
-    }, [value, options, selectedTerms]);
 
-    // 🔹 Combine options + selected
-    const allOptions = [...options, ...selectedTerms].reduce((unique, term) => {
-      if (!unique.some((t) => t.id === term.id)) {
-        unique.push(term);
-      }
-      return unique;
-    }, [] as TermSummary[]);
+      syncSelected();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]); // ✅ only depend on value
 
-    // 🔹 Debounce input
+    /**
+     * Combine options + selectedTerms into one unique array
+     */
+    const allOptions = useMemo(() => {
+      return [...options, ...selectedTerms].filter(
+        (term, idx, arr) => arr.findIndex((t) => t.id === term.id) === idx,
+      );
+    }, [options, selectedTerms]);
+
+    /**
+     * Fetch terms from API when user types
+     */
     useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedInput(inputValue);
-      }, 600);
-      return () => clearTimeout(handler);
-    }, [inputValue]);
-
-    // 🔹 Fetch terms from search
-    const fetchTerms = useCallback(async () => {
-      if (!debouncedInput.trim()) {
-        setOptions([]);
-        setLoading(false);
-        return;
-      }
-      setLoading(true);
-      try {
-        const results = await searchTerms(debouncedInput);
-        const validTerms = (
-          Array.isArray(results) ? results : results || []
-        ).filter(
-          (term: any) =>
-            term &&
-            typeof term.id === "number" &&
-            typeof term.title === "string",
-        );
-        setOptions(validTerms);
-      } catch (error) {
-        console.error("Failed to fetch terms:", error);
-        setOptions([]);
-      } finally {
-        setLoading(false);
-      }
-    }, [debouncedInput]);
-
-    useEffect(() => {
+      const fetchTerms = async () => {
+        if (!debouncedInput.trim()) {
+          setOptions([]);
+          return;
+        }
+        setLoading(true);
+        try {
+          const results = await searchTerms(debouncedInput);
+          const validTerms = (Array.isArray(results) ? results : []).filter(
+            (t) => t && typeof t.id === "number" && typeof t.title === "string",
+          );
+          setOptions(validTerms);
+        } catch (error) {
+          console.error("Failed to fetch terms:", error);
+          setOptions([]);
+        } finally {
+          setLoading(false);
+        }
+      };
       fetchTerms();
-    }, [fetchTerms]);
+    }, [debouncedInput]);
 
     return (
       <Autocomplete
@@ -139,6 +152,7 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
           const newIds = newValue.map((v) => v.id);
           onChange(newIds);
 
+          // Cache any new terms locally
           setSelectedTerms((prev) => {
             const updated = [...prev];
             newValue.forEach((term) => {
@@ -244,6 +258,6 @@ const AsyncTermSelect: React.FC<AsyncTermSelectProps> = React.memo(
     );
   },
 );
-AsyncTermSelect.displayName = "AsyncTermSelect";
 
+AsyncTermSelect.displayName = "AsyncTermSelect";
 export default AsyncTermSelect;

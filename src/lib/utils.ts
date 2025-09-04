@@ -163,21 +163,6 @@ export const formatDate = (dateString: string): string => {
   }
 };
 
-export const formatDateTime = (dateString: string): string => {
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return "Invalid date";
-  }
-};
-
 // Local storage utilities with error handling
 export const safeLocalStorage = {
   get: (key: string): string | null => {
@@ -296,4 +281,20 @@ export const logger = {
       console.warn(`[WARN] ${message}`, data || "");
     }
   },
+};
+
+// src/lib/utils.ts
+export const formatDateTime = (isoString: string) => {
+  const date = new Date(isoString);
+  const formattedDate = date.toLocaleDateString("uz-UZ", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const formattedTime = date.toLocaleTimeString("uz-UZ", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return { formattedDate, formattedTime };
 };

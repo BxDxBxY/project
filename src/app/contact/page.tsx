@@ -26,12 +26,6 @@ const theme = createTheme({
   },
 });
 
-interface ContactForm {
-  fullName: string;
-  email: string;
-  message: string;
-}
-
 export default function ContactPage() {
   const [formData, setFormData] = useState<ContactForm>({
     fullName: "",
@@ -45,20 +39,27 @@ export default function ContactPage() {
   const validateForm = (): boolean => {
     const newErrors: Partial<ContactForm> = {};
 
+    // Full name validation
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Ismingizni kiriting";
+    } else if (formData.fullName.trim().length < 3) {
+      newErrors.fullName = "Ism kamida 3 ta harfdan iborat bo‘lishi kerak";
+    } else if (!/^[A-Za-zÀ-ÖØ-öø-ÿʼ'‘’\-. ]+$/.test(formData.fullName.trim())) {
+      newErrors.fullName = "Ism faqat harflar iborat bo‘lishi kerak";
     }
 
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Pochta manzilingizni kiriting";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Iltimos haqiqiy pochta manzilini kiriting";
     }
 
+    // Message validation
     if (!formData.message.trim()) {
       newErrors.message = "Xat matnini kiriting";
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Xat matni 10ta sozdan kop bo'lishi kerak";
+      newErrors.message = "Xat matni juda kam";
     }
 
     setErrors(newErrors);

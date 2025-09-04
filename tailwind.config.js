@@ -11,11 +11,17 @@ module.exports = {
       pink: colors.fuchsia,
       darkMode: "class",
     },
+    fontSize: {
+      base: "25px",
+    },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
       serif: ["Merriweather", "serif"],
     },
     extend: {
+      fontSize: {
+        base: "25px",
+      },
       spacing: {
         128: "32rem",
         144: "36rem",

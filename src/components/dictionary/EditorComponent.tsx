@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -13,48 +13,132 @@ import Highlight from "@tiptap/extension-highlight";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { TextStyle } from "@tiptap/extension-text-style";
+import { IconButton, Tooltip } from "@mui/material";
 import {
-  Card,
-  Button,
-  ButtonGroup,
-  IconButton,
-  Tooltip,
-  Select,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Divider,
-} from "@mui/material";
-import FormatBold from "@mui/icons-material/FormatBold";
-import FormatItalic from "@mui/icons-material/FormatItalic";
-import FormatUnderlined from "@mui/icons-material/FormatUnderlined";
-import StrikethroughS from "@mui/icons-material/StrikethroughS";
-import Code from "@mui/icons-material/Code";
-import FormatQuote from "@mui/icons-material/FormatQuote";
-import FormatListBulleted from "@mui/icons-material/FormatListBulleted";
-import FormatListNumbered from "@mui/icons-material/FormatListNumbered";
-import Checklist from "@mui/icons-material/Checklist";
-import LinkIcon from "@mui/icons-material/Link";
-import ImageIcon from "@mui/icons-material/Image";
-import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
-import Undo from "@mui/icons-material/Undo";
-import Redo from "@mui/icons-material/Redo";
-import TitleIcon from "@mui/icons-material/Title";
-import FormatAlignLeft from "@mui/icons-material/FormatAlignLeft";
-import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
-import FormatAlignRight from "@mui/icons-material/FormatAlignRight";
-import FormatAlignJustify from "@mui/icons-material/FormatAlignJustify";
+  Checklist,
+  Code,
+  FormatAlignCenter,
+  FormatAlignJustify,
+  FormatAlignLeft,
+  FormatAlignRight,
+  FormatBold,
+  FormatClear,
+  FormatColorText,
+  FormatItalic,
+  FormatListBulleted,
+  FormatListNumbered,
+  FormatQuote,
+  FormatUnderlined,
+  Redo,
+  StrikethroughS,
+  Undo,
+} from "@mui/icons-material";
 import HighlightIcon from "@mui/icons-material/Highlight";
-import FormatColorText from "@mui/icons-material/FormatColorText";
-import FormatClear from "@mui/icons-material/FormatClear";
+import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
+import { ImageIcon, LinkIcon } from "lucide-react";
+
+// Plain CSS for the editor and toolbar
+const editorStyles = `
+  .editor-container {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+  }
+  .editor-content {
+    outline: none;
+    min-height: 150px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .editor-content h1 { font-size: 2em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content h2 { font-size: 1.5em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content h3 { font-size: 1.25em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content h4 { font-size: 1.1em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content h5 { font-size: 1em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content h6 { font-size: 0.9em; margin: 0.5em 0; font-weight: bold; }
+  .editor-content p { margin: 0.5em 0; }
+  .editor-content ul { list-style: disc; margin: 0.5em 0; padding-left: 2em; }
+  .editor-content ol { list-style: decimal; margin: 0.5em 0; padding-left: 2em; }
+  .editor-content li { margin: 0.25em 0; }
+  .editor-content blockquote {
+    border-left: 4px solid #d1d5db;
+    padding-left: 1em;
+    margin: 0.5em 0;
+    color: #4b5563;
+  }
+  .editor-content code {
+    background: #f3f4f6;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  .editor-content pre {
+    background: #1f2937;
+    color: #fff;
+    padding: 1em;
+    border-radius: 4px;
+    font-family: monospace;
+    overflow-x: auto;
+  }
+  .editor-content pre code { background: none; padding: 0; }
+  .editor-content img { max-width: 100%; margin: 0.5em 0; }
+  .editor-content a { color: #2563eb; text-decoration: underline; }
+  .editor-content .task-list-item { display: flex; align-items: center; }
+  .editor-content .task-list-item input[type="checkbox"] { margin-right: 0.5em; }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .toolbar select, .toolbar button, .toolbar input {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .toolbar button.active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+  }
+  .toolbar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .toolbar input[type="color"] {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+  }
+  .dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+  }
+  .dialog h2 { font-size: 1.25em; margin-bottom: 12px; }
+  .dialog input { width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #d1d5db; border-radius: 4px; }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+`;
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 type TipTapEditorProps = {
-  value?: string; // initial HTML
+  value?: string;
   onChange: (html: string) => void;
   placeholder?: string;
   editable?: boolean;
@@ -62,22 +146,15 @@ type TipTapEditorProps = {
   className?: string;
 };
 
-const ToolbarDivider = () => (
-  <Divider orientation="vertical" flexItem className="!mx-1" />
-);
-
 const EditorComponent: React.FC<TipTapEditorProps> = ({
   value = "",
   onChange,
   placeholder = "Write something…",
   editable = true,
   disabled = false,
-  className = "selection:bg-blue-400 selection:text-white !outline-none !ring-0 focused:border-b-2 focused:border-sky-200",
+  className = "",
 }) => {
-  // Move useRef to top to comply with React hook rules
-  const editorContainerRef = useRef<HTMLDivElement>(null);
-
-  // SSR-safe: render only after mount
+  // const editorContainerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -91,11 +168,9 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
   const extensions = useMemo(
     () => [
       StarterKit.configure({
-        // history: true,
-        // codeBlock: true,
+        // Remove explicit configuration to use defaults
       }),
       Placeholder.configure({ placeholder }),
-      Underline,
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -103,15 +178,16 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
         HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" },
       }),
       Image.configure({ inline: false, allowBase64: true }),
-      TextStyle,
-      Color,
-      Highlight,
-      TaskList,
       TaskItem.configure({ nested: true }),
+      TaskList,
       TextAlign.configure({
         types: ["heading", "paragraph"],
         alignments: ["left", "center", "right", "justify"],
       }),
+      Underline,
+      TextStyle,
+      Color,
+      Highlight,
     ],
     [placeholder],
   );
@@ -123,23 +199,20 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
-    immediatelyRender: false, // Fix hydration mismatches
+    shouldRerenderOnTransaction: false,
+    immediatelyRender: false,
   });
 
-  // Keep editor content in sync if parent updates value
   useEffect(() => {
     if (!editor) return;
     const current = editor.getHTML();
     if (value !== undefined && value !== current) {
-      // avoid emitting onUpdate again
       editor.commands.setContent(value, { emitUpdate: false });
     }
   }, [value, editor]);
 
-  // Reflect heading selection
   useEffect(() => {
     if (!editor) return;
-    // Update select when selection changes
     const updateHeading = () => {
       for (let lvl = 1; lvl <= 6; lvl++) {
         if (editor.isActive("heading", { level: lvl })) {
@@ -161,8 +234,6 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
   const is = (name: string, attrs?: Record<string, any>) =>
     editor?.isActive(name as any, attrs) ?? false;
 
-  const btnVariant = (active: boolean) => (active ? "contained" : "outlined");
-
   const handleContainerClick = () => {
     if (editor && !disabled) {
       editor.commands.focus();
@@ -170,11 +241,7 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
   };
 
   if (!mounted) {
-    return (
-      <Card className="p-4 rounded-2xl shadow-sm min-h-[200px] bg-gray-50">
-        Loading editor…
-      </Card>
-    );
+    return <div className="editor-container">Loading editor…</div>;
   }
 
   if (!editor) {
@@ -182,208 +249,243 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
   }
 
   return (
-    <Card className={`p-3 md:p-4 rounded-2xl shadow-sm ${className}`}>
-      {/* Toolbar */}
-      {!disabled && (
-        <div className="flex flex-wrap items-center gap-1">
-          <Select
-            size="small"
-            value={headingLevel}
-            onChange={(e) => {
-              const lvl = Number(e.target.value);
-              setHeadingLevel(lvl);
-              if (lvl === 0) editor.chain().focus().setParagraph().run();
-              else
-                editor
-                  .chain()
-                  .focus()
-                  .toggleHeading({ level: lvl as Level })
-                  .run();
-            }}
-            displayEmpty
-            renderValue={(val) => (val === 0 ? "Paragraph" : `H${val}`)}
-            className="mr-1"
-          >
-            <MenuItem value={0}>Paragraph</MenuItem>
-            {[1, 2, 3, 4, 5, 6].map((l) => (
-              <MenuItem key={l} value={l}>{`Heading ${l}`}</MenuItem>
-            ))}
-          </Select>
+    <>
+      <style>{editorStyles}</style>
+      <div className={`editor-container ${className}`}>
+        {!disabled && (
+          <div className="toolbar bg-[#85574a] p-2 rounded-lg">
+            <select
+              value={headingLevel}
+              onChange={(e) => {
+                const lvl = Number(e.target.value);
+                setHeadingLevel(lvl);
+                if (lvl === 0) editor.chain().focus().setParagraph().run();
+                else
+                  editor
+                    .chain()
+                    .focus()
+                    .toggleHeading({ level: lvl as Level })
+                    .run();
+              }}
+            >
+              <option value={0}>Paragraph</option>
+              {[1, 2, 3, 4, 5, 6].map((l) => (
+                <option key={l} value={l}>{`Heading ${l}`}</option>
+              ))}
+            </select>
 
-          <ButtonGroup size="small" aria-label="basic formatting">
             <Tooltip title="Bold">
-              <Button
+              <IconButton
+                size="small"
+                color={is("bold") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleBold().run()}
-                variant={btnVariant(is("bold"))}
-                startIcon={<FormatBold />}
-              />
+              >
+                <FormatBold fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Italic">
-              <Button
+              <IconButton
+                size="small"
+                color={is("italic") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
-                variant={btnVariant(is("italic"))}
-                startIcon={<FormatItalic />}
-              />
+              >
+                <FormatItalic fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Underline">
-              <Button
+              <IconButton
+                size="small"
+                color={is("underline") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
-                variant={btnVariant(is("underline"))}
-                startIcon={<FormatUnderlined />}
-              />
+              >
+                <FormatUnderlined fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Strikethrough">
-              <Button
+              <IconButton
+                size="small"
+                color={is("strike") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleStrike().run()}
-                variant={btnVariant(is("strike"))}
-                startIcon={<StrikethroughS />}
-              />
+              >
+                <StrikethroughS fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Inline code">
-              <Button
+              <IconButton
+                size="small"
+                color={is("code") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleCode().run()}
-                variant={btnVariant(is("code"))}
-                startIcon={<Code />}
-              />
+              >
+                <Code fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Highlight">
-              <Button
+              <IconButton
+                size="small"
+                color={is("highlight") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleHighlight().run()}
-                variant={btnVariant(is("highlight"))}
-                startIcon={<HighlightIcon />}
-              />
+              >
+                <HighlightIcon fontSize="small" />
+              </IconButton>
             </Tooltip>
-          </ButtonGroup>
 
-          <ToolbarDivider />
-
-          <ButtonGroup size="small" aria-label="lists">
             <Tooltip title="Bulleted list">
-              <Button
+              <IconButton
+                size="small"
+                color={is("bulletList") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
-                variant={btnVariant(is("bulletList"))}
-                startIcon={<FormatListBulleted />}
-              />
+              >
+                <FormatListBulleted fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Numbered list">
-              <Button
+              <IconButton
+                size="small"
+                color={is("orderedList") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                variant={btnVariant(is("orderedList"))}
-                startIcon={<FormatListNumbered />}
-              />
+              >
+                <FormatListNumbered fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Task list">
-              <Button
+              <IconButton
+                size="small"
+                color={is("taskList") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleTaskList().run()}
-                variant={btnVariant(is("taskList"))}
-                startIcon={<Checklist />}
-              />
+              >
+                <Checklist fontSize="small" />
+              </IconButton>
             </Tooltip>
-          </ButtonGroup>
 
-          <ToolbarDivider />
-
-          <ButtonGroup size="small" aria-label="blocks">
             <Tooltip title="Quote">
-              <Button
+              <IconButton
+                size="small"
+                color={is("blockquote") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                variant={btnVariant(is("blockquote"))}
-                startIcon={<FormatQuote />}
-              />
+              >
+                <FormatQuote fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Code block">
-              <Button
+              <IconButton
+                size="small"
+                color={is("codeBlock") ? "primary" : "default"}
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                variant={btnVariant(is("codeBlock"))}
-                startIcon={<TitleIcon />}
-              />
+              >
+                <Code fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Horizontal rule">
-              <Button
+              <IconButton
+                size="small"
                 onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                variant="outlined"
-                startIcon={<HorizontalRuleIcon />}
-              />
+              >
+                <HorizontalRuleIcon fontSize="small" />
+              </IconButton>
             </Tooltip>
-          </ButtonGroup>
 
-          <ToolbarDivider />
-
-          <ButtonGroup size="small" aria-label="align">
             <Tooltip title="Align left">
-              <Button
+              <IconButton
+                size="small"
+                color={
+                  editor.isActive({ textAlign: "left" }) ? "primary" : "default"
+                }
                 onClick={() =>
                   editor.chain().focus().setTextAlign("left").run()
                 }
-                variant={btnVariant(is({ textAlign: "left" } as any))}
-                startIcon={<FormatAlignLeft />}
-              />
+              >
+                <FormatAlignLeft fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Align center">
-              <Button
+              <IconButton
+                size="small"
+                color={
+                  editor.isActive({ textAlign: "center" })
+                    ? "primary"
+                    : "default"
+                }
                 onClick={() =>
                   editor.chain().focus().setTextAlign("center").run()
                 }
-                variant={btnVariant(is({ textAlign: "center" } as any))}
-                startIcon={<FormatAlignCenter />}
-              />
+              >
+                <FormatAlignCenter fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Align right">
-              <Button
+              <IconButton
+                size="small"
+                color={
+                  editor.isActive({ textAlign: "right" })
+                    ? "primary"
+                    : "default"
+                }
                 onClick={() =>
                   editor.chain().focus().setTextAlign("right").run()
                 }
-                variant={btnVariant(is({ textAlign: "right" } as any))}
-                startIcon={<FormatAlignRight />}
-              />
+              >
+                <FormatAlignRight fontSize="small" />
+              </IconButton>
             </Tooltip>
+
             <Tooltip title="Justify">
-              <Button
+              <IconButton
+                size="small"
+                color={
+                  editor.isActive({ textAlign: "justify" })
+                    ? "primary"
+                    : "default"
+                }
                 onClick={() =>
                   editor.chain().focus().setTextAlign("justify").run()
                 }
-                variant={btnVariant(is({ textAlign: "justify" } as any))}
-                startIcon={<FormatAlignJustify />}
-              />
+              >
+                <FormatAlignJustify fontSize="small" />
+              </IconButton>
             </Tooltip>
-          </ButtonGroup>
 
-          <ToolbarDivider />
-
-          <ButtonGroup size="small" aria-label="links & media">
             <Tooltip title="Add/Edit link">
-              <Button
+              <IconButton
+                size="small"
+                color={is("link") ? "primary" : "default"}
                 onClick={() => {
                   const prev = editor.getAttributes("link")?.href ?? "";
                   setLinkHref(prev);
                   setLinkOpen(true);
                 }}
-                variant={btnVariant(is("link"))}
-                startIcon={<LinkIcon />}
-              />
-            </Tooltip>
-            <Tooltip title="Remove link">
-              <Button
-                onClick={() => editor.chain().focus().unsetLink().run()}
-                variant="outlined"
               >
-                Unlink
-              </Button>
+                <LinkIcon fontSize="small" />
+              </IconButton>
             </Tooltip>
-            <Tooltip title="Insert image (URL)">
-              <Button
-                onClick={() => setImageOpen(true)}
-                variant="outlined"
-                startIcon={<ImageIcon />}
-              />
+
+            <Tooltip title="Remove link">
+              <IconButton
+                size="small"
+                onClick={() => editor.chain().focus().unsetLink().run()}
+              >
+                <LinkIcon fontSize="small" className="line-through" />
+              </IconButton>
             </Tooltip>
-          </ButtonGroup>
 
-          <ToolbarDivider />
+            <Tooltip title="Insert image">
+              <IconButton size="small" onClick={() => setImageOpen(true)}>
+                <ImageIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
 
-          <div className="flex items-center gap-2">
             <Tooltip title="Text color">
-              <label className="flex items-center gap-1 px-2 py-1 border rounded-md">
+              <label className="flex items-center gap-1 cursor-pointer">
                 <FormatColorText fontSize="small" />
                 <input
                   type="color"
@@ -398,22 +500,16 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
             </Tooltip>
 
             <Tooltip title="Clear formatting">
-              <Button
+              <IconButton
                 size="small"
                 onClick={() =>
                   editor.chain().focus().unsetAllMarks().clearNodes().run()
                 }
-                variant="outlined"
-                startIcon={<FormatClear />}
               >
-                Clear
-              </Button>
+                <FormatClear fontSize="small" />
+              </IconButton>
             </Tooltip>
-          </div>
 
-          <ToolbarDivider />
-
-          <ButtonGroup size="small" aria-label="history">
             <Tooltip title="Undo">
               <span>
                 <IconButton
@@ -425,6 +521,7 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
                 </IconButton>
               </span>
             </Tooltip>
+
             <Tooltip title="Redo">
               <span>
                 <IconButton
@@ -436,111 +533,78 @@ const EditorComponent: React.FC<TipTapEditorProps> = ({
                 </IconButton>
               </span>
             </Tooltip>
-          </ButtonGroup>
+          </div>
+        )}
+
+        <div className="editor-content" onClick={handleContainerClick}>
+          <EditorContent editor={editor} className="caret-amber-800 " />
         </div>
-      )}
 
-      {/* Content */}
-      <div
-        ref={editorContainerRef}
-        className="mt-3 border rounded-xl p-3 min-h-[220px]"
-        onClick={handleContainerClick}
-      >
-        <EditorContent
-          content={value}
-          editor={editor}
-          className={`prose max-w-none outline-none px-2 ${className || ""}`}
-        />
-      </div>
-
-      {/* Link dialog */}
-      {!disabled && (
-        <Dialog
-          open={linkOpen}
-          onClose={() => setLinkOpen(false)}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>Add / Edit Link</DialogTitle>
-          <DialogContent>
-            <TextField
+        {linkOpen && (
+          <div className="dialog">
+            <h2>Add / Edit Link</h2>
+            <input
               autoFocus
-              margin="dense"
-              label="URL"
               type="url"
-              fullWidth
               value={linkHref}
               onChange={(e) => setLinkHref(e.target.value)}
               placeholder="https://example.com"
             />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setLinkOpen(false)}>Cancel</Button>
-            <Button
-              onClick={() => {
-                if (linkHref.trim()) {
-                  editor
-                    .chain()
-                    .focus()
-                    .extendMarkRange("link")
-                    .setLink({ href: linkHref.trim() })
-                    .run();
-                } else {
-                  editor.chain().focus().unsetLink().run();
-                }
-                setLinkOpen(false);
-              }}
-              variant="contained"
-            >
-              Apply
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
+            <div className="dialog-actions">
+              <button onClick={() => setLinkOpen(false)}>Cancel</button>
+              <button
+                onClick={() => {
+                  if (linkHref.trim()) {
+                    editor
+                      .chain()
+                      .focus()
+                      .extendMarkRange("link")
+                      .setLink({ href: linkHref.trim() })
+                      .run();
+                  } else {
+                    editor.chain().focus().unsetLink().run();
+                  }
+                  setLinkOpen(false);
+                }}
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        )}
 
-      {/* Image dialog */}
-      {!disabled && (
-        <Dialog
-          open={imageOpen}
-          onClose={() => setImageOpen(false)}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>Insert Image</DialogTitle>
-          <DialogContent>
-            <TextField
+        {imageOpen && (
+          <div className="dialog">
+            <h2>Insert Image</h2>
+            <input
               autoFocus
-              margin="dense"
-              label="Image URL"
               type="url"
-              fullWidth
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="https://…/image.png"
             />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setImageOpen(false)}>Cancel</Button>
-            <Button
-              onClick={() => {
-                if (imageUrl.trim()) {
-                  editor
-                    .chain()
-                    .focus()
-                    .setImage({ src: imageUrl.trim() })
-                    .run();
-                  setImageUrl("");
-                }
-                setImageOpen(false);
-              }}
-              variant="contained"
-            >
-              Insert
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
-    </Card>
+            <div className="dialog-actions">
+              <button onClick={() => setImageOpen(false)}>Cancel</button>
+              <button
+                onClick={() => {
+                  if (imageUrl.trim()) {
+                    editor
+                      .chain()
+                      .focus()
+                      .setImage({ src: imageUrl.trim() })
+                      .run();
+                    setImageUrl("");
+                  }
+                  setImageOpen(false);
+                }}
+              >
+                Insert
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

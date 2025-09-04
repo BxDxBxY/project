@@ -132,8 +132,13 @@ export default function MiniDrawer({
           <div className="w-8 h-8 rounded-full bg-[#001c3b] flex items-center justify-center text-white font-bold">
             A
           </div>
-          <Button variant="text" size="medium" onClick={handleLogout}>
-            Logout
+          <Button
+            variant="text"
+            className="!font-bold !text-[#001c3b]"
+            size="medium"
+            onClick={handleLogout}
+          >
+            Chiqish
           </Button>
         </div>
         {!isMobile && (

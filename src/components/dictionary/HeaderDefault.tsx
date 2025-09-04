@@ -57,7 +57,7 @@ export const HeaderDefault = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]" />
         <div className="absolute inset-0 bg-black/10" />
         <Image
-          src="/mid-uzb2.jpg"
+          src="/mid-uzb2-min.jpg"
           alt="Diplomatik fon"
           fill
           className="object-cover object-[50%_30%] opacity-20"
@@ -72,7 +72,7 @@ export const HeaderDefault = () => {
         <div className="flex items-center">
           <Link href="/">
             <Image
-              src="/logo.png"
+              src="/logo-min.png"
               alt="Diplomatik Akademiya Logotipi"
               width={60}
               height={60}

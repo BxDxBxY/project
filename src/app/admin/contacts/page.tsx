@@ -128,7 +128,7 @@ export default function AdminContactsPage() {
         variant="h4"
         className="!mb-6 font-bold text-[#001c3b] text-center"
       >
-        Submitted Contact Messages
+        Qabul qilingan xabarlar
       </Typography>
 
       <Paper className="!rounded-xl !shadow-lg !overflow-hidden">
@@ -227,16 +227,16 @@ export default function AdminContactsPage() {
                         ID
                       </TableCell>
                       <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                        Full Name
+                        Ism Familiya
                       </TableCell>
                       <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                        Email
+                        Elektron manzil
                       </TableCell>
                       <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                        Message
+                        Xat matni
                       </TableCell>
                       <TableCell sx={{ color: "white", fontWeight: "bold" }}>
-                        Created At
+                        Yuborilgan vaqt
                       </TableCell>
                       <TableCell
                         sx={{
@@ -245,7 +245,7 @@ export default function AdminContactsPage() {
                           textAlign: "center",
                         }}
                       >
-                        Actions
+                        Amallar
                       </TableCell>
                     </TableRow>
                   </TableHead>

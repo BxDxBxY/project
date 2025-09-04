@@ -75,6 +75,8 @@ export interface Source {
 export interface TermSummary {
   id: number;
   title: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // Full term details (when opening a specific term)
@@ -96,7 +98,7 @@ export interface TermDetailEdit {
   created_at?: string;
   updated_at?: string;
   categories?: number[];
-  related_terms?: number[];
+  related_terms?: TermSummary[];
   related_countries?: number[];
   sources?: number[];
 }

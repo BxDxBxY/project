@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Diplomatic Dictionary</string>
+    <string name="title_activity_main">Diplomatic Dictionary</string>
+    <string name="package_name">com.diplomatic.dictionary</string>
+    <string name="custom_url_scheme">com.diplomatic.dictionary</string>
+</resources>
