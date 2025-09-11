@@ -97,7 +97,7 @@ export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Checking admin access...</p>
+        <p className="text-blue-900">Checking admin access...</p>
       </div>
     );
   }

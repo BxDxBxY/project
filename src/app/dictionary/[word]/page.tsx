@@ -222,7 +222,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">
                 Manosi
               </h2>
-              <div className="viewer-content" contentEditable={false}>
+              <div className="viewer-content text-gray-900" contentEditable={false}>
                 <TiptapViewer
                   content={term.definition}
                   className="!border-none !shadow-none !drop-shadow-none"
