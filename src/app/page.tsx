@@ -8,20 +8,20 @@ export default function HomePage() {
       <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
         <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full max-w-6xl">
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
-            Diplomatik Terminlar Izohli {"Lug‘ati"}
+            Diplomatik Izohli {"Lug‘at"}
           </h1>
           <hr className="w-full  border-gray-400 opacity-20" />
 
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            {"So'nggi"} paytlarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
-            jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro
-            huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar
-            qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik
-            akademiyada shu sohani imkon qadar qamrab olgan mukammal {"lug'at"}{" "}
-            yaratildi, uning kitob va raqamli (elektron) shaklini tayyorlanishi
-            bu sohadagi kamchilikni bartaraf etadi.
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line">
+            Keyingi yillarda xalqaro munosabatlar masalalari, {"ya'ni"} jahon
+            siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq
+            sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga{" "}
+            {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
+            sohani imkon qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning
+            kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi
+            kamchilikni bartaraf etadi.
           </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify ">
             Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
             {"lug'atning"} {"o'zbek"} tilida tayyorlanishi va nashr etilishi
             muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
@@ -56,52 +56,130 @@ export default function HomePage() {
       </section>
 
       {/* <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
-      <p className="text-3xl md:text-5xl font-bold text-gray-700 uppercase leading-snug">
-        Tashqi ishlar vazirligi <br />
-        Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi <br />
-        Diplomatik akademiyaning Diplomatik {"Lug'ati"}
-      </p>
-  
-      <div className="flex justify-center">
-        <Image
-          src="/diplomatic-academy.jpg"
-          alt="Diplomatik Akademiya"
-          width={600}
-          height={400}
-          className="object-cover rounded-lg shadow-lg"
-        />
-      </div>
-    </section> */}
+  <p className="text-3xl md:text-5xl font-bold text-gray-700 uppercase leading-snug">
+    Tashqi ishlar vazirligi <br />
+    Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi <br />
+    Diplomatik akademiyaning Diplomatik {"Lug'ati"}
+  </p>
+
+  <div className="flex justify-center">
+    <Image
+      src="/diplomatic-academy.jpg"
+      alt="Diplomatik Akademiya"
+      width={600}
+      height={400}
+      className="object-cover rounded-lg shadow-lg"
+    />
+  </div>
+</section> */}
 
       {/* <hr className="border-gray-200" /> */}
 
       {/* Partners Section */}
       {/* <section className="w-full py-16 px-4">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-        Bizning Hamkorlarimiz
-      </h2>
-  
-      <div className="flex gap-8 w-full items-center justify-start md:justify-center overflow-x-auto py-4 scrollbar-hide">
-        {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="flex-shrink-0 p-4 h-[160px] w-[200px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer hover:shadow-lg transition"
-            onClick={() => window.open("https://partner-link.com", "_blank")}
-          >
-            <Image
-              src={`/partner-${i + 1}.png`}
-              alt={`Hamkor ${i + 1}`}
-              width={150}
-              height={75}
-              className="object-contain"
-            />
-          </div>
-        ))}
+  <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+    Bizning Hamkorlarimiz
+  </h2>
+
+  <div className="flex gap-8 w-full items-center justify-start md:justify-center overflow-x-auto py-4 scrollbar-hide">
+    {[...Array(4)].map((_, i) => (
+      <div
+        key={i}
+        className="flex-shrink-0 p-4 h-[160px] w-[200px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer hover:shadow-lg transition"
+        onClick={() => window.open("https://partner-link.com", "_blank")}
+      >
+        <Image
+          src={`/partner-${i + 1}.png`}
+          alt={`Hamkor ${i + 1}`}
+          width={150}
+          height={75}
+          className="object-contain"
+        />
       </div>
-    </section> */}
+    ))}
+  </div>
+</section> */}
     </div>
   );
 }
+//  <div className="pt-20 sm:pt-24 md:pt-28 transition-all duration-300">
+//   {/* Hero Section */}
+//   <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
+//     <div className="w-full max-w-6xl">
+//       {/* Title centered across the whole website width */}
+//       <div className="text-center space-y-6 sm:space-y-7">
+//         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
+//           Diplomatik Terminlar Izohli {"Lug‘ati"}
+//         </h1>
+//         <hr className="w-full border-gray-400 opacity-20" />
+//       </div>
+
+//       {/* Content: mobile = book then text, desktop = text left + book right */}
+//       <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
+//         {/* Book (mobile first) */}
+//         <div className="md:col-span-4 md:order-2 flex justify-center">
+//           <div className="w-[80%] sm:w-[70%] md:w-full max-w-[360px]">
+//             <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
+//               <Image
+//                 src="/book.png" // put book image in /public/book.png
+//                 alt="Diplomatik Lug‘at kitobi"
+//                 fill
+//                 priority
+//                 className="object-contain"
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Text */}
+//         <div className="md:col-span-8 md:order-1 space-y-4">
+//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+//             {"Keyingi"} yillarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
+//             jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar,
+//             xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb
+//             vazifalar qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi
+//             Diplomatik akademiyada shu sohani imkon qadar qamrab olgan
+//             mukammal {"lug'at"} yaratildi, uning kitob va raqamli (elektron)
+//             shaklini tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.
+//           </p>
+
+//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+//             Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
+//             {"lug'atning"} {"o'zbek"} tilida tayyorlanishi va nashr etilishi
+//             muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
+//             {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va
+//             jiddiy tadqiqotlar {"ko'payishiga"} asos {"bo'ladi."}
+//           </p>
+
+//           <hr className="w-full border-gray-400 opacity-20" />
+
+//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+//             {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
+//             madaniyati yuqorilashiga, siyosiy masalalar va diplomatik
+//             jarayonni {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
+//             {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."}{" "}
+//             {"Lug'atdan"} {"o'rin"} olgan termin, ibora, tushuncha va{" "}
+//             {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
+//             etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi
+//             turli adabiyot, manbalardan tarjima qilib kiritildi.
+//           </p>
+
+//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+//             Telegram kanalimizga obuna bo‘ling:{" "}
+//             <a
+//               href="https://t.me/diplugat"
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               className="text-blue-600 hover:underline font-medium"
+//             >
+//               https://t.me/diplugat
+//             </a>
+//           </p>
+//         </div>
+//       </div>
+//     </div>
+//   </section>
+// </div>
 
 // <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center p-8">
 //   {/* Logo & Title */}

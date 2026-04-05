@@ -72,11 +72,11 @@ export const HeaderDefault = () => {
         <div className="flex items-center">
           <Link href="/">
             <Image
-              src="/logo-min.png"
+              src="/logo2.png"
               alt="Diplomatik Akademiya Logotipi"
               width={60}
               height={60}
-              className="rounded-full border-2 border-white shadow-md sm:w-16 sm:h-16 md:w-20 md:h-20"
+              className="rounded-full border-2 sm:w-16 sm:h-16 md:w-20 md:h-20"
             />
           </Link>
           <div className="ml-3 sm:ml-4">

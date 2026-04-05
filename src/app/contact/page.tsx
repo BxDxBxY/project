@@ -109,7 +109,7 @@ export default function ContactPage() {
             {/* Header Section */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] mb-3 sm:mb-4 tracking-tight">
-                Diplomatik Akademiya
+                Diplomatik akademiya
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
                 Diplomatik {"ta'lim"} va xalqaro munosabatlarning mukammalligi
@@ -145,9 +145,12 @@ export default function ContactPage() {
                         <h3 className="font-medium text-sm sm:text-base mb-1">
                           Telefon
                         </h3>
-                        <p className="text-gray-300 text-xs sm:text-sm">
+                        <a
+                          href="tel:+998712670706"
+                          className="text-gray-300 text-xs sm:text-sm"
+                        >
                           (+998 71) 267-07-06 (232)
-                        </p>
+                        </a>
                       </div>
                     </div>
 

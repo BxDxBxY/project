@@ -219,9 +219,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
 
           <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
             <div className="mb-6 sm:mb-8">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">
+              {/* <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">
                 Manosi
-              </h2>
+              </h2> */}
               <div
                 className="viewer-content text-gray-900"
                 contentEditable={false}

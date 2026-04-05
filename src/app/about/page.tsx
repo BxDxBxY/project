@@ -9,9 +9,7 @@ export default function AboutPage() {
         {/* Header Section */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight">
-            Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya
-            universiteti huzuridagi diplomatik akademiyaning diplomatik{" "}
-            {"lug'ati"}
+            Diplomatik izohli {"lug'at"} haqida
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
             {"Lug'at"} hozirgi {"o'zbek"} tilining xalqaro munosabatlarga oid
