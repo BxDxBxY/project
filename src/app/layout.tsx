@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Head from "next/head"; // Import Head component from next/head
+import Head from "next/head";
+import Script from "next/script";
 import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 import FooterComponent from "@/components/dictionary/FooterComponent";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,6 @@ export const metadata: Metadata = {
     "international relations",
   ],
   authors: [{ name: "Diplomatic Academy" }],
-  // Do not include viewport here anymore
 };
 
 interface RootLayoutProps {
@@ -29,27 +30,44 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col min-h-screen bg-gray-50">
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-          </Head>
+        <LanguageProvider>
+          <div className="flex flex-col min-h-screen bg-gray-50">
+            <Head>
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+              />
+            </Head>
 
-          {/* Fixed header */}
-          <HeaderDefault />
+            {/* Fixed header */}
+            <HeaderDefault />
 
-          {/* Main content with padding for fixed header */}
-          <main
-            className={`flex-1 bg-gradient-to-b from-gray-50  to-gray-100 `}
-          >
-            {children}
-          </main>
+            {/* Main content with padding for fixed header */}
+            <main
+              className={`flex-1 bg-gradient-to-b from-gray-50  to-gray-100 `}
+            >
+              {children}
+            </main>
 
-          {/* Sticky footer */}
-          <FooterComponent />
-        </div>
+            {/* Sticky footer */}
+            <FooterComponent />
+          </div>
+        </LanguageProvider>
+
+        {/* Google Analytics Tracking */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZQM6WJ69BC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-ZQM6WJ69BC');
+          `}
+        </Script>
       </body>
     </html>
   );

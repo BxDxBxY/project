@@ -1,79 +1,138 @@
-// useDictionary.ts
 import { useState, useEffect, useCallback } from "react";
-import { DictionaryState } from "@/types";
+import { DictionaryState, TermSummary } from "@/types";
 import { logger } from "@/lib/utils";
 import { searchTerms } from "@/lib/termsApi";
 
+let globalState: DictionaryState = {
+  terms: [],
+  categories: [],
+  loading: true,
+  error: null,
+  search: "",
+  selectedCategory: "",
+  language: "uz",
+};
+
+// Cached raw DB dump (fetched once, filtered client side forever)
+let fullTermsCache: TermSummary[] | null = null;
+
+let hasInitialized = false;
+const listeners = new Set<
+  React.Dispatch<React.SetStateAction<DictionaryState>>
+>();
+
+const setGlobalState = (
+  updater: (prev: DictionaryState) => DictionaryState,
+) => {
+  globalState = updater(globalState);
+  listeners.forEach((listener) => listener(globalState));
+};
+
 interface UseDictionaryReturn extends DictionaryState {
-  setSearch: (v: string) => void; // just updates state
-  triggerSearch: (q?: string) => Promise<void>; // runs API with provided or current query
+  setSearch: (v: string) => void;
+  triggerSearch: (q?: string) => Promise<void>;
   refreshData: (q?: string) => Promise<void>;
   totalTerms: number;
 }
 
-export const useDictionary = (): UseDictionaryReturn => {
-  const [state, setState] = useState<DictionaryState>({
-    terms: [],
-    categories: [],
-    loading: true,
-    error: null,
-    search: "",
-    selectedCategory: "",
-    language: "en",
-  });
+export const useDictionary = (
+  initialTerms?: TermSummary[],
+): UseDictionaryReturn => {
+  const [state, setState] = useState<DictionaryState>(globalState);
 
-  const loadData = useCallback(async (q: string = "") => {
-    setState((prev) => ({ ...prev, loading: true, error: null }));
-    try {
-      logger.info("Loading dictionary data...", { q });
-      const termsData = await searchTerms(q);
-      setState((prev) => ({
+  useEffect(() => {
+    listeners.add(setState);
+    return () => {
+      listeners.delete(setState);
+    };
+  }, []);
+
+  const loadData = useCallback(async () => {
+    if (fullTermsCache !== null) {
+      // Already cached!
+      return;
+    }
+
+    if (initialTerms && initialTerms.length > 0) {
+      logger.info("Hydrating dictionary cache from SSR initialTerms...");
+      fullTermsCache = initialTerms;
+      setGlobalState((prev) => ({
         ...prev,
-        terms: termsData,
+        terms: initialTerms,
         loading: false,
         error: null,
       }));
-      logger.info(`Loaded ${termsData.length} terms`);
+      return;
+    }
+
+    setGlobalState((prev) => ({ ...prev, loading: true, error: null }));
+    try {
+      logger.info("Loading FULL dictionary data on first mount...");
+      // Unpaginated dump
+      const termsData = await searchTerms("");
+      fullTermsCache = termsData;
+      setGlobalState((prev) => ({
+        ...prev,
+        terms: termsData, // Initially show all
+        loading: false,
+        error: null,
+      }));
+      logger.info(`Loaded ${termsData.length} terms into memory cache!`);
     } catch (error) {
       const errorMessage =
         error instanceof Error
           ? error.message
           : "Failed to load dictionary data";
       logger.error("Error loading dictionary data:", error);
-      setState((prev) => ({
+      setGlobalState((prev) => ({
         ...prev,
         loading: false,
         error: errorMessage,
         terms: [],
       }));
     }
-  }, []);
+  }, [initialTerms]);
 
-  const refreshData = useCallback(
-    (q?: string) => loadData(q && state.search),
-    [loadData, state.search],
-  );
-
-  const setSearch = useCallback((v: string) => {
-    setState((prev) => ({ ...prev, search: v }));
-  }, []);
-
-  // IMPORTANT: accept query directly so we don't read stale state
   const triggerSearch = useCallback(
     async (q?: string) => {
-      const query = (q ?? state.search).trim();
-      // also keep state.search in sync with what we actually search for
-      setState((prev) => ({ ...prev, search: query }));
-      await loadData(query);
+      const query = (q ?? globalState.search).trim();
+      setGlobalState((prev) => ({ ...prev, search: query }));
+
+      if (!fullTermsCache) await loadData();
+
+      if (fullTermsCache) {
+        if (!query) {
+          setGlobalState((prev) => ({ ...prev, terms: fullTermsCache! }));
+        } else {
+          const lowerQ = query.toLowerCase();
+          const filtered = fullTermsCache.filter((t) =>
+            t.title.toLowerCase().includes(lowerQ),
+          );
+          setGlobalState((prev) => ({ ...prev, terms: filtered }));
+        }
+      }
     },
-    [loadData, state.search],
+    [loadData],
   );
+
+  const refreshData = useCallback(async () => {
+    // Hard refresh bypassing cache
+    fullTermsCache = null;
+    await loadData();
+    triggerSearch(globalState.search);
+  }, [loadData, triggerSearch]);
+
+  const setSearch = useCallback((v: string) => {
+    setGlobalState((prev) => ({ ...prev, search: v }));
+  }, []);
 
   const totalTerms = state.terms.length;
 
-  // Initial load (empty query or whatever you want)
   useEffect(() => {
-    loadData("");
+    if (!hasInitialized) {
+      hasInitialized = true;
+      loadData();
+    }
   }, [loadData]);
 
   return { ...state, setSearch, triggerSearch, refreshData, totalTerms };

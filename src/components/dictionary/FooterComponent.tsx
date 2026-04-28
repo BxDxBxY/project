@@ -4,9 +4,13 @@ import Link from "next/link";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import XIcon from "@mui/icons-material/X";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
 
 export default function FooterComponent() {
   const pathname = usePathname();
+  const { language } = useLanguage();
+  const t = translations[language].footer;
 
   if (pathname.startsWith("/admin")) return null;
 
@@ -19,19 +23,19 @@ export default function FooterComponent() {
             href="/terms"
             className="hover:underline hover:text-blue-400 transition-colors"
           >
-            Shartlar va Qoidalar
+            {t.terms}
           </Link>
           <Link
             href="/privacy"
             className="hover:underline hover:text-blue-400 transition-colors"
           >
-            Maxfiylik siyosati
+            {t.privacy}
           </Link>
           <Link
             href="/contact"
             className="hover:underline hover:text-blue-400 transition-colors"
           >
-            Kontakt
+            {t.contact}
           </Link>
         </nav>
 
@@ -57,7 +61,7 @@ export default function FooterComponent() {
       </div>
 
       <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-300">
-        &copy; «Diplomatic Academy» — Barcha huquqlar himoyalangan
+        &copy; {t.rights}
       </div>
     </footer>
   );

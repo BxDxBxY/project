@@ -1,48 +1,47 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
+import {
+  Settings,
+  Layout,
+  LayoutGrid,
+  LayoutTemplate,
+  Layers,
+} from "lucide-react";
 
 export default function HomePage() {
-  return (
-    <div className="pt-20 sm:pt-24 md:pt-28 transition-all duration-300">
-      {/* Hero Section */}
+  const { language } = useLanguage();
+  const t = translations[language].home;
+
+  const [variant, setVariant] = useState<number>(1);
+  const [showSwitcher, setShowSwitcher] = useState(false);
+
+  // Variant 1: Current Approved (Minimal)
+  const renderVariant1 = () => (
+    <div className="pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
       <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
         <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full max-w-6xl">
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
-            Diplomatik Izohli {"Lug‘at"}
+            {t.heroTitle}
           </h1>
-          <hr className="w-full  border-gray-400 opacity-20" />
+          <hr className="w-full border-gray-400 opacity-20" />
 
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line">
-            Keyingi yillarda xalqaro munosabatlar masalalari, {"ya'ni"} jahon
-            siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq
-            sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga{" "}
-            {"o'tdi."} Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu
-            sohani imkon qadar qamrab olgan mukammal {"lug'at"} yaratildi, uning
-            kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi
-            kamchilikni bartaraf etadi.
+            {t.heroPara1}
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify ">
-            Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
-            {"lug'atning"} {"o'zbek"} tilida tayyorlanishi va nashr etilishi
-            muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
-            {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va
-            jiddiy tadqiqotlar
-            {"ko'payishiga"} asos {"bo'ladi."}
+            {t.heroPara2}
           </p>
           <hr className="w-full border-gray-400 opacity-20" />
 
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
-            madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni{" "}
-            {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
-            {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."}{" "}
-            {"Lug'atdan"} {"o'rin"} olgan termin, ibora, tushuncha va{" "}
-            {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
-            etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi
-            turli adabiyot, manbalardan tarjima qilib kiritildi.
+            {t.heroPara3}
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            Telegram kanalimizga obuna bo‘ling:{" "}
+            {t.subscribe}{" "}
             <a
               href="https://t.me/diplugat"
               target="_blank"
@@ -54,384 +53,313 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+    </div>
+  );
 
-      {/* <section className="max-w-[1920px] mx-auto min-h-[80vh] flex flex-col items-center justify-center px-4 text-center gap-8">
-  <p className="text-3xl md:text-5xl font-bold text-gray-700 uppercase leading-snug">
-    Tashqi ishlar vazirligi <br />
-    Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi <br />
-    Diplomatik akademiyaning Diplomatik {"Lug'ati"}
-  </p>
+  // Variant 2: Book Layout
+  const renderVariant2 = () => (
+    <div className="pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
+      <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
+        <div className="w-full max-w-6xl">
+          <div className="text-center space-y-6 sm:space-y-7">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
+              {t.heroTitle}
+            </h1>
+            <hr className="w-full border-gray-400 opacity-20" />
+          </div>
 
-  <div className="flex justify-center">
-    <Image
-      src="/diplomatic-academy.jpg"
-      alt="Diplomatik Akademiya"
-      width={600}
-      height={400}
-      className="object-cover rounded-lg shadow-lg"
-    />
-  </div>
-</section> */}
+          <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
+            <div className="md:col-span-4 md:order-2 flex justify-center">
+              <div className="w-[80%] sm:w-[70%] md:w-full max-w-[360px]">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
+                  <Image
+                    src="/book.png"
+                    alt="Diplomatik Lug‘at kitobi"
+                    fill
+                    priority
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
 
-      {/* <hr className="border-gray-200" /> */}
+            <div className="md:col-span-8 md:order-1 space-y-4">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+                {t.heroPara1}
+              </p>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+                {t.heroPara2}
+              </p>
+              <hr className="w-full border-gray-400 opacity-20" />
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+                {t.heroPara3}
+              </p>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+                {t.subscribe}{" "}
+                <a
+                  href="https://t.me/diplugat"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline font-medium"
+                >
+                  https://t.me/diplugat
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 
-      {/* Partners Section */}
-      {/* <section className="w-full py-16 px-4">
-  <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-    Bizning Hamkorlarimiz
-  </h2>
+  // Variant 3: Modern Hero with Stats
+  const renderVariant3 = () => (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-white pt-32 sm:pt-36">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-[#001c3b] tracking-tight mb-6 uppercase">
+          {t.heroTitle}
+        </h1>
+        <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-600">
+          Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya universiteti
+          huzuridagi Diplomatik akademiya.
+        </p>
 
-  <div className="flex gap-8 w-full items-center justify-start md:justify-center overflow-x-auto py-4 scrollbar-hide">
-    {[...Array(4)].map((_, i) => (
-      <div
-        key={i}
-        className="flex-shrink-0 p-4 h-[160px] w-[200px] bg-white rounded-lg shadow flex items-center justify-center cursor-pointer hover:shadow-lg transition"
-        onClick={() => window.open("https://partner-link.com", "_blank")}
-      >
-        <Image
-          src={`/partner-${i + 1}.png`}
-          alt={`Hamkor ${i + 1}`}
-          width={150}
-          height={75}
-          className="object-contain"
-        />
+        <div className="mt-10 flex justify-center gap-4">
+          <Link
+            href="/dictionary"
+            className="px-8 py-3 bg-[#001c3b] text-white rounded-lg font-semibold hover:bg-blue-900 transition shadow-lg"
+          >
+            Lug&apos;atga o&apos;tish
+          </Link>
+        </div>
+
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h3 className="text-4xl font-bold text-[#c9a96e]">500+</h3>
+            <p className="mt-2 text-gray-600 font-medium">
+              Diplomatik Terminlar
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h3 className="text-4xl font-bold text-[#1EB53A]">1-chi</h3>
+            <p className="mt-2 text-gray-600 font-medium">Markaziy Osiyoda</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h3 className="text-4xl font-bold text-[#0099B5]">Milliy</h3>
+            <p className="mt-2 text-gray-600 font-medium">
+              O&apos;zbek Lug&apos;ati
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-16 text-left max-w-4xl mx-auto space-y-6 text-gray-600 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
+          <p className="text-base sm:text-lg leading-relaxed">{t.heroPara1}</p>
+          <p className="text-base sm:text-lg leading-relaxed">{t.heroPara2}</p>
+          <p className="text-base sm:text-lg leading-relaxed">{t.heroPara3}</p>
+        </div>
+      </section>
+    </div>
+  );
+
+  // Variant 4: Feature Grid & Partners Focus
+  const renderVariant4 = () => (
+    <div className="min-h-screen bg-gray-50 pt-32">
+      <section className="bg-[#001c3b] text-white py-20 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
+          <div className="text-center md:text-left flex-1">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#c9a96e] uppercase">
+              {t.heroTitle}
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+              Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan
+              lug&apos;atning o&apos;zbek tilida tayyorlanishi.
+            </p>
+            <Link
+              href="/dictionary"
+              className="inline-block px-8 py-4 bg-[#c9a96e] text-[#001c3b] font-bold rounded-lg hover:bg-yellow-600 transition"
+            >
+              Lug&apos;atdan izlash
+            </Link>
+          </div>
+          <div className="flex-1 flex justify-center md:justify-end">
+            <div className="w-[80%] max-w-[300px] relative aspect-[3/4] rounded-lg overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500">
+              <Image
+                src="/book.png"
+                alt="Diplomatik Lug‘at kitobi"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pt-16">
+        <div className="bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify indent-8">
+            {t.heroPara1}
+          </p>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify indent-8">
+            {t.heroPara2}
+          </p>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify indent-8">
+            {t.heroPara3}
+          </p>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
+          <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <svg
+              className="w-8 h-8 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            Tezkor qidiruv
+          </h3>
+          <p className="text-gray-600">
+            Diplomatik atamalarni tez topish uchun qulay qidiruv tizimi.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
+          <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-6">
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+              />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            Ko&apos;p tilli qo&apos;llab-quvvatlash
+          </h3>
+          <p className="text-gray-600">
+            Ingliz, o&apos;zbek va rus tillarida foydalanish imkoniyati.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
+          <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-6">
+            <svg
+              className="w-8 h-8 text-purple-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            Batafsil izohlar
+          </h3>
+          <p className="text-gray-600">
+            Har bir diplomatik atama uchun keng qamrovli tushuntirishlar.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+
+  return (
+    <div className="relative min-h-screen">
+      {variant === 1 && renderVariant1()}
+      {variant === 2 && renderVariant2()}
+      {variant === 3 && renderVariant3()}
+      {variant === 4 && renderVariant4()}
+
+      {/* Floating Layout Switcher */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+        {showSwitcher && (
+          <div className="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 transition-all animate-in slide-in-from-bottom-5">
+            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 px-2">
+              Select Layout
+            </div>
+
+            <button
+              onClick={() => setVariant(1)}
+              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                variant === 1
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50 text-gray-700"
+              }`}
+            >
+              <Layout className="w-4 h-4" />
+              1. Current Minimal
+            </button>
+
+            <button
+              onClick={() => setVariant(2)}
+              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                variant === 2
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50 text-gray-700"
+              }`}
+            >
+              <LayoutTemplate className="w-4 h-4" />
+              2. Book Layout
+            </button>
+
+            <button
+              onClick={() => setVariant(3)}
+              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                variant === 3
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50 text-gray-700"
+              }`}
+            >
+              <LayoutGrid className="w-4 h-4" />
+              3. Modern Hero
+            </button>
+
+            <button
+              onClick={() => setVariant(4)}
+              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                variant === 4
+                  ? "bg-blue-50 text-blue-700"
+                  : "hover:bg-gray-50 text-gray-700"
+              }`}
+            >
+              <Layers className="w-4 h-4" />
+              4. Feature Grid
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={() => setShowSwitcher(!showSwitcher)}
+          className="bg-[#001c3b] text-white p-4 rounded-full shadow-xl hover:bg-blue-900 transition-transform hover:scale-105"
+          aria-label="Toggle Layout Switcher"
+        >
+          <Settings
+            className={`w-6 h-6 transition-transform ${showSwitcher ? "rotate-180" : ""}`}
+          />
+        </button>
       </div>
-    ))}
-  </div>
-</section> */}
     </div>
   );
 }
-//  <div className="pt-20 sm:pt-24 md:pt-28 transition-all duration-300">
-//   {/* Hero Section */}
-//   <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
-//     <div className="w-full max-w-6xl">
-//       {/* Title centered across the whole website width */}
-//       <div className="text-center space-y-6 sm:space-y-7">
-//         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
-//           Diplomatik Terminlar Izohli {"Lug‘ati"}
-//         </h1>
-//         <hr className="w-full border-gray-400 opacity-20" />
-//       </div>
-
-//       {/* Content: mobile = book then text, desktop = text left + book right */}
-//       <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
-//         {/* Book (mobile first) */}
-//         <div className="md:col-span-4 md:order-2 flex justify-center">
-//           <div className="w-[80%] sm:w-[70%] md:w-full max-w-[360px]">
-//             <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
-//               <Image
-//                 src="/book.png" // put book image in /public/book.png
-//                 alt="Diplomatik Lug‘at kitobi"
-//                 fill
-//                 priority
-//                 className="object-contain"
-//               />
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Text */}
-//         <div className="md:col-span-8 md:order-1 space-y-4">
-//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-//             {"Keyingi"} yillarda xalqaro munosabatlar masalalari, {"ya'ni"}{" "}
-//             jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar,
-//             xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb
-//             vazifalar qatoriga {"o'tdi."} Shu jihatdan, JIDU huzuridagi
-//             Diplomatik akademiyada shu sohani imkon qadar qamrab olgan
-//             mukammal {"lug'at"} yaratildi, uning kitob va raqamli (elektron)
-//             shaklini tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.
-//           </p>
-
-//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-//             Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan{" "}
-//             {"lug'atning"} {"o'zbek"} tilida tayyorlanishi va nashr etilishi
-//             muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida
-//             {"o'zbek"} diplomatik va xalqaro munosabatlar tilining boyishi va
-//             jiddiy tadqiqotlar {"ko'payishiga"} asos {"bo'ladi."}
-//           </p>
-
-//           <hr className="w-full border-gray-400 opacity-20" />
-
-//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-//             {"Lug'at"} {"o'zbek"} millatining xalqaro sohadagi ongi va siyosiy
-//             madaniyati yuqorilashiga, siyosiy masalalar va diplomatik
-//             jarayonni {"o'zbek"} tilida ifodalashga xizmat qilishi sabab
-//             {"bo'ladigan"} birinchi entsiklopedik manba {"bo'ladi."}{" "}
-//             {"Lug'atdan"} {"o'rin"} olgan termin, ibora, tushuncha va{" "}
-//             {"ma'lumotlarning"} aksariyati hozirgacha davlat tilida nashr
-//             etilgan {"ma'lumotnomalarda"} mavjud {"bo'lmay"}, chet tilidagi
-//             turli adabiyot, manbalardan tarjima qilib kiritildi.
-//           </p>
-
-//           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-//             Telegram kanalimizga obuna bo‘ling:{" "}
-//             <a
-//               href="https://t.me/diplugat"
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="text-blue-600 hover:underline font-medium"
-//             >
-//               https://t.me/diplugat
-//             </a>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   </section>
-// </div>
-
-// <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center p-8">
-//   {/* Logo & Title */}
-//   <div className="max-w-5xl mx-auto text-center">
-//     <div className="flex justify-center mb-4">
-//       <Image
-//         src="/logo.png" // 🔹 Dip Academy logo URL goes here
-//         alt="Diplomatik Akademiya Logotipi"
-//         width={120}
-//         height={120}
-//         className="rounded-full shadow-lg"
-//       />
-//     </div>
-
-//     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-//       Diplomatik Lug‘at
-//     </h1>
-
-//     <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed">
-//       Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi Diplomatik
-//       akademiyaning faoliyati haqida
-//     </p>
-
-//     <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-//       Oʻzbekiston Respublikasi Prezidentining 2022-yil 23-iyuldagi “Jahon
-//       iqtisodiyoti va diplomatiya universiteti faoliyatini tizimli isloh
-//       qilish chora-tadbirlari toʻgʻrisida”gi PQ–330-sonli qaroriga asosan
-//       2022-yil sentabr oyidan Jahon iqtisodiyoti va diplomatiya universiteti
-//       (JIDU) huzurida Diplomatik akademiya oʻz faoliyatini boshladi.
-//     </p>
-
-//     {/* Buttons */}
-//     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-//       <Link
-//         href="/dictionary"
-//         className="inline-flex items-center px-8 py-3 text-lg font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 shadow transition-colors duration-200"
-//       >
-//         Lug‘atni ko‘rish
-//       </Link>
-
-//       <Link
-//         href="/about"
-//         className="inline-flex items-center px-8 py-3 border border-gray-300 text-lg font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 shadow-sm transition-colors duration-200"
-//       >
-//         Batafsil ma’lumot
-//       </Link>
-//     </div>
-//   </div>
-
-//   {/* Features Section */}
-//   <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-//     <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-//       <div className="flex items-center justify-center w-14 h-14 mx-auto bg-blue-100 rounded-full mb-4">
-//         <svg
-//           className="w-7 h-7 text-blue-700"
-//           fill="none"
-//           stroke="currentColor"
-//           viewBox="0 0 24 24"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth={2}
-//             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-//           />
-//         </svg>
-//       </div>
-//       <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//         Tezkor qidiruv
-//       </h3>
-//       <p className="text-gray-600 text-sm">
-//         Diplomatik atamalarni tez topish uchun qulay qidiruv tizimi.
-//       </p>
-//     </div>
-
-//     <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-//       <div className="flex items-center justify-center w-14 h-14 mx-auto bg-green-100 rounded-full mb-4">
-//         <svg
-//           className="w-7 h-7 text-green-700"
-//           fill="none"
-//           stroke="currentColor"
-//           viewBox="0 0 24 24"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth={2}
-//             d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-//           />
-//         </svg>
-//       </div>
-//       <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//         Ko‘p tilli qo‘llab-quvvatlash
-//       </h3>
-//       <p className="text-gray-600 text-sm">
-//         Ingliz, o‘zbek va rus tillarida foydalanish imkoniyati.
-//       </p>
-//     </div>
-
-//     <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-//       <div className="flex items-center justify-center w-14 h-14 mx-auto bg-purple-100 rounded-full mb-4">
-//         <svg
-//           className="w-7 h-7 text-purple-700"
-//           fill="none"
-//           stroke="currentColor"
-//           viewBox="0 0 24 24"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth={2}
-//             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-//           />
-//         </svg>
-//       </div>
-//       <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//         Batafsil izohlar
-//       </h3>
-//       <p className="text-gray-600 text-sm">
-//         Har bir diplomatik atama uchun keng qamrovli tushuntirishlar.
-//       </p>
-//     </div>
-//   </div>
-
-//   {/* Partners Section */}
-//   <div className="w-full max-w-6xl mt-20">
-//     <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-//       Bizning hamkorlarimiz
-//     </h2>
-//     <div className="flex gap-8 overflow-x-auto py-4 px-2 scrollbar-hide">
-//       {/* Example partner logos */}
-//       {[...Array(6)].map((_, i) => (
-//         <div
-//           key={i}
-//           className="flex-shrink-0 w-40 h-24 bg-white rounded-lg shadow flex items-center justify-center"
-//         >
-//           <Image
-//             src="" // Partner logo URL
-//             alt={`Hamkor ${i + 1}`}
-//             width={100}
-//             height={50}
-//           />
-//         </div>
-//       ))}
-//     </div>
-//   </div>
-// </div>
-
-("");
-// export default function HomePage() {
-//   return (
-//       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 flex flex-col items-center justify-center p-8">
-//         <div className="max-w-4xl mx-auto text-center">
-//           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-//             Diplomatic Dictionary
-//           </h1>
-
-//           <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-//             A comprehensive resource for diplomatic terms, concepts, and terminology
-//             used in international relations and foreign affairs.
-//           </p>
-
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-//             <Link
-//               href="/dictionary"
-//               className="inline-flex items-center px-8 py-3 border border-transparent text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-//             >
-//               Browse Dictionary
-//             </Link>
-
-//             <Link
-//               href="/about"
-//               className="inline-flex items-center px-8 py-3 border border-gray-300 text-lg font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-//             >
-//               Learn More
-//             </Link>
-//           </div>
-
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-//             <div className="bg-white rounded-lg shadow-lg p-6">
-//               <div className="flex items-center justify-center w-12 h-12 mx-auto bg-blue-100 rounded-full mb-4">
-//                 <svg
-//                   className="w-6 h-6 text-blue-600"
-//                   fill="none"
-//                   stroke="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     strokeWidth={2}
-//                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-//                   />
-//                 </svg>
-//               </div>
-//               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//                 Comprehensive Search
-//               </h3>
-//               <p className="text-gray-600">
-//                 Find diplomatic terms quickly with our advanced search and filtering capabilities.
-//               </p>
-//             </div>
-
-//             <div className="bg-white rounded-lg shadow-lg p-6">
-//               <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
-//                 <svg
-//                   className="w-6 h-6 text-green-600"
-//                   fill="none"
-//                   stroke="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     strokeWidth={2}
-//                     d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-//                   />
-//                 </svg>
-//               </div>
-//               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//                 Multi-Language Support
-//               </h3>
-//               <p className="text-gray-600">
-//                 Access terms in multiple languages including English, Uzbek, and Russian.
-//               </p>
-//             </div>
-
-//             <div className="bg-white rounded-lg shadow-lg p-6">
-//               <div className="flex items-center justify-center w-12 h-12 mx-auto bg-purple-100 rounded-full mb-4">
-//                 <svg
-//                   className="w-6 h-6 text-purple-600"
-//                   fill="none"
-//                   stroke="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     strokeWidth={2}
-//                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-//                   />
-//                 </svg>
-//               </div>
-//               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-//                 Detailed Definitions
-//               </h3>
-//               <p className="text-gray-600">
-//                 Get comprehensive explanations and context for each diplomatic term.
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//   );
-// }

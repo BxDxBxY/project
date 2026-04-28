@@ -20,6 +20,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import LocalPostOfficeTwoToneIcon from "@mui/icons-material/LocalPostOfficeTwoTone";
+import DashboardTwoToneIcon from "@mui/icons-material/DashboardTwoTone";
 import Link from "next/link";
 import { Button, useMediaQuery } from "@mui/material";
 
@@ -109,6 +110,11 @@ export default function MiniDrawer({
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const navigationPanelInfo = [
+    {
+      text: "Boshqaruv paneli",
+      icon: <DashboardTwoToneIcon />,
+      url: "/admin/dashboard",
+    },
     { text: "Terminlar", icon: <FormatColorTextIcon />, url: "/admin/terms" },
     // { text: "Kategoriyalar", icon: <ClassTwoToneIcon />, url: "/admin/categories" },
     // { text: "Foydalanuvchilar", icon: <GroupTwoToneIcon />, url: "/admin/users" },

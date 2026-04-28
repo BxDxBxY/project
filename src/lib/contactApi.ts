@@ -28,12 +28,20 @@ export interface AdminContact {
 
 export async function submitContact(
   data: ContactPayload,
+  recaptchaToken: string,
 ): Promise<ContactResponse> {
-  return apiClient.request<ContactResponse>({
-    url: "/dictionary/contact/",
+  const res = await fetch("/api/contact", {
     method: "POST",
-    data,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...data, recaptchaToken }),
   });
+
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.message || "Failed to submit contact form");
+  }
+
+  return res.json();
 }
 
 export async function fetchAdminContacts(): Promise<AdminContact[]> {

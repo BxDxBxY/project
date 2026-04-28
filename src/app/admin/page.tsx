@@ -9,7 +9,7 @@ export default function AdminIndexPage() {
   // console.log(TokenManager.getAccessToken())
   useEffect(() => {
     if (TokenManager.getAccessToken()) {
-      router.replace("/admin/terms");
+      router.replace("/admin/dashboard");
     } else {
       router.replace("/admin/login");
     }

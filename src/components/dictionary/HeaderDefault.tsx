@@ -9,11 +9,18 @@ import { Drawer } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
+
 export const HeaderDefault = () => {
   const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const { language } = useLanguage();
+  const t = translations[language].nav;
+  const tHeader = translations[language].header;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -37,21 +44,26 @@ export const HeaderDefault = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
   const navLinks = [
-    { href: "/", label: "Bosh Sahifa" },
-    { href: "/about", label: "Lug'at Haqida" },
-    { href: "/dictionary", label: "Lug'at" },
-    { href: "/contact", label: "Kontaktlar" },
+    { href: "/", label: t.home },
+    { href: "/about", label: t.about },
+    { href: "/dictionary", label: t.dictionary },
+    { href: "/contact", label: t.contact },
   ];
 
   return (
     <header
       className={`${
         pathname.startsWith("/admin") ? "hidden" : ""
-      } fixed top-0 left-0 w-full z-50 py-2 transition-transform duration-500 ${
+      } fixed top-0 left-0 w-full z-50 transition-transform duration-500 ${
         hidden ? "-translate-y-full" : "translate-y-0"
-      } bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]`}
+      } bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] flex flex-col`}
     >
+      {/* Demo Banner */}
+      <div className="bg-amber-400 text-amber-950 text-xs sm:text-sm font-semibold py-1.5 w-full relative z-20 shadow-sm marquee-container">
+        <div className="marquee-content">Sayt test variantda ishlamoqda.</div>
+      </div>
       {/* Background with gradient and photo */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]" />
@@ -67,7 +79,7 @@ export const HeaderDefault = () => {
         <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 shadow-md" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 w-full">
         {/* Logo + Title */}
         <div className="flex items-center">
           <Link href="/">
@@ -81,16 +93,16 @@ export const HeaderDefault = () => {
           </Link>
           <div className="ml-3 sm:ml-4">
             <h1 className="uppercase text-lg sm:text-xl md:text-2xl font-bold text-white drop-shadow-lg tracking-wide">
-              Diplomatik {"Lug‘at"}
+              {tHeader.title}
             </h1>
             <p className="text-xs sm:text-sm text-white/90 font-light drop-shadow-md">
-              Rasmiy va birinchi onlayn {"lug‘at"}
+              {tHeader.subtitle}
             </p>
           </div>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-4">
+        <nav className="hidden md:flex space-x-4 items-center">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
@@ -104,6 +116,39 @@ export const HeaderDefault = () => {
               {label}
             </Link>
           ))}
+
+          {/* Language Switcher HIDDEN 
+          <IconButton
+            onClick={handleLangMenuOpen}
+            className="!text-white hover:bg-black/20"
+            size="small"
+            sx={{ ml: 1 }}
+          >
+            <LanguageIcon fontSize="small" sx={{ mr: 0.5 }} />
+            <span className="text-sm font-medium uppercase">{language}</span>
+          </IconButton>
+          <Menu
+            anchorEl={langAnchorEl}
+            open={Boolean(langAnchorEl)}
+            onClose={() => handleLangMenuClose()}
+            disableScrollLock={true}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                bgcolor: "white",
+                color: "#001c3b",
+                "& .MuiMenuItem-root": {
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                },
+              },
+            }}
+          >
+            <MenuItem onClick={() => handleLangMenuClose("uz")}>
+              Oʻzbekcha
+            </MenuItem>
+          </Menu>
+          */}
         </nav>
 
         {/* Mobile Hamburger Menu */}
@@ -157,6 +202,29 @@ export const HeaderDefault = () => {
               {label}
             </Link>
           ))}
+
+          {/* Language Section HIDDEN
+          <div className="pt-4 mt-4 border-t border-white/20">
+            <p className="px-3 text-xs text-white/70 mb-2 uppercase tracking-wider">
+              Til / Язык
+            </p>
+            <div className="flex gap-2 px-3">
+              <button
+                onClick={() => {
+                  setLanguage("uz");
+                  handleDrawerToggle();
+                }}
+                className={`py-1.5 px-3 rounded-md text-sm font-medium transition-colors ${
+                  language === "uz"
+                    ? "bg-white/20 text-white"
+                    : "bg-transparent text-white/70 hover:bg-white/10"
+                }`}
+              >
+                Oʻzbekcha
+              </button>
+            </div>
+          </div>
+          */}
         </nav>
       </Drawer>
     </header>

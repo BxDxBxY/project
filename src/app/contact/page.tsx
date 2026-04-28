@@ -6,6 +6,8 @@ import { Send, Phone, Mail, MapPin } from "lucide-react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import Footer from "@/components/dictionary/FooterComponent";
 import { submitContact } from "@/lib/contactApi";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
 
 // Create custom theme with diplomatic colors
 const theme = createTheme({
@@ -26,7 +28,22 @@ const theme = createTheme({
   },
 });
 
-export default function ContactPage() {
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
+
+interface ContactForm {
+  fullName: string;
+  email: string;
+  message: string;
+}
+
+function ContactFormInner() {
+  const { language } = useLanguage();
+  const t = translations[language].contact;
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const [formData, setFormData] = useState<ContactForm>({
     fullName: "",
     email: "",
@@ -39,27 +56,24 @@ export default function ContactPage() {
   const validateForm = (): boolean => {
     const newErrors: Partial<ContactForm> = {};
 
-    // Full name validation
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Ismingizni kiriting";
+      newErrors.fullName = t.nameErrors.required;
     } else if (formData.fullName.trim().length < 3) {
-      newErrors.fullName = "Ism kamida 3 ta harfdan iborat bo‘lishi kerak";
+      newErrors.fullName = t.nameErrors.min;
     } else if (!/^[A-Za-zÀ-ÖØ-öø-ÿʼ'‘’\-. ]+$/.test(formData.fullName.trim())) {
-      newErrors.fullName = "Ism faqat harflar iborat bo‘lishi kerak";
+      newErrors.fullName = t.nameErrors.pattern;
     }
 
-    // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = "Pochta manzilingizni kiriting";
+      newErrors.email = t.emailErrors.required;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Iltimos haqiqiy pochta manzilini kiriting";
+      newErrors.email = t.emailErrors.pattern;
     }
 
-    // Message validation
     if (!formData.message.trim()) {
-      newErrors.message = "Xat matnini kiriting";
+      newErrors.message = t.msgErrors.required;
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Xat matni juda kam";
+      newErrors.message = t.msgErrors.min;
     }
 
     setErrors(newErrors);
@@ -78,23 +92,34 @@ export default function ContactPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateForm()) return;
+
+    if (!executeRecaptcha) {
+      alert(
+        "Iltimos, kuting. ReCAPTCHA tekshirilmoqda. (Please wait. ReCAPTCHA is loading.)",
+      );
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await submitContact({
-        full_name: formData.fullName,
-        email_address: formData.email,
-        message: formData.message,
-      });
+      const captchaToken = await executeRecaptcha("submit_contact");
+      await submitContact(
+        {
+          full_name: formData.fullName,
+          email_address: formData.email,
+          message: formData.message,
+        },
+        captchaToken,
+      );
 
       setFormData({ fullName: "", email: "", message: "" });
       setShowSuccess(true);
     } catch (error) {
       console.error("Failed to submit contact form:", error);
-      // Optionally show error Snackbar
+      alert(
+        "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring yoki bot emasligingizni tasdiqlang.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -102,17 +127,17 @@ export default function ContactPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col pt-20 sm:pt-24 md:pt-28 pb-8 sm:pb-12 md:pb-16 transition-all duration-300">
+      <div className="flex flex-col pt-28 sm:pt-32 md:pt-36 pb-8 sm:pb-12 md:pb-16 transition-all duration-300">
         {/* Main Content */}
         <div className="flex-1">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
             {/* Header Section */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] mb-3 sm:mb-4 tracking-tight">
-                Diplomatik akademiya
+                {t.title}
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
-                Diplomatik {"ta'lim"} va xalqaro munosabatlarning mukammalligi
+                {t.subtitle}
               </p>
               <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-4 sm:mt-6"></div>
             </div>
@@ -122,7 +147,7 @@ export default function ContactPage() {
               <div className="lg:col-span-1">
                 <div className="bg-[#001c3b] text-white p-6 sm:p-8 rounded-xl shadow-lg h-fit">
                   <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6">
-                    Kontakt Malumotlar
+                    {t.infoTitle}
                   </h2>
 
                   <div className="space-y-4 sm:space-y-6">
@@ -130,11 +155,10 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-medium text-sm sm:text-base mb-1">
-                          Manzil
+                          {t.address}
                         </h3>
-                        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                          100007, <br /> {"Oʻzbekiston"}, Toshkent, <br />{" "}
-                          Mustaqillik shoh {"koʻchasi"}, 54.
+                        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
+                          {t.addressDetails}
                         </p>
                       </div>
                     </div>
@@ -143,7 +167,7 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-medium text-sm sm:text-base mb-1">
-                          Telefon
+                          {t.phone}
                         </h3>
                         <a
                           href="tel:+998712670706"
@@ -158,7 +182,7 @@ export default function ContactPage() {
                       <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a96e] mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-medium text-sm sm:text-base mb-1">
-                          Pochta
+                          {t.email}
                         </h3>
                         <p className="text-gray-300 text-xs sm:text-sm">
                           info@da-uwed.uz
@@ -173,7 +197,7 @@ export default function ContactPage() {
               <div className="lg:col-span-2">
                 <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
                   <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#001c3b] mb-4 sm:mb-6">
-                    Biz bilan {"bog'laning"}
+                    {t.formTitle}
                   </h2>
 
                   <form
@@ -183,7 +207,7 @@ export default function ContactPage() {
                     <div>
                       <TextField
                         fullWidth
-                        label="Toʻliq Ismingiz"
+                        label={t.nameLabel}
                         value={formData.fullName}
                         onChange={handleInputChange("fullName")}
                         error={!!errors.fullName}
@@ -215,7 +239,7 @@ export default function ContactPage() {
                     <div>
                       <TextField
                         fullWidth
-                        label="Pochta manzilingiz"
+                        label={t.emailLabel}
                         type="email"
                         value={formData.email}
                         onChange={handleInputChange("email")}
@@ -248,7 +272,7 @@ export default function ContactPage() {
                     <div>
                       <TextField
                         fullWidth
-                        label="Xat matni"
+                        label={t.msgLabel}
                         multiline
                         rows={6}
                         value={formData.message}
@@ -279,6 +303,29 @@ export default function ContactPage() {
                       />
                     </div>
 
+                    {/* V3 doesn't need the visual component, it runs in background */}
+                    <div className="text-xs text-gray-400 mt-2">
+                      Ushbu sayt Google reCAPTCHA bilan himoyalangan va Google{" "}
+                      <a
+                        href="https://policies.google.com/privacy"
+                        className="text-blue-500 hover:underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Maxfiylik siyosati
+                      </a>{" "}
+                      hamda{" "}
+                      <a
+                        href="https://policies.google.com/terms"
+                        className="text-blue-500 hover:underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Foydalanish shartlari
+                      </a>{" "}
+                      qo&apos;llaniladi.
+                    </div>
+
                     <div>
                       <Button
                         type="submit"
@@ -302,7 +349,7 @@ export default function ContactPage() {
                           },
                         }}
                       >
-                        {isSubmitting ? "Yuborilmoqda..." : "Xat yuborish"}
+                        {isSubmitting ? t.btnSending : t.btnSend}
                       </Button>
                     </div>
                   </form>
@@ -324,7 +371,7 @@ export default function ContactPage() {
             severity="success"
             sx={{ width: "100%", fontSize: { xs: "0.875rem", sm: "1rem" } }}
           >
-            Thank you for your message! We will get back to you shortly.
+            {t.successMsg}
           </Alert>
         </Snackbar>
       </div>
@@ -332,5 +379,12 @@ export default function ContactPage() {
   );
 }
 
-// {/* Footer */}
-//         {/* <Footer /> */}
+export default function ContactPage() {
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "dummy_key";
+
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={siteKey}>
+      <ContactFormInner />
+    </GoogleReCaptchaProvider>
+  );
+}

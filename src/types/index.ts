@@ -75,6 +75,7 @@ export interface Source {
 export interface TermSummary {
   id: number;
   title: string;
+  title_ru?: string; // Placeholder for Russian translation
   created_at: string;
   updated_at: string;
 }
@@ -83,7 +84,9 @@ export interface TermSummary {
 export interface TermDetail {
   id: number;
   title: string;
+  title_ru?: string; // Placeholder for Russian translation
   definition: string;
+  definition_ru?: string; // Placeholder for Russian translation
   created_at: string;
   updated_at: string;
   categories: Category[];
