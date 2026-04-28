@@ -23,10 +23,10 @@ export const TermCard: React.FC<TermCardProps> = ({
   return (
     <Link
       href={adminPanel ? "" : `/dictionary/${term.id}`}
-      className={`flex p-[4px] sm:pl-3 sm:py-3 md:py-4   bg-white rounded-md sm:rounded-xl w-auto h-full hover:shadow-lg transition-all duration-300 hover:bg-blue-50 border border-gray-200 hover:border-blue-400 ${className}`}
+      className={`flex items-center p-4 sm:p-5 md:p-6 bg-white rounded-xl w-auto h-full hover:shadow-xl transition-all duration-300 hover:bg-blue-50/50 border border-gray-100 hover:border-blue-200 group/card ${className}`}
     >
-      <div className="space-y-[2px] sm:space-y-2">
-        <h3 className="text-sm sm:text-base md:text-lg font-semibold !text-gray-900 line-clamp-2 leading-tight px-2 !overflow-hidden">
+      <div className="flex-1">
+        <h3 className="text-[15px] sm:text-base md:text-lg font-bold text-gray-800 group-hover/card:text-[#001c3b] line-clamp-2 leading-snug transition-colors">
           {term.title}
         </h3>
       </div>

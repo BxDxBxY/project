@@ -416,7 +416,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
 
               <div className="p-8 sm:p-12">
                 <div className="border-b border-gray-100 pb-6 mb-8">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#001c3b] mb-4 tracking-tight leading-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 tracking-tight leading-tight">
                     {term.title}
                   </h1>
                   <TimestampsLine />

@@ -11,6 +11,9 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
+import SearchIcon from "@mui/icons-material/Search";
+import { useDictionary } from "@/hooks/useDictionary";
+import { useRouter } from "next/navigation";
 
 export const HeaderDefault = () => {
   const pathname = usePathname();
@@ -21,6 +24,15 @@ export const HeaderDefault = () => {
   const { language } = useLanguage();
   const t = translations[language].nav;
   const tHeader = translations[language].header;
+  const tDict = translations[language].dictionary;
+
+  const { search, setSearch, triggerSearch } = useDictionary();
+  const router = useRouter();
+  const [mobileSearch, setMobileSearch] = useState("");
+
+  useEffect(() => {
+    setMobileSearch(search);
+  }, [search]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -44,6 +56,16 @@ export const HeaderDefault = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  const handleMobileSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setSearch(mobileSearch);
+    triggerSearch(mobileSearch);
+    setMobileOpen(false);
+    if (pathname !== "/dictionary") {
+      router.push("/dictionary");
+    }
+  };
 
   const navLinks = [
     { href: "/", label: t.home },
@@ -202,6 +224,31 @@ export const HeaderDefault = () => {
               {label}
             </Link>
           ))}
+
+          {/* Mobile Search Section */}
+          <div className="pt-6 mt-2 border-t border-white/20">
+            <p className="px-3 text-xs text-white/70 mb-3 uppercase tracking-wider">
+              {tDict.searchPlaceholder}
+            </p>
+            <form
+              onSubmit={handleMobileSearchSubmit}
+              className="px-3 relative flex items-center"
+            >
+              <input
+                type="text"
+                value={mobileSearch}
+                onChange={(e) => setMobileSearch(e.target.value)}
+                placeholder="Qidiruv..."
+                className="w-full bg-white/10 border border-white/20 rounded-lg py-2.5 pl-4 pr-10 text-sm text-white placeholder-white/50 focus:outline-none focus:bg-white/20 transition-all shadow-inner"
+              />
+              <button
+                type="submit"
+                className="absolute right-6 text-white/70 hover:text-white"
+              >
+                <SearchIcon fontSize="small" />
+              </button>
+            </form>
+          </div>
 
           {/* Language Section HIDDEN
           <div className="pt-4 mt-4 border-t border-white/20">

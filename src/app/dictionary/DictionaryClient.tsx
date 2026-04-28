@@ -199,7 +199,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
+    <div className="px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 md:pt-52 transition-all duration-300">
       <div className="flex flex-col items-center gap-6 sm:gap-8 max-w-6xl mx-auto">
         <h1
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center cursor-pointer tracking-tight"
@@ -232,10 +232,10 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
         ) : terms.length > 0 ? (
           /* HAS RESULTS */
           <>
-            <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex justify-between items-center mb-4 sm:mb-6">
+            <div className="w-full max-w-4xl text-sm sm:text-base text-gray-600 flex justify-between items-center mb-8 sm:mb-10">
               <span>{totalTerms > 0 && `${totalTerms} ${t.termsShowing}`}</span>
             </div>
-            <div className="w-full">
+            <div className="w-full space-y-16 sm:space-y-24">
               {[
                 ...UZBEK_ALPHABET,
                 ...Object.keys(groupedTerms).filter(
@@ -244,14 +244,13 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
               ].map(
                 (letter) =>
                   groupedTerms[letter]?.length > 0 && (
-                    <div key={letter} className="mb-8 sm:mb-10">
-                      <div className="mb-4 px-2 sm:px-4">
-                        <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-zinc-700">
+                    <div key={letter} className="scroll-mt-48">
+                      <div className="mb-6 sm:mb-10 px-2 sm:px-4">
+                        <span className="text-3xl sm:text-4xl md:text-5xl font-black text-[#001c3b]/80 border-b-4 border-[#c9a96e]/30 pb-2">
                           {letter}
                         </span>
-                        <hr className="mt-2 border-gray-300 opacity-30" />
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-2 sm:gap-4 ">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                         {groupedTerms[letter].map((term) => (
                           <div
                             key={term.id}

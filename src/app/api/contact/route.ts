@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     rateLimitCache.set(ip, currentCount + 1);
 
     // Forward to backend
-    const res = await fetch(`${BACKEND_URL}/contact/`, {
+    const res = await fetch(`${BACKEND_URL}/dictionary/contact/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

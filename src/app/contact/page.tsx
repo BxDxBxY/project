@@ -127,7 +127,7 @@ function ContactFormInner() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col pt-28 sm:pt-32 md:pt-36 pb-8 sm:pb-12 md:pb-16 transition-all duration-300">
+      <div className="flex flex-col pt-36 sm:pt-44 md:pt-52 pb-8 sm:pb-12 md:pb-16 transition-all duration-300">
         {/* Main Content */}
         <div className="flex-1">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">

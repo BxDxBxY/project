@@ -9,7 +9,7 @@ export default function AboutPage() {
   const t = translations[language].about;
 
   return (
-    <div className="flex-1 flex items-center justify-center pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
+    <div className="flex-1 flex items-center justify-center pt-36 sm:pt-44 md:pt-52 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
         {/* Header Section */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
