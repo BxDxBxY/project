@@ -22,6 +22,7 @@ import {
   LayoutTemplate,
   Layers,
 } from "lucide-react";
+import { PageContainer } from "@/components/ui/PageContainer";
 
 const editorStyles = `
   .editor-container {
@@ -362,7 +363,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
       <div className="transition-all duration-500">
         {/* LAYOUT 1: HERO BANNER */}
         {layoutMode === 1 && (
-          <div className="pt-28 md:pt-32">
+          <div>
             <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-16 sm:py-24 px-4 relative overflow-hidden">
               <div className="absolute top-0 right-0 opacity-10">
                 <svg width="400" height="400" fill="none" viewBox="0 0 24 24">
@@ -402,7 +403,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
 
         {/* LAYOUT 2: ELEGANT DICTIONARY ENTRY */}
         {layoutMode === 2 && (
-          <div className="pt-36 sm:pt-40 pb-16 px-4 max-w-4xl mx-auto">
+          <PageContainer maxWidth="sm">
             <button
               onClick={handleBack}
               className="text-gray-600 hover:text-[#001c3b] mb-8 flex items-center text-sm font-semibold transition bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full w-fit shadow-sm"
@@ -542,12 +543,15 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                 </div>
               </div>
             )}
-          </div>
+          </PageContainer>
         )}
 
         {/* LAYOUT 3: STICKY EDITORIAL (POLISHED) */}
         {layoutMode === 3 && (
-          <div className="pt-32 sm:pt-36 pb-20 px-4 sm:px-6 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16">
+          <PageContainer
+            maxWidth="lg"
+            className="flex flex-col lg:flex-row gap-10 lg:gap-16"
+          >
             {/* Left Column Component (Main Text) */}
             <div className="flex-1 lg:max-w-4xl">
               <button
@@ -711,47 +715,45 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                 </div>
               </div>
             )}
-          </div>
+          </PageContainer>
         )}
 
         {/* LAYOUT 4: MINIMALIST (ORIGINAL) */}
         {layoutMode === 4 && (
-          <div className="pt-32 sm:pt-36 md:pt-40 pb-8 sm:pb-12 md:pb-16 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex flex-col items-center mb-8 sm:mb-10 md:mb-12 text-center">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 sm:mb-6 max-w-3xl break-words tracking-tight leading-snug">
-                  {term.title}
-                </h1>
-                <button
-                  onClick={handleBack}
-                  className="inline-flex items-center px-4 py-2 text-sm sm:text-base font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-lg transition-all"
-                >
-                  <ArrowBackIcon className="mr-2" fontSize="small" /> Lugʻatga
-                  qaytish
-                </button>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border border-gray-100">
-                <div
-                  className="prose max-w-none text-gray-800 viewer-content"
-                  contentEditable={false}
-                >
-                  <TiptapViewer
-                    content={term.definition}
-                    className="!border-none !shadow-none !drop-shadow-none"
-                  />
-                </div>
-
-                <div
-                  className={`mt-8 ${hasExtraInfo ? "pb-8 border-b border-gray-100" : ""}`}
-                >
-                  <TimestampsLine />
-                </div>
-
-                {hasExtraInfo && <MetadataGrid />}
-              </div>
+          <PageContainer maxWidth="sm">
+            <div className="flex flex-col items-center mb-8 sm:mb-10 md:mb-12 text-center">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 sm:mb-6 max-w-3xl break-words tracking-tight leading-snug">
+                {term.title}
+              </h1>
+              <button
+                onClick={handleBack}
+                className="inline-flex items-center px-4 py-2 text-sm sm:text-base font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-lg transition-all"
+              >
+                <ArrowBackIcon className="mr-2" fontSize="small" /> Lugʻatga
+                qaytish
+              </button>
             </div>
-          </div>
+
+            <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border border-gray-100">
+              <div
+                className="prose max-w-none text-gray-800 viewer-content"
+                contentEditable={false}
+              >
+                <TiptapViewer
+                  content={term.definition}
+                  className="!border-none !shadow-none !drop-shadow-none"
+                />
+              </div>
+
+              <div
+                className={`mt-8 ${hasExtraInfo ? "pb-8 border-b border-gray-100" : ""}`}
+              >
+                <TimestampsLine />
+              </div>
+
+              {hasExtraInfo && <MetadataGrid />}
+            </div>
+          </PageContainer>
         )}
       </div>
     </>

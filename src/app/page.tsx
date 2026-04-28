@@ -11,6 +11,7 @@ import {
   LayoutTemplate,
   Layers,
 } from "lucide-react";
+import { PageContainer } from "@/components/ui/PageContainer";
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -21,23 +22,73 @@ export default function HomePage() {
 
   // Variant 1: Current Approved (Minimal)
   const renderVariant1 = () => (
-    <div className="pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
-      <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
-        <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full max-w-6xl">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
-            {t.heroTitle}
-          </h1>
-          <hr className="w-full border-gray-400 opacity-20" />
+    <PageContainer maxWidth="md">
+      <div className="flex flex-col items-center md:items-start text-center gap-6 sm:gap-7 w-full">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
+          {t.heroTitle}
+        </h1>
+        <hr className="w-full border-gray-400 opacity-20" />
 
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line">
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line">
+          {t.heroPara1}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify ">
+          {t.heroPara2}
+        </p>
+        <hr className="w-full border-gray-400 opacity-20" />
+
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+          {t.heroPara3}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+          {t.subscribe}{" "}
+          <a
+            href="https://t.me/diplugat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline font-medium"
+          >
+            https://t.me/diplugat
+          </a>
+        </p>
+      </div>
+    </PageContainer>
+  );
+
+  // Variant 2: Book Layout
+  const renderVariant2 = () => (
+    <PageContainer maxWidth="md">
+      <div className="text-center space-y-6 sm:space-y-7">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
+          {t.heroTitle}
+        </h1>
+        <hr className="w-full border-gray-400 opacity-20" />
+      </div>
+
+      <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
+        <div className="md:col-span-4 md:order-2 flex justify-center">
+          <div className="w-[80%] sm:w-[70%] md:w-full max-w-[360px]">
+            <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
+              <Image
+                src="/book.png"
+                alt="Diplomatik Lug‘at kitobi"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="md:col-span-8 md:order-1 space-y-4">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara1}
           </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify ">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara2}
           </p>
           <hr className="w-full border-gray-400 opacity-20" />
-
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara3}
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
@@ -52,70 +103,14 @@ export default function HomePage() {
             </a>
           </p>
         </div>
-      </section>
-    </div>
-  );
-
-  // Variant 2: Book Layout
-  const renderVariant2 = () => (
-    <div className="pt-28 sm:pt-32 md:pt-36 transition-all duration-300">
-      <section className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 flex justify-center items-start">
-        <div className="w-full max-w-6xl">
-          <div className="text-center space-y-6 sm:space-y-7">
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] uppercase leading-snug tracking-tight">
-              {t.heroTitle}
-            </h1>
-            <hr className="w-full border-gray-400 opacity-20" />
-          </div>
-
-          <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
-            <div className="md:col-span-4 md:order-2 flex justify-center">
-              <div className="w-[80%] sm:w-[70%] md:w-full max-w-[360px]">
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
-                  <Image
-                    src="/book.png"
-                    alt="Diplomatik Lug‘at kitobi"
-                    fill
-                    priority
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="md:col-span-8 md:order-1 space-y-4">
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-                {t.heroPara1}
-              </p>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-                {t.heroPara2}
-              </p>
-              <hr className="w-full border-gray-400 opacity-20" />
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
-                {t.heroPara3}
-              </p>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-                {t.subscribe}{" "}
-                <a
-                  href="https://t.me/diplugat"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline font-medium"
-                >
-                  https://t.me/diplugat
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </PageContainer>
   );
 
   // Variant 3: Modern Hero with Stats
   const renderVariant3 = () => (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-white pt-32 sm:pt-36">
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
+    <PageContainer maxWidth="lg">
+      <section className="text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold text-[#001c3b] tracking-tight mb-6 uppercase">
           {t.heroTitle}
         </h1>
@@ -158,12 +153,12 @@ export default function HomePage() {
           <p className="text-base sm:text-lg leading-relaxed">{t.heroPara3}</p>
         </div>
       </section>
-    </div>
+    </PageContainer>
   );
 
   // Variant 4: Feature Grid & Partners Focus
   const renderVariant4 = () => (
-    <div className="min-h-screen bg-gray-50 pt-32">
+    <PageContainer maxWidth="md">
       <section className="bg-[#001c3b] text-white py-20 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
           <div className="text-center md:text-left flex-1">
@@ -282,7 +277,7 @@ export default function HomePage() {
           </p>
         </div>
       </section>
-    </div>
+    </PageContainer>
   );
 
   return (

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 // } from "@/lib/api";
 import { Category, ModalType } from "@/types";
 import { Button, CircularProgress } from "@mui/material";
+import { PageContainer } from "@/components/ui/PageContainer";
 import { CategoryModal } from "@/components/ui/CategoryModal";
 import {
   createCategory,
@@ -114,85 +115,86 @@ export default function AdminCategoriesPage() {
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Kategoriyalar boshqarish</h1>
-        <Button
-          onClick={() => {
-            setModalType("add");
-            setAddModalOpen(true);
-            // handleAddCategorySubmit()
-          }}
-          variant="contained"
-          color="success"
-          size="medium"
-        >
-          {"+ Kategoriya qo'shish"}
-        </Button>
-      </div>
-
-      {loading ? (
-        <CircularProgress />
-      ) : error ? (
-        <div className="text-red-600">{error}</div>
-      ) : (
-        <div className="space-y-4">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className="p-4 bg-white rounded shadow flex items-center justify-between"
-            >
-              <div className="font-semibold">{category.name}</div>
-              <div className="flex space-x-2 gap-2">
-                <Button
-                  variant="outlined"
-                  color="info"
-                  size="small"
-                  onClick={() => {
-                    setModalType("edit");
-                    handleEdit(category);
-                    setAddModalOpen(true);
-                  }}
-                >
-                  O‘zgartirish
-                </Button>
-                <Button
-                  size="small"
-                  color="error"
-                  variant="contained"
-                  onClick={() => {
-                    setModalType("delete");
-                    handleDelete(category.id);
-                    setAddModalOpen(true);
-                  }}
-                >
-                  O‘chirish
-                </Button>
-              </div>
-            </div>
-          ))}
+    <PageContainer maxWidth="lg">
+      <div>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Kategoriyalar boshqarish</h1>
+          <Button
+            onClick={() => {
+              setModalType("add");
+              setAddModalOpen(true);
+              // handleAddCategorySubmit()
+            }}
+            variant="contained"
+            color="success"
+            size="medium"
+          >
+            {"+ Kategoriya qo'shish"}
+          </Button>
         </div>
-      )}
 
-      <CategoryModal
-        open={addModalOpen} // modalType: "add" | "edit" | "delete" | null
-        type={modalType}
-        categoryName={editCategory?.name}
-        newCategoryName={newCategoryName}
-        setNewCategoryName={setNewCategoryName}
-        loading={modalLoading}
-        error={modalError}
-        onClose={closeModals}
-        onSubmitDelete={handleDeleteConfirm}
-        onSubmit={(e) => {
-          if (modalType === "add") handleAddCategorySubmit(e);
-          if (modalType === "edit") handleEditSubmit(e, newCategoryName);
-          if (modalType === "delete") handleDeleteConfirm();
-        }}
-      />
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <div className="text-red-600">{error}</div>
+        ) : (
+          <div className="space-y-4">
+            {categories.map((category) => (
+              <div
+                key={category.id}
+                className="p-4 bg-white rounded shadow flex items-center justify-between"
+              >
+                <div className="font-semibold">{category.name}</div>
+                <div className="flex space-x-2 gap-2">
+                  <Button
+                    variant="outlined"
+                    color="info"
+                    size="small"
+                    onClick={() => {
+                      setModalType("edit");
+                      handleEdit(category);
+                      setAddModalOpen(true);
+                    }}
+                  >
+                    O‘zgartirish
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="contained"
+                    onClick={() => {
+                      setModalType("delete");
+                      handleDelete(category.id);
+                      setAddModalOpen(true);
+                    }}
+                  >
+                    O‘chirish
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-      {/* Add Modal */}
-      {/* <Modal open={addModalOpen} onClose={closeModals} title="Add Category">
+        <CategoryModal
+          open={addModalOpen} // modalType: "add" | "edit" | "delete" | null
+          type={modalType}
+          categoryName={editCategory?.name}
+          newCategoryName={newCategoryName}
+          setNewCategoryName={setNewCategoryName}
+          loading={modalLoading}
+          error={modalError}
+          onClose={closeModals}
+          onSubmitDelete={handleDeleteConfirm}
+          onSubmit={(e) => {
+            if (modalType === "add") handleAddCategorySubmit(e);
+            if (modalType === "edit") handleEditSubmit(e, newCategoryName);
+            if (modalType === "delete") handleDeleteConfirm();
+          }}
+        />
+
+        {/* Add Modal */}
+        {/* <Modal open={addModalOpen} onClose={closeModals} title="Add Category">
         <form onSubmit={handleAddCategorySubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Name</label>
@@ -226,9 +228,9 @@ export default function AdminCategoriesPage() {
         </form>
       </Modal> */}
 
-      {/* Edit Modal */}
+        {/* Edit Modal */}
 
-      {/* <Modal open={!!editCategory} onClose={closeModals} title="Edit Category">
+        {/* <Modal open={!!editCategory} onClose={closeModals} title="Edit Category">
         {editCategory && (
           <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
@@ -266,8 +268,8 @@ export default function AdminCategoriesPage() {
         )}
       </Modal> */}
 
-      {/* Delete Modal */}
-      {/* <Modal
+        {/* Delete Modal */}
+        {/* <Modal
         open={!!deleteCategoryId}
         onClose={closeModals}
         title="Delete Category"
@@ -300,6 +302,7 @@ export default function AdminCategoriesPage() {
           </Button>
         </div>
       </Modal> */}
-    </div>
+      </div>
+    </PageContainer>
   );
 }

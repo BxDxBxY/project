@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { PageContainer } from "@/components/ui/PageContainer";
 import {
   Grid,
   Paper,
@@ -160,7 +161,7 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <Box sx={{ p: { xs: 2, md: 4 } }}>
+    <PageContainer maxWidth="lg">
       <Box sx={{ mb: 4 }}>
         <Typography
           variant="h4"
@@ -431,6 +432,6 @@ export default function AdminDashboard() {
           </Paper>
         </Grid>
       </Grid>
-    </Box>
+    </PageContainer>
   );
 }

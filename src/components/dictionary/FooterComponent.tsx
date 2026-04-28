@@ -42,7 +42,7 @@ export default function FooterComponent() {
         {/* Social Media Links */}
         <div className="flex w-full sm:w-auto items-center justify-evenly sm:justify-center space-x-4 sm:space-x-6">
           <a
-            href="https://twitter.com/dipacademy"
+            href="https://x.com/uwedofficial"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
@@ -50,7 +50,7 @@ export default function FooterComponent() {
             <XIcon fontSize="small" className="w-5 h-5 sm:w-6 sm:h-6" />
           </a>
           <a
-            href="https://linkedin.com/company/dipacademy"
+            href="https://www.linkedin.com/company/UQBc-SSY-DS13uH4Nys8KIJw4bUBXxbhVO7FJAzVrD3S9Pi3-jidu-huzuridagi-diplomatik-akademiya/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"

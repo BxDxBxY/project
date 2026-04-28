@@ -3,6 +3,7 @@
 import React from "react";
 // removed unused Link import
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { PageContainer } from "@/components/ui/PageContainer";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
 import { TermCard } from "@/components/dictionary/TermCard";
@@ -158,7 +159,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
 
   if (error) {
     return (
-      <div className="max-w-8xl mx-auto p-8 pt-[112px]">
+      <PageContainer maxWidth="md">
         <div className="flex flex-col items-center gap-6">
           <h1
             className="text-3xl cursor-pointer font-bold text-gray-900"
@@ -166,7 +167,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           >
             {t.title}
           </h1>
-          <div className="max-w-6xl bg-white rounded-lg shadow-lg p-6 text-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center max-w-lg">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
               <svg
                 className="w-6 h-6 text-red-600"
@@ -194,13 +195,13 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
             </button>
           </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 md:pt-52 transition-all duration-300">
-      <div className="flex flex-col items-center gap-6 sm:gap-8 max-w-6xl mx-auto">
+    <PageContainer maxWidth="md">
+      <div className="flex flex-col items-center gap-6 sm:gap-8">
         <h1
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center cursor-pointer tracking-tight"
           onClick={handleRefresh}
@@ -299,7 +300,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

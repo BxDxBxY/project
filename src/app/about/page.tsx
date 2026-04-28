@@ -3,14 +3,15 @@
 import React from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
+import { PageContainer } from "@/components/ui/PageContainer";
 
 export default function AboutPage() {
   const { language } = useLanguage();
   const t = translations[language].about;
 
   return (
-    <div className="flex-1 flex items-center justify-center pt-36 sm:pt-44 md:pt-52 transition-all duration-300">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+    <PageContainer maxWidth="md">
+      <div className="py-8 sm:py-12 md:py-16">
         {/* Header Section */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight">
@@ -40,7 +41,7 @@ export default function AboutPage() {
           <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-6 sm:mt-8"></div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

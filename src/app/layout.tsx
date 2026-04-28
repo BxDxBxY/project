@@ -42,10 +42,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             {/* Fixed header */}
             <HeaderDefault />
 
-            {/* Main content with padding for fixed header */}
-            <main
-              className={`flex-1 bg-gradient-to-b from-gray-50  to-gray-100 `}
-            >
+            {/* Main content area — only vertical gap, pages own their width */}
+            <main className="flex-1 bg-gradient-to-b from-gray-50 to-gray-100">
               {children}
             </main>
 

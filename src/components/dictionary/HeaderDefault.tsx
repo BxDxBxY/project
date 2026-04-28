@@ -17,8 +17,6 @@ import { useRouter } from "next/navigation";
 
 export const HeaderDefault = () => {
   const pathname = usePathname();
-  const [hidden, setHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const { language } = useLanguage();
@@ -37,25 +35,6 @@ export const HeaderDefault = () => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        // scrolling down
-        setHidden(true);
-      } else {
-        // scrolling up
-        setHidden(false);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
 
   const handleMobileSearchSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -78,9 +57,7 @@ export const HeaderDefault = () => {
     <header
       className={`${
         pathname.startsWith("/admin") ? "hidden" : ""
-      } fixed top-0 left-0 w-full z-50 transition-transform duration-500 ${
-        hidden ? "-translate-y-full" : "translate-y-0"
-      } bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] flex flex-col`}
+      } sticky top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] flex flex-col shadow-md`}
     >
       {/* Demo Banner */}
       <div className="bg-amber-400 text-amber-950 text-xs sm:text-sm font-semibold py-1.5 w-full relative z-20 shadow-sm marquee-container">
@@ -277,87 +254,3 @@ export const HeaderDefault = () => {
     </header>
   );
 };
-
-// export const HeaderDefault = () => {
-//   const pathname = usePathname();
-//   const [isFixed, setIsFixed] = useState(false);
-
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       if (window.scrollY > 0) {
-//         setIsFixed(true);
-//       } else {
-//         setIsFixed(false);
-//       }
-//     };
-
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-//   return (
-//     <header
-//       className={`w-full  ${
-//         pathname.startsWith("/admin") ? "hidden" : ""
-//       } z-50 bg-gradient-to-br from-gray-50 to-gray-100  py-2 transition-all duration-300 ${
-//         isFixed ? "sticky top-0 drop-shadow-md" : "relative"
-//       }`}
-//       // className={`w-full mb-[200px] ${
-//       //   pathname.startsWith("/admin") ? "hidden" : ""
-//       // } z-50 bg-gradient-to-br from-gray-50 to-gray-100 drop-shadow-md py-2 fixed `}
-//     >
-//       <div className="max-w-[1920px] mx-auto flex justify-between items-center px-[50px]">
-//         {/* Logo */}
-//         <div className="flex items-center ">
-//           <Link href={"/"} className="">
-//             <Image
-//               src="/logo.png"
-//               alt="Diplomatik Akademiya Logotipi"
-//               width={120}
-//               height={120}
-//               className="rounded-full"
-//             />
-//           </Link>
-//           <h1 className="ml-4 uppercase text-xl font-semibold text-gray-800">
-//             Diplomatik {"Lug‘at"}
-//           </h1>
-//         </div>
-
-//         {/* Navbar */}
-//         <nav className="space-x-6 text-lg text-gray-700">
-//           <Link
-//             href="/"
-//             className={` ${
-//               pathname === "/" ? "bg-[#001c3b] text-white" : "bg-none"
-//             } p-2 rounded-md  duration-300 ease-in-out`}
-//           >
-//             <span>Bosh Sahifa</span>
-//           </Link>
-//           <Link
-//             className={` ${
-//               pathname === "/dictionary" ? "bg-[#001c3b] text-white" : "bg-none"
-//             } p-2 rounded-md  duration-300 ease-in-out`}
-//             href="/dictionary"
-//           >
-//             <span>{"Lug'at"}</span>
-//           </Link>
-//           <Link
-//             className={` ${
-//               pathname === "/about" ? "bg-[#001c3b] text-white" : "bg-none"
-//             } p-2 rounded-md  duration-300 ease-in-out`}
-//             href="/about"
-//           >
-//             <span>{"Lug'at"} Haqida</span>
-//           </Link>
-//           <Link
-//             className={` ${
-//               pathname === "/contact" ? "bg-[#001c3b] text-white" : "bg-none"
-//             } p-2 rounded-md transition-all duration-300 ease-in-out`}
-//             href="/contact"
-//           >
-//             <span>Kontaktlar</span>
-//           </Link>
-//         </nav>
-//       </div>
-//     </header>
-//   );
-// };

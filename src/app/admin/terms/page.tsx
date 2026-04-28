@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
+import { PageContainer } from "@/components/ui/PageContainer";
 // import { useRouter } from "next/navigation";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -391,376 +392,378 @@ const AdminTermsPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Header Row */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-          Terminlar
-        </h1>
-        <Button
-          variant="contained"
-          onClick={handleCreate}
-          startIcon={<AddIcon />}
-          className="!bg-blue-600 !text-white !rounded-lg !text-sm !font-medium hover:!bg-blue-700 !shadow-none"
-        >
-          Yangi yaratish
-        </Button>
-      </div>
-
-      {/* Toolbar Row */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-        <div className="w-full sm:max-w-sm">
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            placeholder="Terminlarni qidirish..."
-            className="flex-1 text-gray-800 text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            disabled={loading}
-            trigger={triggerSearch}
-          />
+    <PageContainer maxWidth="full">
+      <div className="flex flex-col gap-4">
+        {/* Header Row */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+            Terminlar
+          </h1>
+          <Button
+            variant="contained"
+            onClick={handleCreate}
+            startIcon={<AddIcon />}
+            className="!bg-blue-600 !text-white !rounded-lg !text-sm !font-medium hover:!bg-blue-700 !shadow-none"
+          >
+            Yangi yaratish
+          </Button>
         </div>
-        <div className="text-sm text-gray-500 font-medium whitespace-nowrap">
-          {totalTerms > 0 ? `${totalTerms} ta natija` : `Natija topilmadi`}
-        </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="w-full">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
-            <LoadingSpinner size="lg" />
-            <p className="mt-4 text-sm sm:!text-base text-gray-500">
-              Lugʻat yuklanmoqda...
-            </p>
+        {/* Toolbar Row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="w-full sm:max-w-sm">
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+              placeholder="Terminlarni qidirish..."
+              className="flex-1 text-gray-800 text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              disabled={loading}
+              trigger={triggerSearch}
+            />
           </div>
-        ) : (
-          totalTerms > 0 && (
-            <>
-              <TableContainer
-                component={Paper}
-                className="shadow-lg rounded-xl overflow-hidden"
-              >
-                {/* Mobile scroll wrapper */}
-                <div className="overflow-x-auto">
-                  <Table className="table-fixed w-full ">
-                    <TableHead>
-                      <TableRow className="bg-[#001c3b]">
-                        <TableCell className="!font-bold !text-white px-4 py-3 text-sm sm:!text-base w-[50%]">
-                          Termin Nomi
-                        </TableCell>
+          <div className="text-sm text-gray-500 font-medium whitespace-nowrap">
+            {totalTerms > 0 ? `${totalTerms} ta natija` : `Natija topilmadi`}
+          </div>
+        </div>
 
-                        <TableCell
-                          className="cursor-pointer select-none w-[15%] text-sm sm:!text-base !font-bold !text-white px-4 py-3"
-                          onClick={() => handleSort("created_at")}
-                        >
-                          Yaratilgan
-                          {sortConfig?.key === "created_at" && (
-                            <span className="ml-1">
-                              {sortConfig.direction === "asc" ? "▲" : "▼"}
-                            </span>
-                          )}
-                        </TableCell>
-
-                        <TableCell
-                          className="cursor-pointer select-none w-[15%] text-sm sm:!text-base !font-bold !text-white px-4 py-3"
-                          onClick={() => handleSort("updated_at")}
-                        >
-                          {"O'zgartirilgan"}
-                          {sortConfig?.key === "updated_at" && (
-                            <span className="ml-1">
-                              {sortConfig.direction === "asc" ? "▲" : "▼"}
-                            </span>
-                          )}
-                        </TableCell>
-
-                        <TableCell className="!font-bold !text-white px-4 py-3 w-[20%] !text-center text-sm sm:!text-base">
-                          Amallar
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                      {sortedTerms.map((term) => (
-                        <TableRow
-                          key={term.id}
-                          className="hover:bg-blue-50 transition-colors border-b border-gray-200"
-                        >
-                          {/* ✅ Allow wrapping */}
-                          <TableCell className="px-4 py-3 !text-sm sm:!text-base text-gray-900 break-words">
-                            {term.title}
+        {/* Main Content */}
+        <div className="w-full">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-12 sm:py-16">
+              <LoadingSpinner size="lg" />
+              <p className="mt-4 text-sm sm:!text-base text-gray-500">
+                Lugʻat yuklanmoqda...
+              </p>
+            </div>
+          ) : (
+            totalTerms > 0 && (
+              <>
+                <TableContainer
+                  component={Paper}
+                  className="shadow-lg rounded-xl overflow-hidden"
+                >
+                  {/* Mobile scroll wrapper */}
+                  <div className="overflow-x-auto">
+                    <Table className="table-fixed w-full ">
+                      <TableHead>
+                        <TableRow className="bg-[#001c3b]">
+                          <TableCell className="!font-bold !text-white px-4 py-3 text-sm sm:!text-base w-[50%]">
+                            Termin Nomi
                           </TableCell>
 
-                          <TableCell className="px-4 py-3 text-sm sm:!text-base text-gray-900">
-                            {(() => {
-                              const { formattedDate, formattedTime } =
-                                formatDateTime(term.created_at);
-                              return (
-                                <div className="flex flex-col items-start">
-                                  <span>{formattedDate}</span>
-                                  <span className="text-xs text-gray-400">
-                                    {formattedTime}
-                                  </span>
-                                </div>
-                              );
-                            })()}
+                          <TableCell
+                            className="cursor-pointer select-none w-[15%] text-sm sm:!text-base !font-bold !text-white px-4 py-3"
+                            onClick={() => handleSort("created_at")}
+                          >
+                            Yaratilgan
+                            {sortConfig?.key === "created_at" && (
+                              <span className="ml-1">
+                                {sortConfig.direction === "asc" ? "▲" : "▼"}
+                              </span>
+                            )}
                           </TableCell>
 
-                          <TableCell className="px-4 py-3 text-sm sm:!text-base text-gray-900">
-                            {(() => {
-                              const { formattedDate, formattedTime } =
-                                formatDateTime(term.updated_at);
-                              return (
-                                <div className="flex flex-col items-start">
-                                  <span>{formattedDate}</span>
-                                  <span className="text-xs text-gray-400">
-                                    {formattedTime}
-                                  </span>
-                                </div>
-                              );
-                            })()}
+                          <TableCell
+                            className="cursor-pointer select-none w-[15%] text-sm sm:!text-base !font-bold !text-white px-4 py-3"
+                            onClick={() => handleSort("updated_at")}
+                          >
+                            {"O'zgartirilgan"}
+                            {sortConfig?.key === "updated_at" && (
+                              <span className="ml-1">
+                                {sortConfig.direction === "asc" ? "▲" : "▼"}
+                              </span>
+                            )}
                           </TableCell>
 
-                          <TableCell className="px-4 py-3 text-center">
-                            <Box className="flex gap-2 justify-center">
-                              <IconButton
-                                size="small"
-                                className="text-blue-600 hover:text-blue-800"
-                                onClick={() => handleTermClick(term.id)}
-                                title="Ko'rish"
-                              >
-                                <VisibilityIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                className="text-green-600 hover:text-green-800"
-                                onClick={() => handleEdit(term.id)}
-                                title="Tahrirlash"
-                              >
-                                <EditIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                className="text-red-600 hover:text-red-800"
-                                onClick={() => handleDelete(term.id)}
-                                title="O'chirish"
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </IconButton>
-                            </Box>
+                          <TableCell className="!font-bold !text-white px-4 py-3 w-[20%] !text-center text-sm sm:!text-base">
+                            Amallar
                           </TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
+                      </TableHead>
 
-                    <TableFooter>
-                      <TableRow>
-                        <TablePagination
-                          rowsPerPageOptions={[
-                            5,
-                            10,
-                            25,
-                            50,
-                            { label: "All", value: -1 },
-                          ]}
-                          colSpan={4}
-                          count={totalTerms}
-                          rowsPerPage={rowsPerPage}
-                          page={page}
-                          slotProps={{
-                            select: {
-                              inputProps: {
-                                "aria-label": "rows per page",
+                      <TableBody>
+                        {sortedTerms.map((term) => (
+                          <TableRow
+                            key={term.id}
+                            className="hover:bg-blue-50 transition-colors border-b border-gray-200"
+                          >
+                            {/* ✅ Allow wrapping */}
+                            <TableCell className="px-4 py-3 !text-sm sm:!text-base text-gray-900 break-words">
+                              {term.title}
+                            </TableCell>
+
+                            <TableCell className="px-4 py-3 text-sm sm:!text-base text-gray-900">
+                              {(() => {
+                                const { formattedDate, formattedTime } =
+                                  formatDateTime(term.created_at);
+                                return (
+                                  <div className="flex flex-col items-start">
+                                    <span>{formattedDate}</span>
+                                    <span className="text-xs text-gray-400">
+                                      {formattedTime}
+                                    </span>
+                                  </div>
+                                );
+                              })()}
+                            </TableCell>
+
+                            <TableCell className="px-4 py-3 text-sm sm:!text-base text-gray-900">
+                              {(() => {
+                                const { formattedDate, formattedTime } =
+                                  formatDateTime(term.updated_at);
+                                return (
+                                  <div className="flex flex-col items-start">
+                                    <span>{formattedDate}</span>
+                                    <span className="text-xs text-gray-400">
+                                      {formattedTime}
+                                    </span>
+                                  </div>
+                                );
+                              })()}
+                            </TableCell>
+
+                            <TableCell className="px-4 py-3 text-center">
+                              <Box className="flex gap-2 justify-center">
+                                <IconButton
+                                  size="small"
+                                  className="text-blue-600 hover:text-blue-800"
+                                  onClick={() => handleTermClick(term.id)}
+                                  title="Ko'rish"
+                                >
+                                  <VisibilityIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  className="text-green-600 hover:text-green-800"
+                                  onClick={() => handleEdit(term.id)}
+                                  title="Tahrirlash"
+                                >
+                                  <EditIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  className="text-red-600 hover:text-red-800"
+                                  onClick={() => handleDelete(term.id)}
+                                  title="O'chirish"
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+
+                      <TableFooter>
+                        <TableRow>
+                          <TablePagination
+                            rowsPerPageOptions={[
+                              5,
+                              10,
+                              25,
+                              50,
+                              { label: "All", value: -1 },
+                            ]}
+                            colSpan={4}
+                            count={totalTerms}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            slotProps={{
+                              select: {
+                                inputProps: {
+                                  "aria-label": "rows per page",
+                                },
+                                native: true,
                               },
-                              native: true,
-                            },
-                          }}
-                          onPageChange={handleChangePage}
-                          onRowsPerPageChange={handleChangeRowsPerPage}
-                          ActionsComponent={TablePaginationActions}
-                          showLastButton={true}
-                          showFirstButton={true}
-                        />
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                </div>
-              </TableContainer>
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                            showLastButton={true}
+                            showFirstButton={true}
+                          />
+                        </TableRow>
+                      </TableFooter>
+                    </Table>
+                  </div>
+                </TableContainer>
 
-              <Dialog
-                open={createMode || viewMode || !!editTerm}
-                fullWidth={true}
-                maxWidth="lg"
-                onClose={closeModals}
-                // sx={{
-                //   "& .MuiDialog-paper": {
-                //     padding: { xs: "16px", sm: "24px" },
-                //     borderRadius: "12px",
-                //   },
-                // }}
-              >
-                <DialogTitle
-                  sx={{
-                    fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
-                    fontWeight: 600,
-                  }}
+                <Dialog
+                  open={createMode || viewMode || !!editTerm}
+                  fullWidth={true}
+                  maxWidth="lg"
+                  onClose={closeModals}
+                  // sx={{
+                  //   "& .MuiDialog-paper": {
+                  //     padding: { xs: "16px", sm: "24px" },
+                  //     borderRadius: "12px",
+                  //   },
+                  // }}
                 >
-                  {createMode
-                    ? "Yangi termin yaratish"
-                    : viewMode
-                      ? "Atama tafsilotlari"
-                      : "Atamani tahrirlash"}
-                </DialogTitle>
-                <DialogContent>
-                  <form
-                    onSubmit={handleFormSubmit}
-                    className="space-y-4 sm:space-y-6"
-                    id="term-create-form"
+                  <DialogTitle
+                    sx={{
+                      fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
+                      fontWeight: 600,
+                    }}
                   >
-                    <div>
-                      <label className="block text-sm sm:!text-base font-medium text-gray-700 mb-2">
-                        Termin Nomi
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.title}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            title: e.target.value,
-                          })
-                        }
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:!text-base"
-                        required
-                        disabled={viewMode}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm sm:!text-base font-medium text-gray-700 mb-2">
-                        Taʼrif
-                      </label>
-                      <EditorComponent
-                        value={formData.definition}
-                        editable={!viewMode}
-                        disabled={viewMode}
-                        onChange={(content) =>
-                          debouncedSetFormData({
-                            ...formData,
-                            definition: content,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-4 sm:space-y-6">
-                      <AsyncTermSelect
-                        value={formData.related_terms}
-                        onChange={(ids) =>
-                          setFormData({ ...formData, related_terms: ids })
-                        }
-                        disabled={viewMode}
-                      />
+                    {createMode
+                      ? "Yangi termin yaratish"
+                      : viewMode
+                        ? "Atama tafsilotlari"
+                        : "Atamani tahrirlash"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <form
+                      onSubmit={handleFormSubmit}
+                      className="space-y-4 sm:space-y-6"
+                      id="term-create-form"
+                    >
+                      <div>
+                        <label className="block text-sm sm:!text-base font-medium text-gray-700 mb-2">
+                          Termin Nomi
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.title}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              title: e.target.value,
+                            })
+                          }
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:!text-base"
+                          required
+                          disabled={viewMode}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm sm:!text-base font-medium text-gray-700 mb-2">
+                          Taʼrif
+                        </label>
+                        <EditorComponent
+                          value={formData.definition}
+                          editable={!viewMode}
+                          disabled={viewMode}
+                          onChange={(content) =>
+                            debouncedSetFormData({
+                              ...formData,
+                              definition: content,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-4 sm:space-y-6">
+                        <AsyncTermSelect
+                          value={formData.related_terms}
+                          onChange={(ids) =>
+                            setFormData({ ...formData, related_terms: ids })
+                          }
+                          disabled={viewMode}
+                        />
+                      </div>
+                      {modalError && (
+                        <div className="text-red-600 text-sm sm:!text-base">
+                          {modalError}
+                        </div>
+                      )}
+                    </form>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={closeModals}
+                      className="!text-sm sm:!text-base !text-gray-700 !rounded-lg"
+                    >
+                      Bekor qilish
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={modalLoading}
+                      form="term-create-form"
+                      className={`!text-sm sm:!text-base !text-white !bg-blue-600 !rounded-lg !px-4 !py-2 !font-medium hover:!bg-blue-700 ${
+                        viewMode ? "!hidden" : "!flex"
+                      }`}
+                    >
+                      {modalLoading
+                        ? "Saqlanmoqda..."
+                        : createMode
+                          ? "Yaratish"
+                          : "Saqlash"}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Dialog
+                  open={!!deleteTermId}
+                  onClose={closeModals}
+                  // sx={{
+                  //   display: "flex",
+                  //   alignItems: "center",
+                  //   justifyContent: "center",
+                  // }}
+                >
+                  <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm sm:max-w-md w-full">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                      Atamani oʻchirish
+                    </h2>
+                    <div className="text-sm sm:!text-base text-gray-700 mb-4 sm:mb-6">
+                      Ushbu atamani oʻchirishga ishonchingiz komilmi?
                     </div>
                     {modalError && (
-                      <div className="text-red-600 text-sm sm:!text-base">
+                      <div className="text-red-600 text-sm sm:!text-base mb-4">
                         {modalError}
                       </div>
                     )}
-                  </form>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={closeModals}
-                    className="!text-sm sm:!text-base !text-gray-700 !rounded-lg"
-                  >
-                    Bekor qilish
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={modalLoading}
-                    form="term-create-form"
-                    className={`!text-sm sm:!text-base !text-white !bg-blue-600 !rounded-lg !px-4 !py-2 !font-medium hover:!bg-blue-700 ${
-                      viewMode ? "!hidden" : "!flex"
-                    }`}
-                  >
-                    {modalLoading
-                      ? "Saqlanmoqda..."
-                      : createMode
-                        ? "Yaratish"
-                        : "Saqlash"}
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Dialog
-                open={!!deleteTermId}
-                onClose={closeModals}
-                // sx={{
-                //   display: "flex",
-                //   alignItems: "center",
-                //   justifyContent: "center",
-                // }}
-              >
-                <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm sm:max-w-md w-full">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
-                    Atamani oʻchirish
-                  </h2>
-                  <div className="text-sm sm:!text-base text-gray-700 mb-4 sm:mb-6">
-                    Ushbu atamani oʻchirishga ishonchingiz komilmi?
-                  </div>
-                  {modalError && (
-                    <div className="text-red-600 text-sm sm:!text-base mb-4">
-                      {modalError}
+                    <div className="flex justify-end gap-2 sm:gap-3">
+                      <button
+                        type="button"
+                        onClick={closeModals}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-200 rounded-lg text-gray-800 text-sm sm:!text-base"
+                      >
+                        Bekor qilish
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDeleteConfirm}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-600 text-white rounded-lg text-sm sm:!text-base font-medium hover:bg-red-700"
+                        disabled={modalLoading}
+                      >
+                        {modalLoading ? "Oʻchirilmoqda..." : "Oʻchirish"}
+                      </button>
                     </div>
-                  )}
-                  <div className="flex justify-end gap-2 sm:gap-3">
-                    <button
-                      type="button"
-                      onClick={closeModals}
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-200 rounded-lg text-gray-800 text-sm sm:!text-base"
-                    >
-                      Bekor qilish
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleDeleteConfirm}
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-600 text-white rounded-lg text-sm sm:!text-base font-medium hover:bg-red-700"
-                      disabled={modalLoading}
-                    >
-                      {modalLoading ? "Oʻchirilmoqda..." : "Oʻchirish"}
-                    </button>
                   </div>
-                </div>
-              </Dialog>
-            </>
-          )
-        )}
-      </div>
-      {/* Scroll to Top Button */}
-      <Zoom in={showScrollTop}>
-        <Fab
-          color="primary"
-          aria-label="scroll to top"
-          onClick={scrollToTop}
-          className="!fixed !bottom-6 !right-6 !bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg"
-          sx={{ width: 48, height: 48 }}
-        >
-          <ArrowUpwardIcon />
-        </Fab>
-      </Zoom>
-      {/* Success Snackbar */}
-      <Snackbar
-        open={showSuccess}
-        autoHideDuration={6000}
-        onClose={() => setShowSuccess(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
+                </Dialog>
+              </>
+            )
+          )}
+        </div>
+        {/* Scroll to Top Button */}
+        <Zoom in={showScrollTop}>
+          <Fab
+            color="primary"
+            aria-label="scroll to top"
+            onClick={scrollToTop}
+            className="!fixed !bottom-6 !right-6 !bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg"
+            sx={{ width: 48, height: 48 }}
+          >
+            <ArrowUpwardIcon />
+          </Fab>
+        </Zoom>
+        {/* Success Snackbar */}
+        <Snackbar
+          open={showSuccess}
+          autoHideDuration={6000}
           onClose={() => setShowSuccess(false)}
-          severity="success"
-          sx={{ width: "100%", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          {successMsg || "Muvaffaqiyatli Bajarildi!"}
-        </Alert>
-      </Snackbar>
-    </div>
+          <Alert
+            onClose={() => setShowSuccess(false)}
+            severity="success"
+            sx={{ width: "100%", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
+            {successMsg || "Muvaffaqiyatli Bajarildi!"}
+          </Alert>
+        </Snackbar>
+      </div>
+    </PageContainer>
   );
 };
 

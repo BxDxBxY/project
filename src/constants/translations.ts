@@ -94,22 +94,35 @@ export const translations = {
       terms: "Shartlar va Qoidalar",
       privacy: "Maxfiylik siyosati",
       contact: "Kontakt",
-      rights: "«Diplomatic Academy» — Barcha huquqlar himoyalangan",
+      rights: "2026 «Diplomatic Academy» — Barcha huquqlar himoyalangan",
     },
     privacy: {
       title: "Maxfiylik siyosati",
-      lastUpdated: "Oxirgi yangilanish: 2026-yil, Mart",
+      lastUpdated: "Oxirgi yangilanish: 2026-yil, Aprel",
       content1:
-        "Diplomatik Akademiyaga xush kelibsiz. Biz sizning maxfiyligingizni hurmat qilamiz va shaxsiy ma'lumotlaringizni himoya qilishga intilamiz.",
-      content2: "Ma'lumotlarni yig'ish va ulardan foydalanish",
+        "Diplomatik Akademiyaga xush kelibsiz. Biz sizning maxfiyligingizni hurmat qilamiz va shaxsiy ma'lumotlaringizni himoya qilishga intilamiz. Ushbu maxfiylik siyosati bizning veb-saytimizdan foydalanganingizda ma'lumotlaringiz qanday to'planishi, ishlatilishi va himoya qilinishini tushuntiradi.",
+      content2: "Ma'lumotlarni yig'ish",
       content3:
-        "Biz xizmatlarimizni yaxshilash va sizga mos kontent taqdim etish maqsadida ba'zi ma'lumotlarni to'plashimiz mumkin. Bularga veb-saytga tashrif buyurish, aloqa formalari orqali yuborilgan ma'lumotlar kiradi.",
+        "Biz xizmatlarimizni yaxshilash maqsadida quyidagi ma'lumotlarni to'plashimiz mumkin: ism-sharifingiz, elektron pochta manzilingiz, aloqa formasi orqali yuborilgan xabarlar va veb-saytdan foydalanish statistikasi (Google Analytics yordamida).",
       content4: "Ma'lumotlar xavfsizligi",
       content5:
-        "Sizning ma'lumotlaringiz xavfsizligi biz uchun muhim. Biz ularni ruxsatsiz kirishdan, foydalanishdan yoki o'zgartirishdan himoya qilish uchun zamonaviy xavfsizlik choralarini ko'ramiz.",
-      content6: "Bog'lanish",
+        "Sizning ma'lumotlaringiz xavfsizligi biz uchun muhim. Biz ularni ruxsatsiz kirishdan, foydalanishdan yoki o'zgartirishdan himoya qilish uchun SSL shifrlash va boshqa zamonaviy xavfsizlik choralarini ko'ramiz.",
+      content6: "Uchinchi tomon xizmatlari",
       content7:
-        "Agar ushbu maxfiylik siyosati haqida savollaringiz bo'lsa, info@da-uwed.uz manziliga murojaat qiling.",
+        "Veb-saytimizda Google Analytics va Google ReCAPTCHA xizmatlaridan foydalaniladi. Ushbu xizmatlar o'zlarining maxfiylik siyosatiga ega bo'lib, ular sayt xavfsizligi va foydalanish tahlilini ta'minlashga xizmat qiladi.",
+    },
+    terms: {
+      title: "Foydalanish shartlari",
+      lastUpdated: "Oxirgi yangilanish: 2026-yil, Aprel",
+      section1Title: "1. Umumiy qoidalar",
+      section1Content:
+        "Ushbu veb-saytdan foydalanish orqali siz quyidagi shartlarga to'liq rozilik bildirasiz. Agar siz ushbu shartlarga rozi bo'lmasangiz, veb-saytdan foydalanmasligingizni so'raymiz.",
+      section2Title: "2. Mualliflik huquqi",
+      section2Content:
+        "Veb-saytdagi barcha materiallar (matnlar, terminlar, izohlar, grafikalar) Diplomatik Akademiyaning intellektual mulki hisoblanadi. Materiallardan ruxsatsiz foydalanish yoki nusxa ko'chirish taqiqlanadi.",
+      section3Title: "3. Mas'uliyatni cheklash",
+      section3Content:
+        "Veb-saytdagi ma'lumotlar faqat axborot va ta'lim maqsadlarida taqdim etiladi. Akademiya lug'atdagi ma'lumotlarning mutlaq aniqligi yoki ulardan foydalanish natijasida kelib chiqadigan har qanday bevosita yoki bilvosita zararlar uchun javobgarlikni o'z zimmasiga olmaydi.",
     },
   },
   ru: {
@@ -208,18 +221,31 @@ export const translations = {
     },
     privacy: {
       title: "Политика конфиденциальности",
-      lastUpdated: "Последнее обновление: Март, 2026",
+      lastUpdated: "Последнее обновление: Апрель, 2026",
       content1:
-        "Добро пожаловать в Дипломатическую Академию. Мы уважаем вашу конфиденциальность и стремимся защитить вашу личную информацию.",
-      content2: "Сбор и использование данных",
+        "Добро пожаловать в Дипломатическую Академию. Мы уважаем вашу конфиденциальность и стремимся защитить вашу личную информацию. Эта политика объясняет, как мы собираем, используем и защищаем ваши данные при использовании нашего веб-сайта.",
+      content2: "Сбор данных",
       content3:
-        "Мы можем собирать некоторую информацию в целях улучшения наших услуг и предоставления вам релевантного контента. Это включает информацию о посещении веб-сайта, информацию, отправленную через контактные формы.",
+        "Мы можем собирать следующую информацию для улучшения наших услуг: ваше ФИО, адрес электронной почты, сообщения, отправленные через контактную форму, и статистику использования веб-сайта (с помощью Google Analytics).",
       content4: "Безопасность данных",
       content5:
-        "Безопасность ваших данных важна для нас. Мы принимаем современные меры безопасности для их защиты от несанкционированного доступа, использования или изменения.",
-      content6: "Связь",
+        "Безопасность ваших данных важна для нас. Мы используем SSL-шифрование и другие современные меры безопасности для их защиты от несанкционированного доступа, использования или изменения.",
+      content6: "Сторонние сервисы",
       content7:
-        "Если у вас есть вопросы по этой политике конфиденциальности, пожалуйста, свяжитесь с нами по адресу info@da-uwed.uz.",
+        "На нашем веб-сайте используются сервисы Google Analytics и Google ReCAPTCHA. Эти сервисы имеют свою политику конфиденциальности и служат для обеспечения безопасности сайта и анализа его использования.",
+    },
+    terms: {
+      title: "Условия использования",
+      lastUpdated: "Последнее обновление: Апрель, 2026",
+      section1Title: "1. Общие положения",
+      section1Content:
+        "Используя этот веб-сайт, вы выражаете полное согласие с нижеследующими условиями. Если вы не согласны с этими условиями, пожалуйста, не используйте веб-сайт.",
+      section2Title: "2. Авторское право",
+      section2Content:
+        "Все материалы веб-сайта (тексты, термины, пояснения, графика) являются интеллектуальной собственностью Дипломатической Академии. Несанкционированное использование или копирование материалов запрещено.",
+      section3Title: "3. Ограничение ответственности",
+      section3Content:
+        "Информация на веб-сайте предоставляется исключительно в ознакомительных и образовательных целях. Академия не несет ответственности за абсолютную точность информации в словаре или за любые прямые или косвенные убытки, возникшие в результате ее использования.",
     },
   },
 };
