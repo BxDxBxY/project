@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import HomeIcon from "@mui/icons-material/Home";

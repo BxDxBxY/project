@@ -106,8 +106,6 @@ export default function AdminCategoriesPage() {
       await loadCategories();
       closeModals();
     } catch (err: any) {
-      console.log(err);
-
       setModalError(err?.details?.name || "Failed to create category");
     } finally {
       setModalLoading(false);

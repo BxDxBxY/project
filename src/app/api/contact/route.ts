@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { LRUCache } from "lru-cache";
+import { contactSchema, validateSchema } from "@/lib/validations";
 
 const BACKEND_URL = process.env.BACKEND_URL!;
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
@@ -30,7 +31,25 @@ export async function POST(req: NextRequest) {
     }
 
     const json = await req.json();
-    const { recaptchaToken, ...data } = json;
+
+    // Input validation
+    const validation = validateSchema(contactSchema, json);
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          message: "Validation failed",
+          errors: validation.errors,
+        },
+        { status: 400 },
+      );
+    }
+
+    const { recaptchaToken, ...data } = validation.data as {
+      full_name: string;
+      email_address: string;
+      message: string;
+      recaptchaToken?: string;
+    };
 
     // Verify reCAPTCHA
     if (RECAPTCHA_SECRET_KEY && RECAPTCHA_SECRET_KEY !== "dummy_secret") {
@@ -75,7 +94,6 @@ export async function POST(req: NextRequest) {
     const resData = await res.json();
     return NextResponse.json(resData, { status: res.status });
   } catch (error) {
-    console.error("Contact API error:", error);
     return NextResponse.json(
       { message: "Failed to send contact form" },
       { status: 500 },

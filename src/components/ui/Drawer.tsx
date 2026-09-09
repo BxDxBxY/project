@@ -115,15 +115,16 @@ export default function MiniDrawer({
       icon: <DashboardTwoToneIcon />,
       url: "/admin/dashboard",
     },
-    { text: "Terminlar", icon: <FormatColorTextIcon />, url: "/admin/terms" },
-    // { text: "Kategoriyalar", icon: <ClassTwoToneIcon />, url: "/admin/categories" },
-    // { text: "Foydalanuvchilar", icon: <GroupTwoToneIcon />, url: "/admin/users" },
     {
-      text: "Xatlar",
+      text: "Terminlar",
+      icon: <FormatColorTextIcon />,
+      url: "/admin/terms",
+    },
+    {
+      text: "Xabarlar",
       icon: <LocalPostOfficeTwoToneIcon />,
       url: "/admin/contacts",
     },
-    // { text: "Drafts", icon: <DrawTwoToneIcon />, url: "#" },
   ];
 
   const handleDrawerOpen = () => setOpen(true);
@@ -134,18 +135,20 @@ export default function MiniDrawer({
   const drawerContent = (
     <div className="h-full flex flex-col">
       <DrawerHeader>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-[#001c3b] flex items-center justify-center text-white font-bold">
-            A
+        <div className="flex items-center gap-2 w-full">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#001c3b] to-[#003d7a] flex items-center justify-center text-white font-bold shadow-md">
+            DA
           </div>
-          <Button
-            variant="text"
-            className="!font-bold !text-[#001c3b]"
-            size="medium"
-            onClick={handleLogout}
-          >
-            Chiqish
-          </Button>
+          {(open || isMobile) && (
+            <Button
+              variant="text"
+              className="!font-semibold !text-[#001c3b] !normal-case"
+              size="small"
+              onClick={handleLogout}
+            >
+              Chiqish
+            </Button>
+          )}
         </div>
         {!isMobile && (
           <IconButton onClick={handleDrawerClose}>
@@ -210,8 +213,8 @@ export default function MiniDrawer({
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
-              Admin Panel
+            <Typography variant="h6" noWrap sx={{ fontWeight: 600 }}>
+              Diplomatik Akademiya
             </Typography>
           </div>
         </Toolbar>

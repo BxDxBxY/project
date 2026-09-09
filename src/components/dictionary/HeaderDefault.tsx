@@ -59,10 +59,6 @@ export const HeaderDefault = () => {
         pathname.startsWith("/admin") ? "hidden" : ""
       } sticky top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] flex flex-col shadow-md`}
     >
-      {/* Demo Banner */}
-      <div className="bg-amber-400 text-amber-950 text-xs sm:text-sm font-semibold py-1.5 w-full relative z-20 shadow-sm marquee-container">
-        <div className="marquee-content">Sayt test variantda ishlamoqda.</div>
-      </div>
       {/* Background with gradient and photo */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]" />
@@ -78,38 +74,38 @@ export const HeaderDefault = () => {
         <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 shadow-md" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-5 w-full">
         {/* Logo + Title */}
-        <div className="flex items-center">
-          <Link href="/">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link href="/" className="transition-transform hover:scale-105">
             <Image
               src="/logo2.png"
               alt="Diplomatik Akademiya Logotipi"
-              width={60}
-              height={60}
-              className="rounded-full border-2 sm:w-16 sm:h-16 md:w-20 md:h-20"
+              width={70}
+              height={70}
+              className="rounded-full sm:w-20 sm:h-20 md:w-24 md:h-24"
             />
           </Link>
-          <div className="ml-3 sm:ml-4">
-            <h1 className="uppercase text-lg sm:text-xl md:text-2xl font-bold text-white drop-shadow-lg tracking-wide">
+          <div>
+            <h1 className="uppercase text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white drop-shadow-lg tracking-wide leading-tight">
               {tHeader.title}
             </h1>
-            <p className="text-xs sm:text-sm text-white/90 font-light drop-shadow-md">
+            <p className="text-xs sm:text-sm text-white/95 font-medium drop-shadow-md mt-0.5">
               {tHeader.subtitle}
             </p>
           </div>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-4 items-center">
+        <nav className="hidden md:flex space-x-2 items-center">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className={`px-3 py-1 rounded-md text-white text-center content-center font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg text-white text-center font-semibold transition-all ${
                 pathname === href
-                  ? "bg-black/40 shadow-md"
-                  : "hover:bg-black/20"
+                  ? "bg-white/25 shadow-lg backdrop-blur-sm"
+                  : "hover:bg-white/15 hover:shadow-md"
               }`}
             >
               {label}

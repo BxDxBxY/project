@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const res = await fetch(`${BACKEND_URL}/dictionary/term/${id}/`, {
+    const res = await fetch(`${BACKEND_URL}/dictionary/term_detailed/${id}/`, {
       cache: "no-store",
     });
     const data = await res.json();

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { DictionaryState, TermSummary } from "@/types";
 import { logger } from "@/lib/utils";
 import { searchTerms } from "@/lib/termsApi";
+import { fuzzySearchTerms } from "@/lib/search/fuzzySearch";
+import { addToSearchHistory } from "@/lib/search/searchHistory";
 
 let globalState: DictionaryState = {
   terms: [],
@@ -104,11 +106,12 @@ export const useDictionary = (
         if (!query) {
           setGlobalState((prev) => ({ ...prev, terms: fullTermsCache! }));
         } else {
-          const lowerQ = query.toLowerCase();
-          const filtered = fullTermsCache.filter((t) =>
-            t.title.toLowerCase().includes(lowerQ),
-          );
+          // Use fuzzy search for better results with typos
+          const filtered = fuzzySearchTerms(fullTermsCache, query);
           setGlobalState((prev) => ({ ...prev, terms: filtered }));
+
+          // Save to search history
+          addToSearchHistory(query);
         }
       }
     },

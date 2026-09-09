@@ -117,7 +117,6 @@ function ContactFormInner() {
       setFormData({ fullName: "", email: "", message: "" });
       setShowSuccess(true);
     } catch (error) {
-      console.error("Failed to submit contact form:", error);
       alert(
         "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring yoki bot emasligingizni tasdiqlang.",
       );

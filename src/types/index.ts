@@ -76,6 +76,8 @@ export interface TermSummary {
   id: number;
   title: string;
   title_ru?: string; // Placeholder for Russian translation
+  definition?: string; // Add definition for search
+  category?: string; // Add category for filtering
   created_at: string;
   updated_at: string;
 }

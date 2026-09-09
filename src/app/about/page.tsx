@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
 import { PageContainer } from "@/components/ui/PageContainer";
@@ -11,35 +10,37 @@ export default function AboutPage() {
 
   return (
     <PageContainer maxWidth="md">
-      <div className="py-8 sm:py-12 md:py-16">
-        {/* Header Section */}
-        <div className="text-center mb-10 sm:mb-12 md:mb-16">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight">
-            {t.title}
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8">
-            {t.para1}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para2}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para3}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para4}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para5}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para6}
-          </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify max-w-6xl mx-auto leading-relaxed whitespace-pre-line indent-8 mt-4 sm:mt-6">
-            {t.para7}
-          </p>
-          <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-6 sm:mt-8"></div>
-        </div>
+      {/* Header Section */}
+      <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#001c3b] mb-3 sm:mb-4 tracking-tight">
+          {t.title}
+        </h1>
+        <div className="w-16 sm:w-20 md:w-24 h-1 bg-[#c9a96e] mx-auto mt-4 sm:mt-6"></div>
+      </div>
+
+      {/* Content Section */}
+      <div className="space-y-4 sm:space-y-6">
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para1}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para2}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para3}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para4}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para5}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para6}
+        </p>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-justify leading-relaxed whitespace-pre-line indent-8">
+          {t.para7}
+        </p>
       </div>
     </PageContainer>
   );

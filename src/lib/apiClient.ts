@@ -1,42 +1,23 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { ApiError } from "@/types";
-import { TokenManager } from "./tokenManager";
 
 // Environment-based API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
-// interface ErrorResponse {
-//   code?: string;
-//   message?: string;
-// }
-
-// class TokenManager {
-//   private static getStorage(): Storage | null {
-//     return typeof window !== "undefined" ? window.localStorage : null;
-//   }
-//   static getAccessToken() { return this.getStorage()?.getItem("accessToken") || null; }
-//   static getRefreshToken() { return this.getStorage()?.getItem("refreshToken") || null; }
-//   static setTokens(access: string, refresh: string) {
-//     const s = this.getStorage(); if (s) { s.setItem("accessToken", access); s.setItem("refreshToken", refresh); }
-//   }
-//   static clearTokens() {
-//     const s = this.getStorage(); if (s) { s.removeItem("accessToken"); s.removeItem("refreshToken"); }
-//   }
-// }
-
 class ApiClient {
   private client: AxiosInstance;
-  // private isRefreshing = false;
-  // private failedQueue: Array<{
-  //   resolve: (value: any) => void;
-  //   reject: (error: any) => void;
-  // }> = [];
+  private isRefreshing = false;
+  private failedQueue: Array<{
+    resolve: (value: any) => void;
+    reject: (error: any) => void;
+  }> = [];
 
   constructor() {
     this.client = axios.create({
       baseURL: API_BASE_URL,
       headers: { "Content-Type": "application/json" },
       timeout: 10000,
+      // withCredentials only for authenticated requests, set per-request
     });
     this.setupInterceptors();
   }
@@ -44,32 +25,23 @@ class ApiClient {
   private setupInterceptors() {
     this.client.interceptors.request.use(
       (config) => {
-        const requiresAuth = ["POST", "PUT", "DELETE"].includes(
-          config.method?.toUpperCase() || "",
+        // Only send credentials for authenticated routes
+        const authRoutes = [
+          "/dictionary/contact_admin",
+          "/dictionary/create_category",
+          "/dictionary/create_term",
+          "/dictionary/user_list",
+          "/dictionary/user_create",
+          "/dictionary/user_update",
+          "/dictionary/user_delete",
+        ];
+
+        const requiresAuth = authRoutes.some((route) =>
+          config.url?.includes(route),
         );
-        const authFreeRoutes = ["/auth/token", "/dictionary/contact"];
-        const isContactAdminGet =
-          config.method?.toUpperCase() === "GET" &&
-          config.url?.includes("/dictionary/contact_admin");
-        const isTerminsAdminGet =
-          config.method?.toUpperCase() === "GET" &&
-          config.url?.includes("/dictionary/create_term");
 
-        const isAuthFreeRoute = authFreeRoutes.some((route) => {
-          console.log(true);
-          return config.url?.includes(route);
-        });
-
-        if (
-          (requiresAuth && !isAuthFreeRoute) ||
-          isContactAdminGet ||
-          isTerminsAdminGet
-        ) {
-          const token = TokenManager.getAccessToken();
-          console.log("token exists", token);
-          if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-          }
+        if (requiresAuth) {
+          config.withCredentials = true;
         }
 
         return config;
@@ -82,10 +54,48 @@ class ApiClient {
       async (error: AxiosError) => {
         const originalRequest = error.config as any;
 
+        // Handle 401 errors with token refresh
         if (error.response?.status === 401 && !originalRequest._retry) {
-          TokenManager.clearTokens();
-          if (typeof window !== "undefined")
-            window.location.href = "/admin/login";
+          if (this.isRefreshing) {
+            // Queue the request while refresh is in progress
+            return new Promise((resolve, reject) => {
+              this.failedQueue.push({ resolve, reject });
+            })
+              .then(() => this.client(originalRequest))
+              .catch((err) => Promise.reject(err));
+          }
+
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            // Attempt to refresh the token
+            await fetch("/api/auth/token/refresh/", {
+              method: "POST",
+              credentials: "include", // Send httpOnly cookies
+            });
+
+            // Process queued requests
+            this.failedQueue.forEach(({ resolve }) => {
+              resolve(this.client(originalRequest));
+            });
+            this.failedQueue = [];
+
+            // Retry the original request
+            return this.client(originalRequest);
+          } catch (refreshError) {
+            // Refresh failed - clear queue and redirect to login
+            this.failedQueue.forEach(({ reject }) => reject(refreshError));
+            this.failedQueue = [];
+
+            if (typeof window !== "undefined") {
+              window.location.href = "/admin/login";
+            }
+
+            return Promise.reject(refreshError);
+          } finally {
+            this.isRefreshing = false;
+          }
         }
 
         return Promise.reject(error);
@@ -113,4 +123,3 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
-// export { TokenManager };

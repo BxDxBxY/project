@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 
 interface PageContainerProps {
   children: React.ReactNode;
@@ -18,6 +17,7 @@ interface PageContainerProps {
  *   <PageContainer maxWidth="md">  → max-w-6xl (dictionary, about, contact)
  *   <PageContainer maxWidth="sm">  → max-w-4xl (privacy, terms, term detail)
  *   <PageContainer maxWidth="full"> → no max-width (home hero variants)
+ *   <PageContainer noPadding>      → removes default padding (for custom layouts)
  */
 export const PageContainer: React.FC<PageContainerProps> = ({
   children,
@@ -33,7 +33,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
 
   return (
     <div
-      className={`px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 mx-auto ${widthClass} ${className}`}
+      className={`px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10 mx-auto ${widthClass} ${className}`}
     >
       {children}
     </div>

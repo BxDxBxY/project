@@ -6,6 +6,9 @@ import Script from "next/script";
 import { HeaderDefault } from "@/components/dictionary/HeaderDefault";
 import FooterComponent from "@/components/dictionary/FooterComponent";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import CookieConsent from "@/components/CookieConsent";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,31 +31,44 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="uz" suppressHydrationWarning>
       <body className={inter.className}>
-        <LanguageProvider>
-          <div className="flex flex-col min-h-screen bg-gray-50">
-            <Head>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
-              />
-            </Head>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+          forcedTheme="light"
+        >
+          <QueryProvider>
+            <LanguageProvider>
+              <div className="flex flex-col min-h-screen bg-gray-50">
+                <Head>
+                  <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                  />
+                </Head>
 
-            {/* Fixed header */}
-            <HeaderDefault />
+                {/* Fixed header */}
+                <HeaderDefault />
 
-            {/* Main content area — only vertical gap, pages own their width */}
-            <main className="flex-1 bg-gradient-to-b from-gray-50 to-gray-100">
-              {children}
-            </main>
+                {/* Main content area — only vertical gap, pages own their width */}
+                <main className="flex-1 bg-gradient-to-b from-gray-50 to-gray-100">
+                  {children}
+                </main>
 
-            {/* Sticky footer */}
-            <FooterComponent />
-          </div>
-        </LanguageProvider>
+                {/* Sticky footer */}
+                <FooterComponent />
 
-        {/* Google Analytics Tracking */}
+                {/* Cookie Consent Banner */}
+                <CookieConsent />
+              </div>
+            </LanguageProvider>
+          </QueryProvider>
+        </ThemeProvider>
+
+        {/* Google Analytics - Conditional based on consent */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ZQM6WJ69BC"
           strategy="afterInteractive"
@@ -62,6 +78,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+
+            // Default to denied, will be updated by CookieConsent component
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied'
+            });
 
             gtag('config', 'G-ZQM6WJ69BC');
           `}

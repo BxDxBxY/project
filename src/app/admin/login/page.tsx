@@ -1,44 +1,31 @@
-// Copied from src/app/admin/login.tsx
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { login, verifyToken } from "@/lib/authApi";
-import { TokenManager } from "@/lib/tokenManager";
-// import { login, TokenManager, verifyToken } from "@/lib/api";
+import { login } from "@/lib/authApi";
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | undefined>(
-    TokenManager.getAccessToken(),
-  );
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const router = useRouter();
 
-  // If already logged in → redirect
+  // Check if already logged in via middleware
+  // Middleware will redirect if valid token exists in httpOnly cookie
   useEffect(() => {
-    if (accessToken) {
-      verifyToken(accessToken).then((res) => {
-        if (!res.code && !res.detail) {
-          router.replace("/admin/terms");
-        } else {
-          TokenManager.clearTokens();
-          setAccessToken(undefined);
-        }
-      });
-    }
-  }, [accessToken, router]);
+    // Token verification now happens server-side in middleware
+    // This effect is kept for potential client-side checks if needed
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const tokens = await login({ username, password });
-      TokenManager.setTokens(tokens.access, tokens.refresh);
-      setAccessToken(tokens.access); // ✅ обновляем state
+      // Login now sets httpOnly cookies server-side
+      await login({ username, password });
+      // Tokens are now in httpOnly cookies, redirect to admin
       router.replace("/admin/terms");
     } catch (err: any) {
       setError(err.message || "Login failed");

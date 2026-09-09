@@ -30,7 +30,8 @@ export async function submitContact(
   data: ContactPayload,
   recaptchaToken: string,
 ): Promise<ContactResponse> {
-  const res = await fetch("/internal-api/contact", {
+  // Use the internal API route which proxies to backend
+  const res = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...data, recaptchaToken }),

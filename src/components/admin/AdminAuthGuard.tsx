@@ -17,17 +17,7 @@ export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
       const access = TokenManager.getAccessToken();
       const refresh = TokenManager.getRefreshToken();
 
-      console.log(
-        "AdminAuthGuard: Access token:",
-        access ? "present" : "missing",
-      );
-      console.log(
-        "AdminAuthGuard: Refresh token:",
-        refresh ? "present" : "missing",
-      );
-
       if (!access && !refresh) {
-        console.log("No tokens, redirecting to login");
         router.replace("/admin/login");
         setChecking(false);
         return;
@@ -36,44 +26,28 @@ export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
       try {
         if (access) {
           const res = await verifyToken(access);
-          console.log("verifyToken response:", res);
           if (!res.code && !res.detail) {
             setChecking(false);
             return;
           }
-          console.log("Access token invalid, attempting refresh");
         }
 
         if (refresh) {
-          const data = await refreshToken(refresh);
-          console.log("refreshToken response:", data);
-          if (data.access) {
-            TokenManager.setTokens(data.access, refresh); // Update access token
-            setChecking(false);
-            return;
-          }
-          console.log("Refresh token invalid, clearing tokens");
-          TokenManager.clearTokens();
-          router.replace("/admin/login");
+          await refreshToken();
           setChecking(false);
           return;
         }
 
-        console.log("No valid tokens, redirecting to login");
-        TokenManager.clearTokens();
+        await TokenManager.clearTokens();
         router.replace("/admin/login");
         setChecking(false);
       } catch (err: any) {
-        console.error("AdminAuthGuard error:", {
-          message: err.message,
-          stack: err.stack,
-        });
         if (err.message.includes("Network Error")) {
           setError(
             "Authentication server unavailable. Please try again later.",
           );
         } else {
-          TokenManager.clearTokens();
+          await TokenManager.clearTokens();
           router.replace("/admin/login");
         }
         setChecking(false);

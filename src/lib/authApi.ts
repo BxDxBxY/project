@@ -1,19 +1,24 @@
 import { apiClient } from "./apiClient";
-import { LoginCredentials, AuthTokens } from "@/types";
+import { LoginCredentials } from "@/types";
 
-export const login = (credentials: LoginCredentials) =>
-  apiClient.request<AuthTokens>({
+// Login now returns success status, tokens are set as httpOnly cookies
+export const login = async (
+  credentials: LoginCredentials,
+): Promise<{ success: boolean }> => {
+  return apiClient.request<{ success: boolean }>({
     method: "POST",
     url: "/auth/token/",
     data: credentials,
   });
+};
 
-export const refreshToken = (refresh: string) =>
-  apiClient.request<AuthTokens>({
+// Refresh token is now handled automatically by reading from httpOnly cookie
+export const refreshToken = async (): Promise<{ success: boolean }> => {
+  return apiClient.request<{ success: boolean }>({
     method: "POST",
     url: "/auth/token/refresh/",
-    data: { refresh },
   });
+};
 
 export const verifyToken = (token: string) =>
   apiClient.request<{ detail?: string; code?: string }>({
@@ -21,6 +26,10 @@ export const verifyToken = (token: string) =>
     url: "/auth/token/verify/",
     data: { token },
   });
+
+export const logout = async (): Promise<void> => {
+  await fetch("/api/auth/logout", { method: "POST" });
+};
 
 export const withRetry = async <T>(
   fn: () => Promise<T>,
@@ -34,7 +43,6 @@ export const withRetry = async <T>(
       if (attempt === retries || !err.message.includes("Network Error")) {
         throw err;
       }
-      console.log(`Retry ${attempt}/${retries} for API call`);
       await new Promise((resolve) => setTimeout(resolve, delay * attempt));
     }
   }

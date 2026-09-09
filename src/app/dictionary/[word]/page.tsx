@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { fetchTerm } from "@/lib/termsApi";
-import { TermDetail } from "@/types";
-import { logger, formatDateTime } from "@/lib/utils";
+import { useTermQuery, usePrefetchTerm } from "@/hooks/useTermsQuery";
+import { Category, Country, TermSummary, Source } from "@/types";
+import { formatDateTime } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics/analytics";
 import InfoIcon from "@mui/icons-material/Info";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LanguageIcon from "@mui/icons-material/Language";
@@ -15,13 +16,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import TiptapViewer from "@/components/dictionary/TipTapViewer";
-import {
-  Settings,
-  Layout,
-  LayoutGrid,
-  LayoutTemplate,
-  Layers,
-} from "lucide-react";
 import { PageContainer } from "@/components/ui/PageContainer";
 
 const editorStyles = `
@@ -90,17 +84,34 @@ const getFlagEmoji = (isoCode?: string) => {
 const TermDetailPage: React.FC<TermDetailPageProps> = ({
   params,
 }: TermDetailPageProps) => {
-  const [term, setTerm] = useState<TermDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [layoutMode, setLayoutMode] = useState<1 | 2 | 3 | 4>(2); // Layout switcher (default to 2)
-  const [showSwitcher, setShowSwitcher] = useState(false);
+  const [termId, setTermId] = useState<number | null>(null);
+  // Term-page layout: 1 = hero, 2 = tabs, 3 = sticky editorial, 4 = minimalist. Change this value to switch.
+  const layoutMode: number = 2;
   const [activeTab, setActiveTab] = useState<
     "about" | "countries" | "terms" | "sources"
   >("about");
 
-  const { word: termId } = React.use(params);
   const router = useRouter();
+  const prefetchTerm = usePrefetchTerm();
+
+  // Unwrap params and extract term ID
+  useEffect(() => {
+    params.then((p) => {
+      const id = parseInt(p.word, 10);
+      if (!isNaN(id)) {
+        setTermId(id);
+      }
+    });
+  }, [params]);
+
+  // Use React Query to fetch term data
+  const {
+    data: term,
+    isLoading: loading,
+    error: queryError,
+  } = useTermQuery(termId || 0);
+
+  const error = queryError ? String(queryError) : null;
 
   const handleBack = () => {
     if (window.history.length > 2) {
@@ -110,32 +121,26 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
     }
   };
 
+  // Scroll to top when term changes
   useEffect(() => {
-    const fetchTermData = async () => {
-      setLoading(true);
-      try {
-        const termIdNum = parseInt(termId as string, 10);
-        if (isNaN(termIdNum)) {
-          throw new Error("Invalid term ID");
-        }
-        const [termData] = await Promise.all([fetchTerm(termIdNum)]);
-        setTerm(termData);
-        setError(null);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to load term";
-        logger.error("Error loading term:", err);
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTermData();
+    window.scrollTo(0, 0);
   }, [termId]);
+
+  // Track term view
+  useEffect(() => {
+    if (term) {
+      trackEvent.viewTerm(term.id, term.title);
+    }
+  }, [term]);
+
+  // Prefetch related terms on hover
+  const handleTermHover = (id: number) => {
+    prefetchTerm(id);
+  };
 
   if (loading) {
     return (
-      <div className="pt-[128px] p-8 flex flex-col items-center justify-center min-h-[60vh]">
+      <div className="p-8 flex flex-col items-center justify-center min-h-[60vh]">
         <LoadingSpinner size="lg" />
         <p className="mt-4 text-gray-500 font-medium">Termin yuklanmoqda...</p>
       </div>
@@ -144,7 +149,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
 
   if (error || !term) {
     return (
-      <div className="mx-auto pt-[128px] p-8 flex flex-col items-center justify-center min-h-[60vh]">
+      <div className="mx-auto p-8 flex flex-col items-center justify-center min-h-[60vh]">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border border-red-50">
           <div className="flex items-center justify-center w-16 h-16 mx-auto bg-red-100 rounded-full mb-6 text-red-600">
             <InfoIcon fontSize="large" />
@@ -185,7 +190,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               Kategoriyalar
             </h3>
             <div className="flex flex-wrap gap-2">
-              {term.categories.map((c, i) => (
+              {term.categories.map((c: Category, i: number) => (
                 <span
                   key={i}
                   className="px-3 py-1.5 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-100"
@@ -203,7 +208,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               Aloqador Davlatlar
             </h3>
             <div className="flex flex-col gap-2">
-              {term.related_countries.map((country, i) => (
+              {term.related_countries.map((country: Country, i: number) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 p-2 bg-gray-50 border border-gray-100 rounded-lg w-full max-w-xs transition hover:bg-gray-100"
@@ -228,10 +233,11 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               O&apos;xshash Terminlar
             </h3>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
-              {term.related_terms.map((rt, i) => (
+              {term.related_terms.map((rt: TermSummary, i: number) => (
                 <Link
                   key={i}
                   href={`/dictionary/${rt.id}`}
+                  onMouseEnter={() => handleTermHover(rt.id)}
                   className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors flex items-center"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-300 mr-2"></span>
@@ -248,7 +254,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               Manbalar
             </h3>
             <ul className="flex flex-col gap-2">
-              {term.sources.map((s, i) => (
+              {term.sources.map((s: Source, i: number) => (
                 <li key={i}>
                   <a
                     href={s.url}
@@ -290,75 +296,6 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
   return (
     <>
       <style>{editorStyles}</style>
-
-      {/* Floating Layout Switcher */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-        {showSwitcher && (
-          <div className="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 transition-all animate-in slide-in-from-bottom-5">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 px-2">
-              Select Layout
-            </div>
-
-            <button
-              onClick={() => setLayoutMode(1)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                layoutMode === 1
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <Layout className="w-4 h-4" />
-              1. Hero Banner
-            </button>
-
-            <button
-              onClick={() => setLayoutMode(2)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                layoutMode === 2
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <LayoutTemplate className="w-4 h-4" />
-              2. Interactive Tabs
-            </button>
-
-            <button
-              onClick={() => setLayoutMode(3)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                layoutMode === 3
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4" />
-              3. Sticky Editorial
-            </button>
-
-            <button
-              onClick={() => setLayoutMode(4)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                layoutMode === 4
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              4. Minimalist
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={() => setShowSwitcher(!showSwitcher)}
-          className="bg-[#001c3b] text-white p-4 rounded-full shadow-xl hover:bg-blue-900 transition-transform hover:scale-105"
-          aria-label="Toggle Layout Switcher"
-        >
-          <Settings
-            className={`w-6 h-6 transition-transform ${showSwitcher ? "rotate-180" : ""}`}
-          />
-        </button>
-      </div>
 
       <div className="transition-all duration-500">
         {/* LAYOUT 1: HERO BANNER */}
@@ -481,7 +418,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                             Kategoriyalar
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {term.categories.map((c, i) => (
+                            {term.categories.map((c: Category, i: number) => (
                               <span
                                 key={i}
                                 className="px-3 py-1 bg-gray-100 rounded-lg text-sm"
@@ -513,10 +450,11 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                   )}
                   {activeTab === "terms" && (
                     <div className="flex flex-col gap-3">
-                      {term.related_terms.map((rt, i) => (
+                      {term.related_terms.map((rt: TermSummary, i: number) => (
                         <Link
                           key={i}
                           href={`/dictionary/${rt.id}`}
+                          onMouseEnter={() => handleTermHover(rt.id)}
                           className="text-blue-600 font-medium hover:underline p-3 border border-gray-100 rounded-lg hover:border-blue-200 bg-gray-50 hover:bg-blue-50 transition"
                         >
                           {rt.title}
@@ -526,7 +464,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                   )}
                   {activeTab === "sources" && (
                     <div className="flex flex-col gap-3">
-                      {term.sources.map((s, i) => (
+                      {term.sources.map((s: Source, i: number) => (
                         <a
                           key={i}
                           href={s.url}
@@ -613,7 +551,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                             Kategoriyalar
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {term.categories.map((c, i) => (
+                            {term.categories.map((c: Category, i: number) => (
                               <span
                                 key={i}
                                 className="text-sm font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100"
@@ -662,21 +600,24 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                         O&apos;xshash Terminlar
                       </h4>
                       <div className="flex flex-col gap-2">
-                        {term.related_terms.map((rt, i) => (
-                          <Link
-                            key={i}
-                            href={`/dictionary/${rt.id}`}
-                            className="group flex items-center justify-between p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"
-                          >
-                            <span className="text-sm font-semibold text-slate-700 group-hover:text-indigo-600 line-clamp-1">
-                              {rt.title}
-                            </span>
-                            <KeyboardArrowRightIcon
-                              fontSize="small"
-                              className="text-slate-400 group-hover:text-indigo-500"
-                            />
-                          </Link>
-                        ))}
+                        {term.related_terms.map(
+                          (rt: TermSummary, i: number) => (
+                            <Link
+                              key={i}
+                              href={`/dictionary/${rt.id}`}
+                              onMouseEnter={() => handleTermHover(rt.id)}
+                              className="group flex items-center justify-between p-3 bg-white rounded-xl shadow-sm border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"
+                            >
+                              <span className="text-sm font-semibold text-slate-700 group-hover:text-indigo-600 line-clamp-1">
+                                {rt.title}
+                              </span>
+                              <KeyboardArrowRightIcon
+                                fontSize="small"
+                                className="text-slate-400 group-hover:text-indigo-500"
+                              />
+                            </Link>
+                          ),
+                        )}
                       </div>
                     </div>
                   )}
@@ -691,7 +632,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                         Manbalar
                       </h4>
                       <ul className="space-y-3">
-                        {term.sources.map((s, i) => (
+                        {term.sources.map((s: Source, i: number) => (
                           <li key={i}>
                             <a
                               href={s.url}

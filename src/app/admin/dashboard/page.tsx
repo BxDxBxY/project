@@ -165,12 +165,12 @@ export default function AdminDashboard() {
       <Box sx={{ mb: 4 }}>
         <Typography
           variant="h4"
-          sx={{ fontWeight: 800, color: "#001c3b", mb: 1 }}
+          sx={{ fontWeight: 700, color: "#001c3b", mb: 1 }}
         >
-          Xush kelibsiz!
+          Boshqaruv paneli
         </Typography>
         <Typography variant="body1" sx={{ color: "text.secondary" }}>
-          Diplomatik akademiya lug&apos;ati boshqaruv paneli statistikasi.
+          Lug&apos;at statistikasi va oxirgi yangilanishlar
         </Typography>
       </Box>
 
@@ -214,96 +214,6 @@ export default function AdminDashboard() {
       </Grid>
 
       <Grid container spacing={3}>
-        {/* Looker Studio Google Analytics Embedding Placeholder */}
-        <Grid size={{ xs: 12 }}>
-          <Paper
-            sx={{
-              p: 0,
-              borderRadius: 4,
-              overflow: "hidden",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-              border: "1px solid",
-              borderColor: "grey.100",
-              mb: 3,
-            }}
-          >
-            <Box
-              sx={{
-                p: 3,
-                borderBottom: "1px solid",
-                borderColor: "grey.100",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                bgcolor: "grey.50",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 700,
-                  color: "#001c3b",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <TrendingUpIcon color="primary" /> Veb-sayt Statistikasi (Google
-                Analytics)
-              </Typography>
-            </Box>
-            {/* 
-              TODO: Replace the Box below with the iframe code from Looker Studio 
-              Example:
-              <iframe width="100%" height="600" src="https://lookerstudio.google.com/embed/reporting/..." frameBorder="0" style={{ border:0 }} allowFullScreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-            */}
-            <Box
-              sx={{
-                width: "100%",
-                height: 600,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "grey.100",
-              }}
-            >
-              <Typography
-                variant="body1"
-                color="text.secondary"
-                align="center"
-                sx={{ p: 4, maxWidth: 600 }}
-              >
-                Google Analytics ma&apos;lumotlarini bu yerda ko&apos;rish uchun
-                Looker Studio hisobotini ulang.
-                <br />
-                <br />
-                <strong>Qanday ulanadi?</strong>
-                <br />
-                1.{" "}
-                <a
-                  href="https://lookerstudio.google.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ color: "#2563eb", textDecoration: "underline" }}
-                >
-                  Looker Studio
-                </a>{" "}
-                ga kiring va bo&apos;sh hisobot yarating.
-                <br />
-                2. Ma&apos;lumotlar manbasi sifatida o&apos;zingizning{" "}
-                <strong>Google Analytics (G-ZQM6WJ69BC)</strong> ni tanlang.
-                <br />
-                3. Yuqori o&apos;ng burchakdagi ulashish tugmasidan{" "}
-                <strong>&quot;Embed report&quot; (Iframe olish)</strong> ni
-                bosing.
-                <br />
-                4. Olingan iframe kodini ushbu panelning kod qismiga (
-                <code>dashboard/page.tsx</code>) joylashtiring.
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-
         <Grid size={{ xs: 12 }}>
           <Paper
             sx={{

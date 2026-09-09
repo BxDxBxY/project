@@ -264,9 +264,9 @@ export const isProduction = process.env.NODE_ENV === "production";
 
 // Logging utilities
 export const logger = {
-  info: (message: string, data?: any) => {
+  info: (_message: string, _data?: any) => {
     if (isDevelopment) {
-      console.log(`[INFO] ${message}`, data || "");
+      // Logging disabled for security
     }
   },
 

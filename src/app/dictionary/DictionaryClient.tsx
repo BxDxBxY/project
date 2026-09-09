@@ -1,11 +1,15 @@
 "use client";
 
-import React from "react";
 // removed unused Link import
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { PageContainer } from "@/components/ui/PageContainer";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
+import { SearchSuggestions } from "@/components/dictionary/SearchSuggestions";
+import {
+  SearchFilters,
+  SortOption,
+} from "@/components/dictionary/SearchFilters";
 import { TermCard } from "@/components/dictionary/TermCard";
 import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
@@ -16,6 +20,9 @@ import { UZBEK_ALPHABET } from "@/constants/alphabet";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
+import { getSearchSuggestions } from "@/lib/search/fuzzySearch";
+import { useRouter } from "next/navigation";
+import { trackEvent } from "@/lib/analytics/analytics";
 
 // Assume fetchCountries and fetchSources are defined similarly
 // In lib/countriesApi.ts
@@ -94,11 +101,98 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
     search,
     setSearch,
     refreshData,
-    totalTerms,
     triggerSearch,
   } = useDictionary(initialTerms);
   const { language } = useLanguage();
   const t = translations[language].dictionary;
+  const router = useRouter();
+
+  // Enhanced search state
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState<TermSummary[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("relevance");
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Full, unfiltered term list — used for autocomplete and category options.
+  // Seeded from SSR; back-filled from the client cache if SSR returned nothing.
+  const [allTerms, setAllTerms] = useState<TermSummary[]>(initialTerms);
+  useEffect(() => {
+    if (!search && terms.length > allTerms.length) {
+      setAllTerms(terms);
+    }
+  }, [terms, search, allTerms.length]);
+
+  // Get unique categories from terms
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    allTerms.forEach((term) => {
+      if (term.category) cats.add(term.category);
+    });
+    return Array.from(cats).sort();
+  }, [allTerms]);
+
+  // Handle search input change with suggestions
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+
+    if (value.trim().length >= 2) {
+      setIsSearching(true);
+      setShowSuggestions(true);
+
+      // Get suggestions from the full term list
+      const results = getSearchSuggestions(allTerms, value);
+      setSuggestions(results);
+      setIsSearching(false);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(value.trim().length === 0);
+    }
+  };
+
+  // Handle suggestion selection
+  const handleSuggestionSelect = (term: TermSummary) => {
+    setShowSuggestions(false);
+    trackEvent.viewTerm(term.id, term.title);
+    router.push(`/dictionary/${term.id}`);
+  };
+
+  // Handle search history selection
+  const handleSearchHistory = (query: string) => {
+    setSearch(query);
+    triggerSearch(query);
+    setShowSuggestions(false);
+    trackEvent.useSearchHistory(query);
+  };
+
+  // Handle search trigger
+  const handleSearch = (query: string) => {
+    triggerSearch(query);
+    if (query.trim()) {
+      trackEvent.search(query, filteredAndSortedTerms.length);
+    }
+  };
+
+  // Apply filters and sorting
+  const filteredAndSortedTerms = useMemo(() => {
+    let filtered = [...terms];
+
+    // Filter by category
+    if (selectedCategory) {
+      filtered = filtered.filter((term) => term.category === selectedCategory);
+    }
+
+    // Sort
+    if (sortBy === "alphabetical") {
+      filtered.sort((a, b) => a.title.localeCompare(b.title, "uz"));
+    } else if (sortBy === "newest") {
+      filtered.sort((a, b) => b.id - a.id);
+    }
+    // "relevance" keeps the fuzzy search order
+
+    return filtered;
+  }, [terms, selectedCategory, sortBy]);
 
   const handleRefresh = async () => {
     try {
@@ -110,12 +204,12 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
   };
 
   const groupedTerms = useMemo(() => {
-    if (!Array.isArray(terms)) return {};
-    const sortedTerms = [...terms].sort((a, b) =>
+    if (!Array.isArray(filteredAndSortedTerms)) return {};
+    const sortedTerms = [...filteredAndSortedTerms].sort((a, b) =>
       a.title.localeCompare(b.title, "uz"),
     );
     return groupTermsByAlphabet(sortedTerms);
-  }, [terms]);
+  }, [filteredAndSortedTerms]);
 
   // handleTermClick removed as we use Link directly
 
@@ -209,16 +303,47 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           {t.title}
         </h1>
 
-        {/* Search Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-3xl sm:max-w-4xl">
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            placeholder={t.searchPlaceholder}
-            className="flex-1 text-gray-800 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            disabled={loading}
-            trigger={triggerSearch}
-            enableAutocomplete={true}
+        {/* Search Bar with Suggestions */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-3xl sm:max-w-4xl relative">
+          <div className="flex-1 relative">
+            <SearchBar
+              value={search}
+              onChange={handleSearchChange}
+              placeholder={t.searchPlaceholder}
+              className="flex-1 text-gray-800 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              disabled={loading}
+              trigger={handleSearch}
+              enableAutocomplete={false}
+            />
+            {showSuggestions && (
+              <SearchSuggestions
+                query={search}
+                suggestions={suggestions}
+                isLoading={isSearching}
+                onSelect={handleSuggestionSelect}
+                onSearchHistory={handleSearchHistory}
+                onClose={() => setShowSuggestions(false)}
+              />
+            )}
+          </div>
+          <SearchFilters
+            selectedCategory={selectedCategory}
+            categories={categories}
+            sortBy={sortBy}
+            onCategoryChange={(cat) => {
+              setSelectedCategory(cat);
+              if (cat) trackEvent.applyFilter("category", cat);
+            }}
+            onSortChange={(sort) => {
+              setSortBy(sort);
+              trackEvent.changeSort(sort);
+            }}
+            onClear={() => {
+              setSelectedCategory("");
+              setSortBy("relevance");
+            }}
+            isOpen={showFilters}
+            onToggle={() => setShowFilters(!showFilters)}
           />
         </div>
 
@@ -234,7 +359,10 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           /* HAS RESULTS */
           <>
             <div className="w-full max-w-4xl text-sm sm:text-base text-gray-600 flex justify-between items-center mb-8 sm:mb-10">
-              <span>{totalTerms > 0 && `${totalTerms} ${t.termsShowing}`}</span>
+              <span>
+                {filteredAndSortedTerms.length > 0 &&
+                  `${filteredAndSortedTerms.length} ${t.termsShowing}`}
+              </span>
             </div>
             <div className="w-full space-y-16 sm:space-y-24">
               {[
@@ -284,7 +412,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 sm:mb-6">
             <span>
               {search
-                ? "Ushbu qidiruv bo&apos;yicha termin topilmadi."
+                ? "Ushbu qidiruv boʻyicha termin topilmadi."
                 : t.noResults}
             </span>
             <Button
@@ -295,7 +423,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
               }}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm sm:text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Barcha terminlarni ko&apos;rish
+              Barcha terminlarni koʻrish
             </Button>
           </div>
         )}

@@ -1,5 +1,5 @@
-import { Modal, Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
+import { Modal, Box, Button, TextField, Typography } from "@mui/material";
 
 type ModalType = "add" | "edit" | "delete";
 
