@@ -13,12 +13,35 @@ import {
 } from "lucide-react";
 import { PageContainer } from "@/components/ui/PageContainer";
 
+/**
+ * Maket variantlarini almashtirish paneli faqat ishlab chiqish rejimida
+ * koʻrsatiladi — rasmiy saytda bunday tugma boʻlmasligi kerak.
+ */
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const linkFocus =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001c3b] rounded-sm";
+
 export default function HomePage() {
   const { language } = useLanguage();
   const t = translations[language].home;
 
   const [variant, setVariant] = useState<number>(1);
   const [showSwitcher, setShowSwitcher] = useState(false);
+
+  const subscribeBlock = (
+    <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify">
+      {t.subscribe}{" "}
+      <a
+        href="https://t.me/diplugat"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`text-[#00527a] hover:underline font-medium ${linkFocus}`}
+      >
+        https://t.me/diplugat
+      </a>
+    </p>
+  );
 
   // Variant 1: Current Approved (Minimal)
   const renderVariant1 = () => (
@@ -29,28 +52,18 @@ export default function HomePage() {
         </h1>
         <hr className="w-full border-gray-400 opacity-20" />
 
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line">
+        <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify whitespace-pre-line">
           {t.heroPara1}
         </p>
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify ">
+        <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify ">
           {t.heroPara2}
         </p>
         <hr className="w-full border-gray-400 opacity-20" />
 
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+        <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify">
           {t.heroPara3}
         </p>
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-          {t.subscribe}{" "}
-          <a
-            href="https://t.me/diplugat"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline font-medium"
-          >
-            https://t.me/diplugat
-          </a>
-        </p>
+        {subscribeBlock}
       </div>
     </PageContainer>
   );
@@ -71,7 +84,7 @@ export default function HomePage() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
               <Image
                 src="/book.png"
-                alt="Diplomatik Lug‘at kitobi"
+                alt={t.heroTitle}
                 fill
                 priority
                 className="object-contain"
@@ -81,73 +94,43 @@ export default function HomePage() {
         </div>
 
         <div className="md:col-span-8 md:order-1 space-y-4">
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+          <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara1}
           </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+          <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara2}
           </p>
           <hr className="w-full border-gray-400 opacity-20" />
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify whitespace-pre-line indent-8">
+          <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-justify whitespace-pre-line indent-8">
             {t.heroPara3}
           </p>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-            {t.subscribe}{" "}
-            <a
-              href="https://t.me/diplugat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline font-medium"
-            >
-              https://t.me/diplugat
-            </a>
-          </p>
+          {subscribeBlock}
         </div>
       </div>
     </PageContainer>
   );
 
-  // Variant 3: Modern Hero with Stats
+  // Variant 3: Modern Hero
   const renderVariant3 = () => (
     <PageContainer maxWidth="lg">
       <section className="text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold text-[#001c3b] tracking-tight mb-6 uppercase">
           {t.heroTitle}
         </h1>
-        <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-600">
-          Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya universiteti
-          huzuridagi Diplomatik akademiya.
+        <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-700">
+          {translations[language].header.subtitle}
         </p>
 
         <div className="mt-10 flex justify-center gap-4">
           <Link
             href="/dictionary"
-            className="px-8 py-3 bg-[#001c3b] text-white rounded-lg font-semibold hover:bg-blue-900 transition shadow-lg"
+            className={`px-8 py-3 bg-[#001c3b] text-white rounded-lg font-semibold hover:bg-[#00325f] transition shadow-lg ${linkFocus}`}
           >
-            Lug&apos;atga o&apos;tish
+            {t.goToDictionary}
           </Link>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="text-4xl font-bold text-[#c9a96e]">500+</h3>
-            <p className="mt-2 text-gray-600 font-medium">
-              Diplomatik Terminlar
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="text-4xl font-bold text-[#1EB53A]">1-chi</h3>
-            <p className="mt-2 text-gray-600 font-medium">Markaziy Osiyoda</p>
-          </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="text-4xl font-bold text-[#0099B5]">Milliy</h3>
-            <p className="mt-2 text-gray-600 font-medium">
-              O&apos;zbek Lug&apos;ati
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-16 text-left max-w-4xl mx-auto space-y-6 text-gray-600 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div className="mt-16 text-left max-w-4xl mx-auto space-y-6 text-gray-700 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
           <p className="text-base sm:text-lg leading-relaxed">{t.heroPara1}</p>
           <p className="text-base sm:text-lg leading-relaxed">{t.heroPara2}</p>
           <p className="text-base sm:text-lg leading-relaxed">{t.heroPara3}</p>
@@ -156,31 +139,30 @@ export default function HomePage() {
     </PageContainer>
   );
 
-  // Variant 4: Feature Grid & Partners Focus
+  // Variant 4: Feature Grid
   const renderVariant4 = () => (
     <PageContainer maxWidth="md">
       <section className="bg-[#001c3b] text-white py-20 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
           <div className="text-center md:text-left flex-1">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#c9a96e] uppercase">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#e0c48f] uppercase">
               {t.heroTitle}
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
-              Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan
-              lug&apos;atning o&apos;zbek tilida tayyorlanishi.
+            <p className="text-lg md:text-xl text-gray-200 leading-relaxed mb-8">
+              {translations[language].header.subtitle}
             </p>
             <Link
               href="/dictionary"
-              className="inline-block px-8 py-4 bg-[#c9a96e] text-[#001c3b] font-bold rounded-lg hover:bg-yellow-600 transition"
+              className={`inline-block px-8 py-4 bg-[#c9a96e] text-[#001c3b] font-bold rounded-lg hover:bg-[#e0c48f] transition ${linkFocus}`}
             >
-              Lug&apos;atdan izlash
+              {t.goToDictionary}
             </Link>
           </div>
           <div className="flex-1 flex justify-center md:justify-end">
-            <div className="w-[80%] max-w-[300px] relative aspect-[3/4] rounded-lg overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500">
+            <div className="w-[80%] max-w-[300px] relative aspect-[3/4] rounded-lg overflow-hidden shadow-2xl">
               <Image
                 src="/book.png"
-                alt="Diplomatik Lug‘at kitobi"
+                alt={t.heroTitle}
                 fill
                 priority
                 className="object-contain"
@@ -205,77 +187,21 @@ export default function HomePage() {
       </section>
 
       <section className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
-          <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-6">
-            <svg
-              className="w-8 h-8 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+        {[
+          { title: t.featureSearchTitle, text: t.featureSearchText },
+          { title: t.featureLanguagesTitle, text: t.featureLanguagesText },
+          { title: t.featureDetailsTitle, text: t.featureDetailsText },
+        ].map((feature) => (
+          <div
+            key={feature.title}
+            className="bg-white rounded-xl shadow-lg p-8 text-center"
+          >
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              {feature.title}
+            </h2>
+            <p className="text-gray-700">{feature.text}</p>
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
-            Tezkor qidiruv
-          </h3>
-          <p className="text-gray-600">
-            Diplomatik atamalarni tez topish uchun qulay qidiruv tizimi.
-          </p>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
-          <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-6">
-            <svg
-              className="w-8 h-8 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-              />
-            </svg>
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
-            Ko&apos;p tilli qo&apos;llab-quvvatlash
-          </h3>
-          <p className="text-gray-600">
-            Ingliz, o&apos;zbek va rus tillarida foydalanish imkoniyati.
-          </p>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-8 text-center transform hover:-translate-y-1 transition duration-300">
-          <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-6">
-            <svg
-              className="w-8 h-8 text-purple-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
-            Batafsil izohlar
-          </h3>
-          <p className="text-gray-600">
-            Har bir diplomatik atama uchun keng qamrovli tushuntirishlar.
-          </p>
-        </div>
+        ))}
       </section>
     </PageContainer>
   );
@@ -287,74 +213,51 @@ export default function HomePage() {
       {variant === 3 && renderVariant3()}
       {variant === 4 && renderVariant4()}
 
-      {/* Floating Layout Switcher */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-        {showSwitcher && (
-          <div className="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 transition-all animate-in slide-in-from-bottom-5">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 px-2">
-              Select Layout
+      {/* Maket almashtirgich — faqat lokal ishlab chiqish uchun */}
+      {isDevelopment && (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+          {showSwitcher && (
+            <div className="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2">
+              <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1 px-2">
+                Select Layout (dev only)
+              </div>
+
+              {[
+                { id: 1, label: "1. Current Minimal", Icon: Layout },
+                { id: 2, label: "2. Book Layout", Icon: LayoutTemplate },
+                { id: 3, label: "3. Modern Hero", Icon: LayoutGrid },
+                { id: 4, label: "4. Feature Grid", Icon: Layers },
+              ].map(({ id, label, Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setVariant(id)}
+                  aria-pressed={variant === id}
+                  className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    variant === id
+                      ? "bg-blue-50 text-blue-800"
+                      : "hover:bg-gray-50 text-gray-700"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" aria-hidden="true" />
+                  {label}
+                </button>
+              ))}
             </div>
+          )}
 
-            <button
-              onClick={() => setVariant(1)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                variant === 1
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <Layout className="w-4 h-4" />
-              1. Current Minimal
-            </button>
-
-            <button
-              onClick={() => setVariant(2)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                variant === 2
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <LayoutTemplate className="w-4 h-4" />
-              2. Book Layout
-            </button>
-
-            <button
-              onClick={() => setVariant(3)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                variant === 3
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4" />
-              3. Modern Hero
-            </button>
-
-            <button
-              onClick={() => setVariant(4)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                variant === 4
-                  ? "bg-blue-50 text-blue-700"
-                  : "hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              4. Feature Grid
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={() => setShowSwitcher(!showSwitcher)}
-          className="bg-[#001c3b] text-white p-4 rounded-full shadow-xl hover:bg-blue-900 transition-transform hover:scale-105"
-          aria-label="Toggle Layout Switcher"
-        >
-          <Settings
-            className={`w-6 h-6 transition-transform ${showSwitcher ? "rotate-180" : ""}`}
-          />
-        </button>
-      </div>
+          <button
+            onClick={() => setShowSwitcher(!showSwitcher)}
+            className="bg-[#001c3b] text-white p-4 rounded-full shadow-xl hover:bg-[#00325f] transition-transform hover:scale-105"
+            aria-label="Toggle layout switcher (development only)"
+            aria-expanded={showSwitcher}
+          >
+            <Settings
+              className={`w-6 h-6 transition-transform ${showSwitcher ? "rotate-180" : ""}`}
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

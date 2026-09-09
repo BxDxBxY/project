@@ -5,59 +5,74 @@ export const translations = {
     // Header & Navigation
     nav: {
       home: "Bosh Sahifa",
-      about: "Lug'at Haqida",
-      dictionary: "Lug'at",
+      about: "Lugʻat Haqida",
+      dictionary: "Lugʻat",
       contact: "Kontaktlar",
     },
     header: {
-      title: "Diplomatik Lug‘at",
-      subtitle: "Rasmiy va birinchi onlayn lug‘at",
+      title: "Diplomatik Lugʻat",
+      subtitle: "Diplomatik terminlarning rasmiy onlayn lugʻati",
+      testBanner: "Sayt test tartibida ishlamoqda.",
+      skipToContent: "Asosiy mazmunga oʻtish",
+      openMenu: "Menyuni ochish",
+      closeMenu: "Menyuni yopish",
+      searchLabel: "Lugʻatdan qidirish",
+      searchSubmit: "Qidirish",
     },
     // Home Page
     home: {
-      heroTitle: "Diplomatik Izohli Lug‘at",
+      heroTitle: "Diplomatik Izohli Lugʻat",
       heroPara1:
-        "Keyingi yillarda xalqaro munosabatlar masalalari, ya'ni jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga o'tdi. Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu sohani imkon qadar qamrab olgan mukammal lug'at yaratildi, uning kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.",
+        "Keyingi yillarda xalqaro munosabatlar masalalari, yaʼni jahon siyosati, diplomatiya, xalqaro iqtisodiy munosabatlar, xalqaro huquq sohalariga oid adabiyotlar yaratish eng dolzarb vazifalar qatoriga oʻtdi. Shu jihatdan, JIDU huzuridagi Diplomatik akademiyada shu sohani imkon qadar qamrab olgan mukammal lugʻat yaratildi, uning kitob va raqamli (elektron) shaklini tayyorlanishi bu sohadagi kamchilikni bartaraf etadi.",
       heroPara2:
-        "Markaziy Osiyo mamlakatlarida birinchi ilmiy asoslangan lug'atning o'zbek tilida tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida o'zbek diplomatik va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar ko'payishiga asos bo'ladi.",
+        "Markaziy Osiyo mamlakatlarida ilmiy asoslangan lugʻatning oʻzbek tilida tayyorlanishi va nashr etilishi muhim ilmiy ahamiyat kasb etadi. Mazkur loyiha natijasida oʻzbek diplomatik va xalqaro munosabatlar tilining boyishi va jiddiy tadqiqotlar koʻpayishiga asos boʻladi.",
       heroPara3:
-        "Lug'at o'zbek millatining xalqaro sohadagi ongi va siyosiy madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni o'zbek tilida ifodalashga xizmat qilishi sabab bo'ladigan birinchi entsiklopedik manba bo'ladi. Lug'atdan o'rin olgan termin, ibora, tushuncha va ma'lumotlarning aksariyati hozirgacha davlat tilida nashr etilgan ma'lumotnomalarda mavjud bo'lmay, chet tilidagi turli adabiyot, manbalardan tarjima qilib kiritildi.",
-      subscribe: "Telegram kanalimizga obuna bo‘ling:",
+        "Lugʻat oʻzbek millatining xalqaro sohadagi ongi va siyosiy madaniyati yuqorilashiga, siyosiy masalalar va diplomatik jarayonni oʻzbek tilida ifodalashga xizmat qiladigan entsiklopedik manba boʻlib xizmat qiladi. Lugʻatdan oʻrin olgan termin, ibora, tushuncha va maʼlumotlarning aksariyati hozirgacha davlat tilida nashr etilgan maʼlumotnomalarda mavjud boʻlmay, chet tilidagi turli adabiyot, manbalardan tarjima qilib kiritildi.",
+      subscribe: "Telegram kanalimizga obuna boʻling:",
+      goToDictionary: "Lugʻatga oʻtish",
+      featureSearchTitle: "Tezkor qidiruv",
+      featureSearchText:
+        "Diplomatik atamalarni tez topish uchun qulay qidiruv tizimi.",
+      featureLanguagesTitle: "Ikki tilli interfeys",
+      featureLanguagesText: "Oʻzbek va rus tillarida foydalanish imkoniyati.",
+      featureDetailsTitle: "Batafsil izohlar",
+      featureDetailsText:
+        "Har bir diplomatik atama uchun keng qamrovli tushuntirishlar.",
     },
     // About Page
     about: {
-      title: "Diplomatik izohli lug'at haqida",
+      title: "Diplomatik izohli lugʻat haqida",
       para1:
-        "Lug'at hozirgi o'zbek tilining xalqaro munosabatlarga oid sohasi – siyosat va diplomatiyada qo'llanayotgan 1000ga yaqin termin, so'z birikmasi va nomlarni o'z ichiga olgan. Qo'llanma xalqaro munosabatlar, siyosatshunoslik fanlari o'qitiladigan universitetlar, institutlar tadqiqotchi va talabalari, yosh diplomatlar, tarjumonlar, qolaversa, shu soha bilan qiziqquvchi kitobxonlarga mo'ljallangan.",
+        "Lugʻat hozirgi oʻzbek tilining xalqaro munosabatlarga oid sohasi – siyosat va diplomatiyada qoʻllanayotgan 1000ga yaqin termin, soʻz birikmasi va nomlarni oʻz ichiga olgan. Qoʻllanma xalqaro munosabatlar, siyosatshunoslik fanlari oʻqitiladigan universitetlar, institutlar tadqiqotchi va talabalari, yosh diplomatlar, tarjumonlar, qolaversa, shu soha bilan qiziqquvchi kitobxonlarga moʻljallangan.",
       para2:
-        "So'zboshi O'zbekiston Respublikasi Prezidenti Sh.M.Mirziyoyevning 2019 yil 21 oktyabrda “O'zbek tilining davlat tili sifatidagi nufuzi va mavqeini tubdan oshirish chora-tadbirlari to'g'risida”gi farmoniga muvofiq davlat tili to'g'risidagi qonun hujjatlariga rioya qilinishini, sohaga oid muammolarni tahlil etib, bu borada yagona davlat siyosati amalga oshirilishini ta'minlash yuzasidan Vazirlar Mahkamasida Davlat tilini rivojlantirish departamenti tashkil etildi va yangi so'z va atamalarni rasmiy iste'molga kiritish borasidagi ishlarni tartibga soladigan Atamalar komissiyasi tuzildi.",
+        "Soʻzboshi Oʻzbekiston Respublikasi Prezidenti Sh.M.Mirziyoyevning 2019 yil 21 oktyabrda “Oʻzbek tilining davlat tili sifatidagi nufuzi va mavqeini tubdan oshirish chora-tadbirlari toʻgʻrisida”gi farmoniga muvofiq davlat tili toʻgʻrisidagi qonun hujjatlariga rioya qilinishini, sohaga oid muammolarni tahlil etib, bu borada yagona davlat siyosati amalga oshirilishini taʼminlash yuzasidan Vazirlar Mahkamasida Davlat tilini rivojlantirish departamenti tashkil etildi va yangi soʻz va atamalarni rasmiy isteʼmolga kiritish borasidagi ishlarni tartibga soladigan Atamalar komissiyasi tuzildi.",
       para3:
-        "Qo'lingizdagi “Diplomatik terminlar izohli lug'ati” ham shu ushbu chora-tadbirlarga javob tariqasida sohadagi ehtiyojni bir muncha qondirishga xizmat qiladi, degan maqsadda yaratildi. Kitob o'zbek millatining xalqaro sohadagi ongi va siyosiy madaniyati yuksalishiga, siyosiy masalalar va diplomatik jarayonni o'zbek tilida ifodalab berishga xizmat qiluvchi adabiyotlar, jumladan lug'atlar yaratish sohasiga qo'shilgan baholiqadrat hissa bo'ladi, deb umid qilamiz. Ushbu nashrni amalga oshirishdan ko'zlangan yana bir maqsad siyosat, diplomatiya, umuman xalqaro munosabatlar sohasi mutaxassislari, JIDU talabalari va qolaversa, qiziqquvchilarga shu sohadagi terminlar, birikma va nomlarni o'rganish va o'z faoliyatlarida qo'llash imkoniyatini yaratish bo'ldi.",
+        "Qoʻlingizdagi “Diplomatik terminlar izohli lugʻati” ham shu ushbu chora-tadbirlarga javob tariqasida sohadagi ehtiyojni bir muncha qondirishga xizmat qiladi, degan maqsadda yaratildi. Kitob oʻzbek millatining xalqaro sohadagi ongi va siyosiy madaniyati yuksalishiga, siyosiy masalalar va diplomatik jarayonni oʻzbek tilida ifodalab berishga xizmat qiluvchi adabiyotlar, jumladan lugʻatlar yaratish sohasiga qoʻshilgan baholiqadrat hissa boʻladi, deb umid qilamiz. Ushbu nashrni amalga oshirishdan koʻzlangan yana bir maqsad siyosat, diplomatiya, umuman xalqaro munosabatlar sohasi mutaxassislari, JIDU talabalari va qolaversa, qiziqquvchilarga shu sohadagi terminlar, birikma va nomlarni oʻrganish va oʻz faoliyatlarida qoʻllash imkoniyatini yaratish boʻldi.",
       para4:
-        "Shu o'rinda hamma sohalarda kabi diplomatiya tili ham o'z terminlari tizimiga ega ekani, uning lug'at boyligi diplomatik, tarixiy, madaniy, lingvistik, huquqiy va boshqa xil iboralardan tashkil topganini eslatib o'tish lozim.",
+        "Shu oʻrinda hamma sohalarda kabi diplomatiya tili ham oʻz terminlari tizimiga ega ekani, uning lugʻat boyligi diplomatik, tarixiy, madaniy, lingvistik, huquqiy va boshqa xil iboralardan tashkil topganini eslatib oʻtish lozim.",
       para5:
-        "Diplomatiya tili uchun uzun jumlalar, iboralar, kirish so'zlari va bog'lovchilarning ko'pligi xos. Diplomatik til rasmiy tildan, xususan, xalqaro siyosat tilidan, jurnalistika tilidan, ma'lum darajada badiiy-adabiy tildan ham ancha farq qiladi.",
+        "Diplomatiya tili uchun uzun jumlalar, iboralar, kirish soʻzlari va bogʻlovchilarning koʻpligi xos. Diplomatik til rasmiy tildan, xususan, xalqaro siyosat tilidan, jurnalistika tilidan, maʼlum darajada badiiy-adabiy tildan ham ancha farq qiladi.",
       para6:
-        "Ta'kidlash joizki, diplomatik atamalar asosan lotin, ingliz, frantsuz tillarida yaratilgan yoki ular orqali vositachi tillar sifatida kirib kelgan. Har qanday zamonaviy tilda diplomatiya va siyosatga tegishli terminlar faol rivojlanmoqda, shuning uchun insonning diplomatiya va tashqi aloqalar bilan bog'liq aqliy faoliyati natijalari terminlarda ifodalanmoqda, deb taxmin qilish mantiqan to'g'ri.",
+        "Taʼkidlash joizki, diplomatik atamalar asosan lotin, ingliz, frantsuz tillarida yaratilgan yoki ular orqali vositachi tillar sifatida kirib kelgan. Har qanday zamonaviy tilda diplomatiya va siyosatga tegishli terminlar faol rivojlanmoqda, shuning uchun insonning diplomatiya va tashqi aloqalar bilan bogʻliq aqliy faoliyati natijalari terminlarda ifodalanmoqda, deb taxmin qilish mantiqan toʻgʻri.",
       para7:
-        "Lug'atdagi atamalarni tanlashda o'zbek tili mezonlariga, til normalariga rioya qilindi. Lug'at ushbu sohadagi dastlabki izlanish sifatida uni tuzishda lug'atchilikning barcha an'ana va qoidalariga rioya qilishga hamda xalqaro hayotda, siyosatda qo'llanayotgan diplomatik terminlarni imkon qadar to'plashga harakat qilindi.",
+        "Lugʻatdagi atamalarni tanlashda oʻzbek tili mezonlariga, til normalariga rioya qilindi. Lugʻat ushbu sohadagi dastlabki izlanish sifatida uni tuzishda lugʻatchilikning barcha anʼana va qoidalariga rioya qilishga hamda xalqaro hayotda, siyosatda qoʻllanayotgan diplomatik terminlarni imkon qadar toʻplashga harakat qilindi.",
     },
     // Contact Page
     contact: {
       title: "Diplomatik akademiya",
-      subtitle: "Diplomatik ta'lim va xalqaro munosabatlarning mukammalligi",
-      infoTitle: "Kontakt Malumotlar",
+      subtitle: "Diplomatik taʼlim va xalqaro munosabatlar sohasidagi markaz",
+      infoTitle: "Kontakt Maʼlumotlar",
       address: "Manzil",
       addressDetails:
         "100007,\nOʻzbekiston, Toshkent,\nMustaqillik shoh koʻchasi, 54.",
       phone: "Telefon",
       email: "Pochta",
-      formTitle: "Biz bilan bog'laning",
+      formTitle: "Biz bilan bogʻlaning",
       nameLabel: "Toʻliq Ismingiz",
       nameErrors: {
         required: "Ismingizni kiriting",
-        min: "Ism kamida 3 ta harfdan iborat bo‘lishi kerak",
-        pattern: "Ism faqat harflar iborat bo‘lishi kerak",
+        min: "Ism kamida 3 ta harfdan iborat boʻlishi kerak",
+        pattern: "Ismda faqat harflar, boʻshliq va defis boʻlishi mumkin",
       },
       emailLabel: "Pochta manzilingiz",
       emailErrors: {
@@ -69,10 +84,25 @@ export const translations = {
         required: "Xat matnini kiriting",
         min: "Xat matni juda kam",
       },
+      consentLabel:
+        "Men murojaatimni koʻrib chiqish uchun ism, e-pochta va xat matnimga ishlov berilishiga roziman.",
+      consentLink: "Maxfiylik siyosati",
+      consentError:
+        "Murojaatni yuborish uchun maʼlumotlarga ishlov berishga rozilik bering",
+      dataNotice:
+        "Biz faqat murojaatga javob berish uchun zarur maʼlumotlarni soʻraymiz. Rozilikni istalgan vaqtda bekor qilishingiz mumkin.",
       btnSending: "Yuborilmoqda...",
       btnSend: "Xat yuborish",
-      successMsg:
-        "Xabaringiz uchun tashakkur! Tez orada siz bilan bog'lanamiz.",
+      successMsg: "Xabaringiz uchun tashakkur! Tez orada siz bilan bogʻlanamiz.",
+      errorMsg:
+        "Xatolik yuz berdi. Iltimos, birozdan soʻng qayta urinib koʻring.",
+      captchaLoading:
+        "Spamdan himoya tekshiruvi yuklanmoqda. Bir necha soniyadan soʻng qayta urinib koʻring.",
+      recaptchaNoticePrefix: "Bu forma Google reCAPTCHA bilan himoyalangan:",
+      recaptchaPrivacy: "Maxfiylik siyosati",
+      recaptchaTerms: "Foydalanish shartlari",
+      recaptchaNoticeSuffix:
+        "Himoya xizmati siz formani toʻldirishni boshlaganingizda yuklanadi.",
     },
     // Dictionary Page
     dictionary: {
@@ -81,6 +111,8 @@ export const translations = {
       loading: "Lugʻat yuklanmoqda...",
       termsShowing: "termin koʻrsatilmoqda",
       noResults: "Maʼlumot topilmadi",
+      noSearchResults: "Ushbu qidiruv boʻyicha termin topilmadi.",
+      showAllTerms: "Barcha terminlarni koʻrish",
       showTermsBtn: "Terminlarni koʻrsatish",
       errorMsg: "Lugʻatni yuklash muvaffaqiyatsiz yakunlandi",
       retry: "Qayta urinish",
@@ -88,41 +120,35 @@ export const translations = {
       categories: "Kategoriyalar",
       countries: "Aloqador davlatlar",
       sources: "Manbalar",
+      scrollTop: "Sahifa boshiga qaytish",
+      letterHeading: "harfi bilan boshlanuvchi terminlar",
     },
     // Footer & Common
     footer: {
-      terms: "Shartlar va Qoidalar",
+      terms: "Foydalanish shartlari",
       privacy: "Maxfiylik siyosati",
+      cookies: "Cookie-fayllar siyosati",
+      refund: "Toʻlovlarni qaytarish siyosati",
       contact: "Kontakt",
-      rights: "2026 «Diplomatic Academy» — Barcha huquqlar himoyalangan",
+      legalTitle: "Huquqiy maʼlumot",
+      orgTitle: "Tashkilot rekvizitlari",
+      socialTitle: "Ijtimoiy tarmoqlar",
+      rights: "Barcha huquqlar himoyalangan",
+      addressLabel: "Manzil",
+      phoneLabel: "Telefon",
+      emailLabel: "E-pochta",
+      taxIdLabel: "STIR",
+      socialX: "Rasmiy X (Twitter) sahifasi",
+      socialLinkedIn: "Rasmiy LinkedIn sahifasi",
     },
-    privacy: {
-      title: "Maxfiylik siyosati",
-      lastUpdated: "Oxirgi yangilanish: 2026-yil, Aprel",
-      content1:
-        "Diplomatik Akademiyaga xush kelibsiz. Biz sizning maxfiyligingizni hurmat qilamiz va shaxsiy ma'lumotlaringizni himoya qilishga intilamiz. Ushbu maxfiylik siyosati bizning veb-saytimizdan foydalanganingizda ma'lumotlaringiz qanday to'planishi, ishlatilishi va himoya qilinishini tushuntiradi.",
-      content2: "Ma'lumotlarni yig'ish",
-      content3:
-        "Biz xizmatlarimizni yaxshilash maqsadida quyidagi ma'lumotlarni to'plashimiz mumkin: ism-sharifingiz, elektron pochta manzilingiz, aloqa formasi orqali yuborilgan xabarlar va veb-saytdan foydalanish statistikasi (Google Analytics yordamida).",
-      content4: "Ma'lumotlar xavfsizligi",
-      content5:
-        "Sizning ma'lumotlaringiz xavfsizligi biz uchun muhim. Biz ularni ruxsatsiz kirishdan, foydalanishdan yoki o'zgartirishdan himoya qilish uchun SSL shifrlash va boshqa zamonaviy xavfsizlik choralarini ko'ramiz.",
-      content6: "Uchinchi tomon xizmatlari",
-      content7:
-        "Veb-saytimizda Google Analytics va Google ReCAPTCHA xizmatlaridan foydalaniladi. Ushbu xizmatlar o'zlarining maxfiylik siyosatiga ega bo'lib, ular sayt xavfsizligi va foydalanish tahlilini ta'minlashga xizmat qiladi.",
-    },
-    terms: {
-      title: "Foydalanish shartlari",
-      lastUpdated: "Oxirgi yangilanish: 2026-yil, Aprel",
-      section1Title: "1. Umumiy qoidalar",
-      section1Content:
-        "Ushbu veb-saytdan foydalanish orqali siz quyidagi shartlarga to'liq rozilik bildirasiz. Agar siz ushbu shartlarga rozi bo'lmasangiz, veb-saytdan foydalanmasligingizni so'raymiz.",
-      section2Title: "2. Mualliflik huquqi",
-      section2Content:
-        "Veb-saytdagi barcha materiallar (matnlar, terminlar, izohlar, grafikalar) Diplomatik Akademiyaning intellektual mulki hisoblanadi. Materiallardan ruxsatsiz foydalanish yoki nusxa ko'chirish taqiqlanadi.",
-      section3Title: "3. Mas'uliyatni cheklash",
-      section3Content:
-        "Veb-saytdagi ma'lumotlar faqat axborot va ta'lim maqsadlarida taqdim etiladi. Akademiya lug'atdagi ma'lumotlarning mutlaq aniqligi yoki ulardan foydalanish natijasida kelib chiqadigan har qanday bevosita yoki bilvosita zararlar uchun javobgarlikni o'z zimmasiga olmaydi.",
+    cookieBanner: {
+      title: "Cookie-fayllardan foydalanish",
+      description:
+        "Sayt ishlashi uchun zarur cookie-fayllardan foydalanadi. Statistika cookie-fayllari faqat siz rozilik bergandan keyin yoqiladi.",
+      policyLink: "Cookie-fayllar siyosati",
+      acceptAll: "Barchasini qabul qilish",
+      necessaryOnly: "Faqat zarurlari",
+      settings: "Cookie sozlamalari",
     },
   },
   ru: {
@@ -135,7 +161,13 @@ export const translations = {
     },
     header: {
       title: "Дипломатический словарь",
-      subtitle: "Официальный и первый онлайн-словарь",
+      subtitle: "Официальный онлайн-словарь дипломатических терминов",
+      testBanner: "Сайт работает в тестовом режиме.",
+      skipToContent: "Перейти к основному содержанию",
+      openMenu: "Открыть меню",
+      closeMenu: "Закрыть меню",
+      searchLabel: "Поиск по словарю",
+      searchSubmit: "Найти",
     },
     // Home Page
     home: {
@@ -143,10 +175,19 @@ export const translations = {
       heroPara1:
         "В последние годы создание литературы по вопросам международных отношений, то есть мировой политики, дипломатии, международных экономических отношений, международного права, стало одной из наиболее актуальных задач. В связи с этим в Дипломатической академии при УМЭД был создан комплексный словарь, максимально охватывающий эту сферу; подготовка его книжной и цифровой (электронной) версий устранит пробел в этой области.",
       heroPara2:
-        "Подготовка и публикация в странах Центральной Азии первого научно обоснованного словаря на узбекском языке имеет важное научное значение. В результате данного проекта обогатится узбекский язык дипломатии и международных отношений, что послужит основой для увеличения серьёзных исследований.",
+        "Подготовка и публикация в странах Центральной Азии научно обоснованного словаря на узбекском языке имеет важное научное значение. В результате данного проекта обогатится узбекский язык дипломатии и международных отношений, что послужит основой для увеличения серьёзных исследований.",
       heroPara3:
-        "Словарь станет первым энциклопедическим источником, который послужит повышению уровня сознания и политической культуры узбекской нации в международной сфере, а также выражению политических вопросов и дипломатического процесса на узбекском языке. Большинство терминов, выражений, понятий и сведений, вошедших в словарь, до сих пор не существовали в опубликованных на государственном языке справочниках и были включены путём перевода из различной литературы и источников на иностранных языках.",
+        "Словарь служит энциклопедическим источником, который способствует повышению уровня сознания и политической культуры узбекской нации в международной сфере, а также выражению политических вопросов и дипломатического процесса на узбекском языке. Большинство терминов, выражений, понятий и сведений, вошедших в словарь, до сих пор не существовали в опубликованных на государственном языке справочниках и были включены путём перевода из различной литературы и источников на иностранных языках.",
       subscribe: "Подписывайтесь на наш Telegram-канал:",
+      goToDictionary: "Перейти к словарю",
+      featureSearchTitle: "Быстрый поиск",
+      featureSearchText:
+        "Удобная поисковая система для быстрого нахождения дипломатических терминов.",
+      featureLanguagesTitle: "Двуязычный интерфейс",
+      featureLanguagesText: "Возможность работы на узбекском и русском языках.",
+      featureDetailsTitle: "Подробные толкования",
+      featureDetailsText:
+        "Развёрнутые пояснения для каждого дипломатического термина.",
     },
     // About Page
     about: {
@@ -169,7 +210,7 @@ export const translations = {
     // Contact Page
     contact: {
       title: "Дипломатическая академия",
-      subtitle: "Дипломатическое образование и передовой опыт",
+      subtitle: "Центр дипломатического образования и международных отношений",
       infoTitle: "Контактная информация",
       address: "Адрес",
       addressDetails:
@@ -181,7 +222,7 @@ export const translations = {
       nameErrors: {
         required: "Введите ваше имя",
         min: "Имя должно состоять минимум из 3 букв",
-        pattern: "Имя должно содержать только буквы",
+        pattern: "Имя может содержать только буквы, пробел и дефис",
       },
       emailLabel: "Почта",
       emailErrors: {
@@ -193,9 +234,23 @@ export const translations = {
         required: "Введите текст сообщения",
         min: "Текст сообщения слишком короткий",
       },
+      consentLabel:
+        "Я согласен(-на) на обработку моего имени, адреса электронной почты и текста обращения для рассмотрения моего обращения.",
+      consentLink: "Политика конфиденциальности",
+      consentError: "Для отправки обращения необходимо дать согласие",
+      dataNotice:
+        "Мы запрашиваем только данные, необходимые для ответа на обращение. Согласие можно отозвать в любое время.",
       btnSending: "Отправка...",
       btnSend: "Отправить сообщение",
       successMsg: "Спасибо за ваше сообщение! Мы скоро свяжемся с вами.",
+      errorMsg: "Произошла ошибка. Пожалуйста, попробуйте позже.",
+      captchaLoading:
+        "Загружается проверка защиты от спама. Повторите попытку через несколько секунд.",
+      recaptchaNoticePrefix: "Форма защищена Google reCAPTCHA:",
+      recaptchaPrivacy: "Политика конфиденциальности",
+      recaptchaTerms: "Условия использования",
+      recaptchaNoticeSuffix:
+        "Сервис защиты загружается, когда вы начинаете заполнять форму.",
     },
     // Dictionary Page
     dictionary: {
@@ -204,6 +259,8 @@ export const translations = {
       loading: "Словарь загружается...",
       termsShowing: "терминов показано",
       noResults: "Информация не найдена",
+      noSearchResults: "По этому запросу термины не найдены.",
+      showAllTerms: "Показать все термины",
       showTermsBtn: "Показать термины",
       errorMsg: "Не удалось загрузить словарь",
       retry: "Повторить",
@@ -211,41 +268,35 @@ export const translations = {
       categories: "Категории",
       countries: "Связанные страны",
       sources: "Источники",
+      scrollTop: "Вернуться к началу страницы",
+      letterHeading: "термины на букву",
     },
     // Footer & Common
     footer: {
-      terms: "Условия и Положения",
+      terms: "Условия использования",
       privacy: "Политика конфиденциальности",
+      cookies: "Политика использования cookie",
+      refund: "Политика возврата средств",
       contact: "Контакты",
-      rights: "«Дипломатическая Академия» — Все права защищены",
+      legalTitle: "Правовая информация",
+      orgTitle: "Реквизиты организации",
+      socialTitle: "Социальные сети",
+      rights: "Все права защищены",
+      addressLabel: "Адрес",
+      phoneLabel: "Телефон",
+      emailLabel: "E-mail",
+      taxIdLabel: "ИНН",
+      socialX: "Официальная страница в X (Twitter)",
+      socialLinkedIn: "Официальная страница в LinkedIn",
     },
-    privacy: {
-      title: "Политика конфиденциальности",
-      lastUpdated: "Последнее обновление: Апрель, 2026",
-      content1:
-        "Добро пожаловать в Дипломатическую Академию. Мы уважаем вашу конфиденциальность и стремимся защитить вашу личную информацию. Эта политика объясняет, как мы собираем, используем и защищаем ваши данные при использовании нашего веб-сайта.",
-      content2: "Сбор данных",
-      content3:
-        "Мы можем собирать следующую информацию для улучшения наших услуг: ваше ФИО, адрес электронной почты, сообщения, отправленные через контактную форму, и статистику использования веб-сайта (с помощью Google Analytics).",
-      content4: "Безопасность данных",
-      content5:
-        "Безопасность ваших данных важна для нас. Мы используем SSL-шифрование и другие современные меры безопасности для их защиты от несанкционированного доступа, использования или изменения.",
-      content6: "Сторонние сервисы",
-      content7:
-        "На нашем веб-сайте используются сервисы Google Analytics и Google ReCAPTCHA. Эти сервисы имеют свою политику конфиденциальности и служат для обеспечения безопасности сайта и анализа его использования.",
-    },
-    terms: {
-      title: "Условия использования",
-      lastUpdated: "Последнее обновление: Апрель, 2026",
-      section1Title: "1. Общие положения",
-      section1Content:
-        "Используя этот веб-сайт, вы выражаете полное согласие с нижеследующими условиями. Если вы не согласны с этими условиями, пожалуйста, не используйте веб-сайт.",
-      section2Title: "2. Авторское право",
-      section2Content:
-        "Все материалы веб-сайта (тексты, термины, пояснения, графика) являются интеллектуальной собственностью Дипломатической Академии. Несанкционированное использование или копирование материалов запрещено.",
-      section3Title: "3. Ограничение ответственности",
-      section3Content:
-        "Информация на веб-сайте предоставляется исключительно в ознакомительных и образовательных целях. Академия не несет ответственности за абсолютную точность информации в словаре или за любые прямые или косвенные убытки, возникшие в результате ее использования.",
+    cookieBanner: {
+      title: "Использование cookie-файлов",
+      description:
+        "Сайт использует cookie-файлы, необходимые для его работы. Статистические cookie включаются только после вашего согласия.",
+      policyLink: "Политика использования cookie",
+      acceptAll: "Принять все",
+      necessaryOnly: "Только необходимые",
+      settings: "Настройки cookie",
     },
   },
 };

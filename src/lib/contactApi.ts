@@ -28,7 +28,7 @@ export interface AdminContact {
 
 export async function submitContact(
   data: ContactPayload,
-  recaptchaToken: string,
+  recaptchaToken?: string,
 ): Promise<ContactResponse> {
   const res = await fetch("/internal-api/contact", {
     method: "POST",

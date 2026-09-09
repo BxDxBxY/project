@@ -5,8 +5,8 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { legalDocs } from "@/constants/legalDocs";
 import { LegalDocumentView } from "@/components/legal/LegalDocumentView";
 
-export default function TermsPage() {
+export default function RefundPage() {
   const { language } = useLanguage();
 
-  return <LegalDocumentView document={legalDocs[language].terms} />;
+  return <LegalDocumentView document={legalDocs[language].refund} />;
 }

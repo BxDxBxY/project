@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+"use client";
+
+import React, { useState, useEffect, useRef, useId } from "react";
 import { Button, CircularProgress } from "@mui/material";
 import { searchTerms } from "@/lib/termsApi";
 import { TermSummary } from "@/types";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
 
 interface SearchBarProps {
   value: string;
@@ -25,6 +29,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   liveSearch = false,
   enableAutocomplete = false,
 }) => {
+  const { language } = useLanguage();
+  const tHeader = translations[language].header;
+  const tDict = translations[language].dictionary;
+  const listboxId = useId();
+
   const [localValue, setLocalValue] = useState(value);
   const [suggestions, setSuggestions] = useState<TermSummary[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -131,9 +140,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
       <div className={`relative flex items-center  ${className}`}>
         {/* search icon */}
-        <div className="absolute left-0 pl-3 z-10 flex items-center pointer-events-none">
+        <div
+          className="absolute left-0 pl-3 z-10 flex items-center pointer-events-none"
+          aria-hidden="true"
+        >
           <svg
-            className="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -150,31 +162,38 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {/* input */}
         <input
           ref={inputRef}
-          type="text"
+          type="search"
+          role="combobox"
           value={localValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className="block w-full pl-10 pr-20 py-2 border-b-2 border-transparent  
-                     rounded-t-md leading-5 bg-white shadow duration-300 transition-all 
-                     focus:drop-shadow-2xl placeholder-gray-500 focus:outline-none  
-                     focus:border-blue-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+          aria-label={tHeader.searchLabel}
+          aria-expanded={enableAutocomplete ? showSuggestions : undefined}
+          aria-controls={enableAutocomplete ? listboxId : undefined}
+          aria-autocomplete={enableAutocomplete ? "list" : undefined}
+          className="block w-full pl-10 pr-20 py-2 border-b-2 border-transparent
+                     rounded-t-md leading-5 bg-white shadow duration-300 transition-all
+                     focus:drop-shadow-2xl placeholder-gray-600
+                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001c3b]
+                     focus:border-[#001c3b] sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
         />
 
         {/* clear button */}
         {localValue && (
           <button
             onClick={handleClear}
-            className="absolute right-14 inset-y-0 pr-5 flex items-center cursor-pointer"
+            className="absolute right-14 inset-y-0 pr-5 flex items-center cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001c3b] rounded-sm"
             type="button"
-            aria-label="Clear search"
+            aria-label={tDict.showAllTerms}
           >
             <svg
-              className="h-5 w-5 text-gray-400 hover:text-gray-600"
+              className="h-5 w-5 text-gray-600 hover:text-gray-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -189,10 +208,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {/* submit button */}
         <Button
           onClick={handleSubmit}
-          className="!absolute !capitalize !tracking-wide !cursor-pointer !right-0 !inset-y-0 !pr-3 !flex !items-center !text-blue-500 !hover:text-blue-700"
+          className="!absolute !capitalize !tracking-wide !cursor-pointer !right-0 !inset-y-0 !pr-3 !flex !items-center"
+          sx={{ color: "#00527a", fontWeight: 600 }}
           type="button"
         >
-          Qidirish
+          {tHeader.searchSubmit}
         </Button>
       </div>
 
@@ -202,11 +222,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         localValue.trim().length >= 2 && (
           <div
             ref={dropdownRef}
+            id={listboxId}
+            role="listbox"
+            aria-label={tHeader.searchLabel}
             className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto"
           >
             {isTyping ? (
               <div className="flex justify-center p-4">
                 <CircularProgress size={24} />
+                <span className="sr-only">{tDict.loading}</span>
               </div>
             ) : suggestions.length > 0 ? (
               <ul className="py-1">
@@ -217,7 +241,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   >
                     <Link
                       href={`/dictionary/${term.id}`}
-                      className="block px-4 py-2 text-sm text-gray-700 cursor-pointer w-full text-left"
+                      className="block px-4 py-2 text-sm text-gray-800 cursor-pointer w-full text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#001c3b]"
                       onClick={() => setShowSuggestions(false)}
                     >
                       <span className="font-medium">{term.title}</span>
@@ -226,8 +250,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 ))}
               </ul>
             ) : (
-              <div className="px-4 py-3 text-sm text-gray-500">
-                Hech narsa topilmadi
+              <div className="px-4 py-3 text-sm text-gray-700" role="status">
+                {tDict.noSearchResults}
               </div>
             )}
           </div>

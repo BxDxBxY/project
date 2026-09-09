@@ -14,7 +14,8 @@ export default function NotFound() {
         <div className="relative w-48 h-48 mx-auto mb-8">
           <Image
             src="/logo2.png"
-            alt="Logo"
+            alt=""
+            aria-hidden="true"
             fill
             className="object-contain opacity-20 grayscale"
           />

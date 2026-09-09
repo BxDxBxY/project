@@ -2,9 +2,30 @@
 
 A comprehensive TypeScript-based web application for browsing and searching diplomatic terms and concepts used in international relations and foreign affairs.
 
+## 📄 Legal & compliance
+
+Before deploying, read:
+
+- `docs/LEGAL-RISK-REPORT.ru.md` — compliance status, open legal questions and the
+  checklist for the legal department.
+- `docs/IMAGE-CREDITS.md` — image provenance register.
+- `src/constants/organization.ts` — organisation details. Fields marked `TODO`
+  are shown on the site until real data is filled in.
+
+Legal documents live in `src/constants/legalDocs.ts` (Uzbek + Russian) and are
+rendered by `src/components/legal/LegalDocumentView.tsx` at `/privacy`, `/terms`,
+`/cookies` and `/refund`.
+
+Analytics (`ConsentedAnalytics`) and reCAPTCHA are **not** loaded until the user
+consents / starts using the contact form. Do not move these scripts back into the
+root layout.
+
 ## 🚀 Features
 
-- **Multi-language Support**: English, Uzbek, and Russian translations
+- **Bilingual interface**: Uzbek and Russian (no English UI at the moment)
+- **Uzbek alphabetical order**: dictionary sorting follows the official Uzbek
+  Latin alphabet, including the Oʻ, Gʻ, Sh, Ch, Ng digraphs
+  (`src/lib/uzbekCollation.ts`)
 - **Advanced Search**: Real-time search with debounced input
 - **Category Filtering**: Filter terms by categories
 - **Responsive Design**: Modern UI that works on all devices
@@ -185,10 +206,12 @@ The application is fully responsive and works on:
 
 ## 🌐 Internationalization
 
-- Multi-language support
-- Language-specific content
-- RTL support ready
-- Cultural considerations
+- Two locales: `uz` (default) and `ru`, stored in the `language` cookie
+- All UI strings live in `src/constants/translations.ts`; legal documents in
+  `src/constants/legalDocs.ts`
+- The language switcher in the header is currently commented out, so only the
+  Uzbek UI is reachable in production — enable it or drop the unused translations
+- No RTL locales are used
 
 ## 🔧 Development
 
@@ -201,9 +224,10 @@ The application is fully responsive and works on:
 
 ### Testing
 
-- Unit test setup ready
-- Integration test structure
-- E2E test framework
+No automated test suite is set up yet. Before changing dictionary sorting,
+verify `src/lib/uzbekCollation.ts` manually: `Oʻ`, `Gʻ`, `Sh`, `Ch`, `Ng` must
+come after `Z`, and all apostrophe variants (`ʻ ' ' \``) must be treated as one
+character.
 
 ## 📈 Future Enhancements
 

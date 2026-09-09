@@ -12,7 +12,11 @@ import { logger } from "@/lib/utils";
 import { useMemo, useState, useEffect } from "react";
 import { TermSummary } from "@/types";
 import { Button, Fab, Zoom } from "@mui/material";
-import { UZBEK_ALPHABET } from "@/constants/alphabet";
+import {
+  compareUzbek,
+  groupByUzbekAlphabet,
+  orderedLetters,
+} from "@/lib/uzbekCollation";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
@@ -27,58 +31,6 @@ import { translations } from "@/constants/translations";
 // Import them
 // import { fetchCountries } from "@/lib/countriesApi";
 // import { fetchSources } from "@/lib/sourcesApi";
-
-const getUzbekFirstLetter = (title: string): string => {
-  const cleanStr = title.replace(/^[^a-zA-ZOʻoʻGʻgʻ]+/, "").trim();
-  if (!cleanStr) return "#";
-  const upper = cleanStr.toUpperCase();
-  if (upper.startsWith("CH")) return "Ch";
-  if (upper.startsWith("SH")) return "Sh";
-  if (upper.startsWith("NG")) return "Ng";
-  if (
-    upper.startsWith("Oʻ") ||
-    upper.startsWith("O'") ||
-    upper.startsWith("O`") ||
-    upper.startsWith("O’") ||
-    upper.startsWith("O‘")
-  )
-    return "Oʻ";
-  if (
-    upper.startsWith("Gʻ") ||
-    upper.startsWith("G'") ||
-    upper.startsWith("G`") ||
-    upper.startsWith("G’") ||
-    upper.startsWith("G‘")
-  )
-    return "Gʻ";
-  return upper[0];
-};
-
-const groupTermsByAlphabet = (
-  terms: TermSummary[],
-): Record<string, TermSummary[]> => {
-  const grouped: Record<string, TermSummary[]> = {};
-
-  UZBEK_ALPHABET.forEach((letter) => {
-    grouped[letter] = [];
-  });
-
-  terms.forEach((term: TermSummary) => {
-    const letter = getUzbekFirstLetter(term.title);
-    if (!grouped[letter]) {
-      grouped[letter] = [];
-    }
-    grouped[letter].push(term);
-  });
-
-  Object.keys(grouped).forEach((letter) => {
-    grouped[letter].sort((a: TermSummary, b: TermSummary) =>
-      a.title.localeCompare(b.title, "uz"),
-    );
-  });
-
-  return grouped;
-};
 
 interface DictionaryClientProps {
   initialTerms: TermSummary[];
@@ -109,13 +61,14 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
     }
   };
 
+  // Saralash va guruhlash rasmiy oʻzbek alifbosi tartibida (lib/uzbekCollation).
   const groupedTerms = useMemo(() => {
     if (!Array.isArray(terms)) return {};
-    const sortedTerms = [...terms].sort((a, b) =>
-      a.title.localeCompare(b.title, "uz"),
-    );
-    return groupTermsByAlphabet(sortedTerms);
+    const sortedTerms = [...terms].sort((a, b) => compareUzbek(a.title, b.title));
+    return groupByUzbekAlphabet(sortedTerms, (term: TermSummary) => term.title);
   }, [terms]);
+
+  const letters = useMemo(() => orderedLetters(groupedTerms), [groupedTerms]);
 
   // handleTermClick removed as we use Link directly
 
@@ -161,12 +114,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
     return (
       <PageContainer maxWidth="md">
         <div className="flex flex-col items-center gap-6">
-          <h1
-            className="text-3xl cursor-pointer font-bold text-gray-900"
-            onClick={handleRefresh}
-          >
-            {t.title}
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t.title}</h1>
           <div className="bg-white rounded-lg shadow-lg p-6 text-center max-w-lg">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
               <svg
@@ -189,7 +137,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
             <p className="text-sm text-gray-500 mb-4">{error}</p>
             <button
               onClick={handleRefresh}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#00527a] hover:bg-[#001c3b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001c3b]"
             >
               {t.retry}
             </button>
@@ -202,10 +150,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
   return (
     <PageContainer maxWidth="md">
       <div className="flex flex-col items-center gap-6 sm:gap-8">
-        <h1
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center cursor-pointer tracking-tight"
-          onClick={handleRefresh}
-        >
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center tracking-tight">
           {t.title}
         </h1>
 
@@ -233,23 +178,25 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
         ) : terms.length > 0 ? (
           /* HAS RESULTS */
           <>
-            <div className="w-full max-w-4xl text-sm sm:text-base text-gray-600 flex justify-between items-center mb-8 sm:mb-10">
+            <div
+              className="w-full max-w-4xl text-sm sm:text-base text-gray-700 flex justify-between items-center mb-8 sm:mb-10"
+              role="status"
+            >
               <span>{totalTerms > 0 && `${totalTerms} ${t.termsShowing}`}</span>
             </div>
             <div className="w-full space-y-16 sm:space-y-24">
-              {[
-                ...UZBEK_ALPHABET,
-                ...Object.keys(groupedTerms).filter(
-                  (k) => !UZBEK_ALPHABET.includes(k),
-                ),
-              ].map(
+              {letters.map(
                 (letter) =>
                   groupedTerms[letter]?.length > 0 && (
-                    <div key={letter} className="scroll-mt-48">
+                    <section
+                      key={letter}
+                      className="scroll-mt-48"
+                      aria-label={`${letter} — ${t.letterHeading}`}
+                    >
                       <div className="mb-6 sm:mb-10 px-2 sm:px-4">
-                        <span className="text-3xl sm:text-4xl md:text-5xl font-black text-[#001c3b]/80 border-b-4 border-[#c9a96e]/30 pb-2">
+                        <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-black text-[#001c3b] border-b-4 border-[#c9a96e] pb-2">
                           {letter}
-                        </span>
+                        </h2>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                         {groupedTerms[letter].map((term) => (
@@ -261,7 +208,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </section>
                   ),
               )}
             </div>
@@ -269,11 +216,10 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
             <Zoom in={showScrollTop}>
               <Fab
                 color="primary"
-                aria-label="scroll to top"
+                aria-label={t.scrollTop}
                 onClick={scrollToTop}
-                className="!fixed !bottom-6 !right-6 !bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg "
+                className="!fixed !bottom-6 !right-6 !bg-[#001c3b] !text-white hover:!bg-[#00325f] !shadow-lg "
                 size="small"
-                // sx={{ width: 48, height: 48 }}
               >
                 <ArrowUpwardIcon />
               </Fab>
@@ -281,21 +227,25 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           </>
         ) : (
           /* NO RESULTS */
-          <div className="w-full max-w-3xl text-sm sm:text-base text-gray-600 flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 sm:mb-6">
-            <span>
-              {search
-                ? "Ushbu qidiruv bo&apos;yicha termin topilmadi."
-                : t.noResults}
-            </span>
+          <div
+            className="w-full max-w-3xl text-sm sm:text-base text-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 sm:mb-6"
+            role="status"
+          >
+            <span>{search ? t.noSearchResults : t.noResults}</span>
             <Button
               variant="contained"
               onClick={() => {
                 setSearch("");
                 triggerSearch("");
               }}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm sm:text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              sx={{
+                backgroundColor: "#001c3b",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": { backgroundColor: "#00325f" },
+              }}
             >
-              Barcha terminlarni ko&apos;rish
+              {t.showAllTerms}
             </Button>
           </div>
         )}

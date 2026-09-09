@@ -7,6 +7,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
 import { useDictionary } from "@/hooks/useDictionary";
 import { formatDateTime, logger } from "@/lib/utils";
+import { compareUzbek } from "@/lib/uzbekCollation";
 import {
   createTerm,
   updateTerm,
@@ -190,9 +191,10 @@ const AdminTermsPage: React.FC = () => {
     if (sortConfig) {
       sorted.sort((a, b) => {
         if (sortConfig.key === "title") {
+          // Rasmiy oʻzbek alifbosi tartibi (Oʻ, Gʻ, Sh, Ch, Ng — Z dan keyin).
           return sortConfig.direction === "asc"
-            ? a.title.localeCompare(b.title, "uz")
-            : b.title.localeCompare(a.title, "uz");
+            ? compareUzbek(a.title, b.title)
+            : compareUzbek(b.title, a.title);
         }
 
         if (
@@ -208,7 +210,7 @@ const AdminTermsPage: React.FC = () => {
       });
     } else {
       // Default: sort by title asc
-      sorted.sort((a, b) => a.title.localeCompare(b.title, "uz"));
+      sorted.sort((a, b) => compareUzbek(a.title, b.title));
     }
 
     return sorted.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);

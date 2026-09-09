@@ -34,6 +34,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, []);
 
+  // Skrinriderlar va qidiruv tizimlari sahifa tilini toʻgʻri aniqlashi uchun
+  // <html lang="..."> atributi tanlangan tilga moslanadi (WCAG 3.1.1).
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     Cookies.set("language", lang, { expires: 365, path: "/" }); // Save preference for 1 year
