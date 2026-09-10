@@ -12,8 +12,8 @@ export default function CookiesPage() {
   return (
     <>
       <LegalDocumentView document={legalDocs[language].cookies} />
-      <div className="flex justify-center pb-12 px-4">
-        <CookieSettingsButton />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <CookieSettingsButton className="text-[#00527a] hover:text-[#001c3b]" />
       </div>
     </>
   );

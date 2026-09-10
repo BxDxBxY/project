@@ -206,3 +206,12 @@ body {
     transform: translate(-100%, 0);
   }
 }
+
+/* Harakatni kamaytirish rejimida bannerni toʻxtatish (WCAG 2.2.2) */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+    padding-left: 0;
+    text-align: center;
+  }
+}

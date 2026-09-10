@@ -13,16 +13,10 @@ import { ORGANIZATION } from "./organization";
  * юридической службой Академии.
  */
 
-export interface LegalTable {
-  headers: string[];
-  rows: string[][];
-}
-
 export interface LegalSection {
   title: string;
   paragraphs?: string[];
   bullets?: string[];
-  table?: LegalTable;
 }
 
 export interface LegalDocument {
@@ -33,7 +27,7 @@ export interface LegalDocument {
   footerNote?: string;
 }
 
-export type LegalDocKey = "privacy" | "terms" | "cookies" | "refund";
+export type LegalDocKey = "privacy" | "terms" | "cookies";
 
 const uzOrg = ORGANIZATION.uz;
 const ruOrg = ORGANIZATION.ru;
@@ -82,31 +76,13 @@ const uzPrivacy: LegalDocument = {
     },
     {
       title: "3. Ishlov berish maqsadlari va huquqiy asoslari",
-      table: {
-        headers: ["Maʼlumot", "Maqsad", "Huquqiy asos"],
-        rows: [
-          [
-            "Ism, e-pochta, murojaat matni",
-            "Murojaatni koʻrib chiqish va javob berish",
-            "Subyektning roziligi (forma yuborilishidan oldin belgilanadigan rozilik belgisi)",
-          ],
-          [
-            "IP-manzil (vaqtinchalik)",
-            "Spam, avtomatlashtirilgan hujum va suiisteʼmoldan himoya",
-            "Operatorning axborot xavfsizligini taʼminlash boʻyicha qonuniy manfaati",
-          ],
-          [
-            "Til va rozilik cookie-fayllari",
-            "Saytning ishlashi va tanlovingizni eslab qolish",
-            "Xizmatni taqdim etish uchun zaruriyat",
-          ],
-          [
-            "Statistika cookie-fayllari",
-            "Saytdan foydalanish statistikasini umumlashtirilgan holda tahlil qilish",
-            "Subyektning roziligi (istalgan vaqtda bekor qilinishi mumkin)",
-          ],
-        ],
-      },
+      paragraphs: ["Ustunlar tartibi: Maʼlumot — Maqsad — Huquqiy asos."],
+      bullets: [
+        "Ism, e-pochta, murojaat matni — Murojaatni koʻrib chiqish va javob berish — Subyektning roziligi (forma yuborilishidan oldin belgilanadigan rozilik belgisi)",
+        "IP-manzil (vaqtinchalik) — Spam, avtomatlashtirilgan hujum va suiisteʼmoldan himoya — Operatorning axborot xavfsizligini taʼminlash boʻyicha qonuniy manfaati",
+        "Til va rozilik cookie-fayllari — Saytning ishlashi va tanlovingizni eslab qolish — Xizmatni taqdim etish uchun zaruriyat",
+        "Statistika cookie-fayllari — Saytdan foydalanish statistikasini umumlashtirilgan holda tahlil qilish — Subyektning roziligi (istalgan vaqtda bekor qilinishi mumkin)",
+      ],
     },
     {
       title: "4. Uchinchi tomon xizmatlari va maʼlumotlarning uzatilishi",
@@ -279,46 +255,14 @@ const uzCookies: LegalDocument = {
   sections: [
     {
       title: "1. Sayt foydalanadigan cookie-fayllar",
-      table: {
-        headers: ["Nomi", "Turi", "Vazifasi", "Saqlanish muddati", "Kim oʻrnatadi"],
-        rows: [
-          [
-            "language",
-            "Zarur",
-            "Tanlangan interfeys tilini eslab qolish",
-            "12 oy",
-            "Sayt",
-          ],
-          [
-            "cookie_consent",
-            "Zarur",
-            "Cookie boʻyicha tanlovingizni saqlash",
-            "12 oy",
-            "Sayt",
-          ],
-          [
-            "_ga, _ga_*",
-            "Statistika",
-            "Umumlashtirilgan tashrif statistikasi (Google Analytics)",
-            "24 oygacha",
-            "Google",
-          ],
-          [
-            "_GRECAPTCHA",
-            "Xavfsizlik",
-            "Aloqa formasini spamdan himoya qilish (reCAPTCHA)",
-            "6 oygacha",
-            "Google",
-          ],
-          [
-            "access_token, refresh_token",
-            "Zarur (faqat xodimlar)",
-            "Administrativ panelga kirishni tasdiqlash",
-            "Sessiya davomida",
-            "Sayt",
-          ],
-        ],
-      },
+      paragraphs: ["Ustunlar tartibi: Nomi — Turi — Vazifasi — Saqlanish muddati — Kim oʻrnatadi."],
+      bullets: [
+        "language — Zarur — Tanlangan interfeys tilini eslab qolish — 12 oy — Sayt",
+        "cookie_consent — Zarur — Cookie boʻyicha tanlovingizni saqlash — 12 oy — Sayt",
+        "_ga, _ga_* — Statistika — Umumlashtirilgan tashrif statistikasi (Google Analytics) — 24 oygacha — Google",
+        "_GRECAPTCHA — Xavfsizlik — Aloqa formasini spamdan himoya qilish (reCAPTCHA) — 6 oygacha — Google",
+        "access_token, refresh_token — Zarur (faqat xodimlar) — Administrativ panelga kirishni tasdiqlash — Sessiya davomida — Sayt",
+      ],
     },
     {
       title: "2. Rozilikni boshqarish",
@@ -351,63 +295,6 @@ const uzCookies: LegalDocument = {
       ],
     },
   ],
-};
-
-const uzRefund: LegalDocument = {
-  title: "Toʻlovlarni qaytarish siyosati",
-  effectiveDate: `Kuchga kirgan sana: ${UZ_EFFECTIVE}`,
-  intro: [
-    "MUHIM: hozirda saytdagi barcha funksiyalar — lugʻatdan foydalanish, qidiruv, terminlarni koʻrish — bepul. Sayt toʻlov qabul qilmaydi, obuna sotmaydi va bank kartasi maʼlumotlarini soʻramaydi. Shu sababli ayni vaqtda qaytarish uchun asos ham yuzaga kelmaydi.",
-    "Ushbu hujjat kelgusida pullik xizmatlar (masalan, muassasalar uchun litsenziya, API yoki oʻquv kurslari) joriy etilgan taqdirda qoʻllanadigan qoidalarni oldindan belgilaydi.",
-  ],
-  sections: [
-    {
-      title: "1. Qoʻllanish sohasi",
-      paragraphs: [
-        "Qoidalar faqat Akademiya rasmiy ravishda joriy etgan va saytda oshkor eʼlon qilingan pullik xizmatlarga qoʻllanadi. Pullik xizmat joriy etilganda uning narxi, tarkibi va toʻlov tartibi ommaviy oferta shaklida alohida eʼlon qilinadi.",
-      ],
-    },
-    {
-      title: "2. Toʻlovni qaytarish asoslari",
-      bullets: [
-        "xizmat texnik nosozlik tufayli koʻrsatilmagan yoki qisman koʻrsatilgan boʻlsa;",
-        "toʻlov texnik xato tufayli takroriy yoki notoʻgʻri summada amalga oshirilgan boʻlsa;",
-        "xizmat eʼlon qilingan tavsifga muvofiq kelmasa;",
-        "qonun hujjatlarida belgilangan boshqa hollarda.",
-      ],
-    },
-    {
-      title: "3. Raqamli kontent uchun xususiyatlar",
-      paragraphs: [
-        "Raqamli kontent va elektron xizmatlar (yuklab olinadigan nashrlar, API kalitlari, elektron kurslar) uchun kontentga kirish taqdim etilgan yoki fayl yuklab olingan paytdan boshlab toʻlov faqat xizmat sifati talablarga javob bermagan hollarda qaytariladi. Bu qoida foydalanuvchining qonun hujjatlarida belgilangan huquqlarini cheklamaydi.",
-      ],
-    },
-    {
-      title: "4. Murojaat qilish tartibi",
-      bullets: [
-        `Murojaatni ${uzOrg.email} manziliga yuborish kerak.`,
-        "Murojaatda koʻrsatiladi: toʻlovchining ismi, toʻlov sanasi va summasi, toʻlov usuli, toʻlovni tasdiqlovchi hujjat, qaytarish sababi.",
-        "Murojaat qabul qilingan kundan boshlab 10 ish kuni ichida koʻrib chiqiladi.",
-        "Toʻlov, qoida tariqasida, toʻlov amalga oshirilgan usul orqali qaytariladi.",
-      ],
-    },
-    {
-      title: "5. Qaytarish qoʻllanmaydigan hollar",
-      bullets: [
-        "xizmat toʻliq va sifatli koʻrsatilgan boʻlsa hamda dalillangan nuqson boʻlmasa;",
-        "foydalanuvchi tomonidan foydalanish shartlari buzilgan boʻlsa;",
-        "murojaat qonun hujjatlarida belgilangan muddat oʻtgach yuborilgan boʻlsa.",
-      ],
-    },
-    {
-      title: "6. Nizolarni hal etish",
-      paragraphs: [
-        "Nizolar Oʻzbekiston Respublikasi qonunchiligi asosida, avvalo muzokaralar yoʻli bilan hal etiladi.",
-      ],
-    },
-  ],
-  footerNote:
-    "Pullik xizmatlar joriy etilishidan oldin ushbu hujjat yuridik xizmat tomonidan yakuniy tahrirdan oʻtkazilishi shart.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -449,31 +336,13 @@ const ruPrivacy: LegalDocument = {
     },
     {
       title: "3. Цели и правовые основания обработки",
-      table: {
-        headers: ["Данные", "Цель", "Правовое основание"],
-        rows: [
-          [
-            "Имя, e-mail, текст обращения",
-            "Рассмотрение обращения и ответ на него",
-            "Согласие субъекта (отметка согласия перед отправкой формы)",
-          ],
-          [
-            "IP-адрес (временно)",
-            "Защита от спама, автоматизированных атак и злоупотреблений",
-            "Законный интерес оператора в обеспечении информационной безопасности",
-          ],
-          [
-            "Cookie языка и согласия",
-            "Работа сайта и запоминание вашего выбора",
-            "Необходимость для предоставления сервиса",
-          ],
-          [
-            "Статистические cookie",
-            "Анализ обобщённой статистики использования сайта",
-            "Согласие субъекта (может быть отозвано в любое время)",
-          ],
-        ],
-      },
+      paragraphs: ["Порядок сведений: Данные — Цель — Правовое основание."],
+      bullets: [
+        "Имя, e-mail, текст обращения — Рассмотрение обращения и ответ на него — Согласие субъекта (отметка согласия перед отправкой формы)",
+        "IP-адрес (временно) — Защита от спама, автоматизированных атак и злоупотреблений — Законный интерес оператора в обеспечении информационной безопасности",
+        "Cookie языка и согласия — Работа сайта и запоминание вашего выбора — Необходимость для предоставления сервиса",
+        "Статистические cookie — Анализ обобщённой статистики использования сайта — Согласие субъекта (может быть отозвано в любое время)",
+      ],
     },
     {
       title: "4. Сторонние сервисы и передача данных",
@@ -646,34 +515,14 @@ const ruCookies: LegalDocument = {
   sections: [
     {
       title: "1. Какие cookie использует сайт",
-      table: {
-        headers: ["Название", "Тип", "Назначение", "Срок хранения", "Кто устанавливает"],
-        rows: [
-          ["language", "Необходимые", "Запоминание выбранного языка интерфейса", "12 месяцев", "Сайт"],
-          ["cookie_consent", "Необходимые", "Хранение вашего выбора по cookie", "12 месяцев", "Сайт"],
-          [
-            "_ga, _ga_*",
-            "Статистические",
-            "Обобщённая статистика посещений (Google Analytics)",
-            "до 24 месяцев",
-            "Google",
-          ],
-          [
-            "_GRECAPTCHA",
-            "Безопасность",
-            "Защита формы обратной связи от спама (reCAPTCHA)",
-            "до 6 месяцев",
-            "Google",
-          ],
-          [
-            "access_token, refresh_token",
-            "Необходимые (только сотрудники)",
-            "Подтверждение доступа в административную панель",
-            "На время сессии",
-            "Сайт",
-          ],
-        ],
-      },
+      paragraphs: ["Порядок сведений: Название — Тип — Назначение — Срок хранения — Кто устанавливает."],
+      bullets: [
+        "language — Необходимые — Запоминание выбранного языка интерфейса — 12 месяцев — Сайт",
+        "cookie_consent — Необходимые — Хранение вашего выбора по cookie — 12 месяцев — Сайт",
+        "_ga, _ga_* — Статистические — Обобщённая статистика посещений (Google Analytics) — до 24 месяцев — Google",
+        "_GRECAPTCHA — Безопасность — Защита формы обратной связи от спама (reCAPTCHA) — до 6 месяцев — Google",
+        "access_token, refresh_token — Необходимые (только сотрудники) — Подтверждение доступа в административную панель — На время сессии — Сайт",
+      ],
     },
     {
       title: "2. Управление согласием",
@@ -708,63 +557,6 @@ const ruCookies: LegalDocument = {
   ],
 };
 
-const ruRefund: LegalDocument = {
-  title: "Политика возврата средств",
-  effectiveDate: `Дата вступления в силу: ${RU_EFFECTIVE}`,
-  intro: [
-    "ВАЖНО: в настоящее время все функции сайта — доступ к словарю, поиск, просмотр терминов — бесплатны. Сайт не принимает платежи, не продаёт подписки и не запрашивает данные банковских карт. Поэтому в данный момент основания для возврата средств не возникают.",
-    "Настоящий документ заранее устанавливает правила, которые будут применяться в случае введения платных услуг (например, институциональных лицензий, доступа к API или образовательных курсов).",
-  ],
-  sections: [
-    {
-      title: "1. Сфера применения",
-      paragraphs: [
-        "Правила применяются только к платным услугам, официально введённым Академией и публично объявленным на сайте. При введении платной услуги её стоимость, состав и порядок оплаты публикуются отдельно в форме публичной оферты.",
-      ],
-    },
-    {
-      title: "2. Основания для возврата",
-      bullets: [
-        "услуга не была оказана или оказана частично из-за технической неисправности;",
-        "платёж совершён повторно или в неверной сумме из-за технической ошибки;",
-        "услуга не соответствует объявленному описанию;",
-        "иные случаи, установленные законодательством.",
-      ],
-    },
-    {
-      title: "3. Особенности для цифрового контента",
-      paragraphs: [
-        "Для цифрового контента и электронных услуг (загружаемые издания, ключи API, электронные курсы) с момента предоставления доступа или загрузки файла возврат производится только при ненадлежащем качестве услуги. Настоящее правило не ограничивает права пользователя, установленные законодательством.",
-      ],
-    },
-    {
-      title: "4. Порядок обращения",
-      bullets: [
-        `Обращение направляется на адрес ${ruOrg.email}.`,
-        "В обращении указываются: имя плательщика, дата и сумма платежа, способ оплаты, подтверждающий документ, причина возврата.",
-        "Обращение рассматривается в течение 10 рабочих дней со дня получения.",
-        "Возврат, как правило, производится тем же способом, которым был совершён платёж.",
-      ],
-    },
-    {
-      title: "5. Случаи, когда возврат не производится",
-      bullets: [
-        "услуга оказана полностью и качественно, обоснованных претензий нет;",
-        "пользователем нарушены условия использования;",
-        "обращение направлено по истечении срока, установленного законодательством.",
-      ],
-    },
-    {
-      title: "6. Разрешение споров",
-      paragraphs: [
-        "Споры разрешаются на основании законодательства Республики Узбекистан, прежде всего путём переговоров.",
-      ],
-    },
-  ],
-  footerNote:
-    "До введения платных услуг настоящий документ должен пройти окончательную юридическую проверку.",
-};
-
 export const legalDocs: Record<
   LanguageCode,
   Record<LegalDocKey, LegalDocument>
@@ -773,12 +565,10 @@ export const legalDocs: Record<
     privacy: uzPrivacy,
     terms: uzTerms,
     cookies: uzCookies,
-    refund: uzRefund,
   },
   ru: {
     privacy: ruPrivacy,
     terms: ruTerms,
     cookies: ruCookies,
-    refund: ruRefund,
   },
 };

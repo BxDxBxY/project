@@ -32,7 +32,6 @@ export default function FooterComponent() {
     { href: "/terms", label: t.terms },
     { href: "/privacy", label: t.privacy },
     { href: "/cookies", label: t.cookies },
-    { href: "/refund", label: t.refund },
     { href: "/contact", label: t.contact },
   ];
 

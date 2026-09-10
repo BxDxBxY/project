@@ -13,8 +13,8 @@ Before deploying, read:
   are shown on the site until real data is filled in.
 
 Legal documents live in `src/constants/legalDocs.ts` (Uzbek + Russian) and are
-rendered by `src/components/legal/LegalDocumentView.tsx` at `/privacy`, `/terms`,
-`/cookies` and `/refund`.
+rendered by `src/components/legal/LegalDocumentView.tsx` at `/privacy`, `/terms`
+and `/cookies`.
 
 Analytics (`ConsentedAnalytics`) and reCAPTCHA are **not** loaded until the user
 consents / starts using the contact form. Do not move these scripts back into the
