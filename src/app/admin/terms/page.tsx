@@ -394,7 +394,7 @@ const AdminTermsPage: React.FC = () => {
   }
 
   return (
-    <PageContainer maxWidth="full">
+    <PageContainer maxWidth="full" className="!px-0 !py-0">
       <div className="flex flex-col gap-4">
         {/* Header Row */}
         <div className="flex items-center justify-between">

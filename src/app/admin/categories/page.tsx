@@ -115,7 +115,7 @@ export default function AdminCategoriesPage() {
   };
 
   return (
-    <PageContainer maxWidth="lg">
+    <PageContainer maxWidth="full" className="!px-0 !py-0">
       <div>
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Kategoriyalar boshqarish</h1>

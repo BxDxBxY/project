@@ -161,8 +161,8 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <PageContainer maxWidth="lg">
-      <Box sx={{ mb: 4 }}>
+    <PageContainer maxWidth="full" className="!px-0 !py-0">
+      <Box sx={{ mb: 3 }}>
         <Typography
           variant="h4"
           sx={{ fontWeight: 800, color: "#001c3b", mb: 1 }}
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
         </Typography>
       </Box>
 
-      <Grid container spacing={3} sx={{ mb: 6 }}>
+      <Grid container spacing={2.5} sx={{ mb: 3 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard
             title="Umumiy terminlar"

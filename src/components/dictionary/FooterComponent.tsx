@@ -6,19 +6,11 @@ import XIcon from "@mui/icons-material/X";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
-import { ORGANIZATION, isPlaceholder } from "@/constants/organization";
+import { ORGANIZATION } from "@/constants/organization";
 import { CookieSettingsButton } from "@/components/ui/CookieConsent";
 
 const linkClass =
   "hover:underline hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9a96e] rounded-sm transition-colors";
-
-/** Toʻldirilmagan rekvizit saytda koʻrinib turishi kerak, lekin ajratib koʻrsatiladi. */
-const DetailValue: React.FC<{ value: string }> = ({ value }) =>
-  isPlaceholder(value) ? (
-    <mark className="bg-amber-200 text-amber-950 px-1 rounded">{value}</mark>
-  ) : (
-    <>{value}</>
-  );
 
 export default function FooterComponent() {
   const pathname = usePathname();
@@ -62,9 +54,6 @@ export default function FooterComponent() {
               <a href={`mailto:${org.email}`} className={linkClass}>
                 {org.email}
               </a>
-            </p>
-            <p>
-              {t.taxIdLabel}: <DetailValue value={org.taxId} />
             </p>
           </address>
         </section>

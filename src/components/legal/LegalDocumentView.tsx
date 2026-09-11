@@ -44,7 +44,7 @@ export const LegalDocumentView: React.FC<LegalDocumentViewProps> = ({
 }) => {
   return (
     <PageContainer maxWidth="md">
-      <div className="py-8 sm:py-12 md:py-16">
+      <div>
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight text-center">
           {doc.title}
         </h1>

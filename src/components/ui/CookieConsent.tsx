@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useConsent } from "@/lib/ConsentContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/constants/translations";
@@ -14,6 +15,7 @@ import { translations } from "@/constants/translations";
  */
 export const CookieConsent: React.FC = () => {
   const { bannerVisible, acceptAll, acceptNecessaryOnly } = useConsent();
+  const pathname = usePathname();
   const { language } = useLanguage();
   const t = translations[language].cookieBanner;
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -25,7 +27,8 @@ export const CookieConsent: React.FC = () => {
     }
   }, [bannerVisible]);
 
-  if (!bannerVisible) return null;
+  // Admin panel ichki tizim — unda cookie banneri koʻrsatilmaydi.
+  if (!bannerVisible || pathname.startsWith("/admin")) return null;
 
   return (
     <div

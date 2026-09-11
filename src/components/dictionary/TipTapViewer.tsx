@@ -130,7 +130,7 @@ const TiptapViewer: React.FC<TiptapViewerProps> = ({
       <style>{editorStyles}</style>
       <div className={`viewer-container ${className}`}>
         <div
-          className="viewer-content text-justify md:!text-xl py-0 my-0"
+          className="viewer-content text-left sm:text-justify md:!text-xl py-0 my-0"
           contentEditable={false}
         >
           <EditorContent editor={editor} />

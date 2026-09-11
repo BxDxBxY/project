@@ -26,8 +26,6 @@ export interface OrganizationDetails {
   email: string;
   /** Shaxsga oid maʼlumotlar boʻyicha murojaat manzili */
   privacyEmail: string;
-  /** STIR / ИНН */
-  taxId: string;
   /** Shaxsga oid maʼlumotlar bazasining Davlat reyestridagi raqami */
   dataRegistryNumber: string;
   website: string;
@@ -45,7 +43,6 @@ export const ORGANIZATION: Record<LanguageCode, OrganizationDetails> = {
     phone: "+998 71 267-07-06 (232)",
     email: "info@da-uwed.uz",
     privacyEmail: `${TODO_MARK}: shaxsga oid maʼlumotlar boʻyicha murojaatlar uchun rasmiy e-pochta manzilini koʻrsating`,
-    taxId: `${TODO_MARK}: STIR (INN) raqamini koʻrsating`,
     dataRegistryNumber: `${TODO_MARK}: shaxsga oid maʼlumotlar bazasining Davlat reyestridagi roʻyxatdan oʻtish raqami yoki "roʻyxatdan oʻtkazilmoqda" deb koʻrsating`,
     website: `${TODO_MARK}: saytning rasmiy domenini koʻrsating`,
   },
@@ -60,7 +57,6 @@ export const ORGANIZATION: Record<LanguageCode, OrganizationDetails> = {
     phone: "+998 71 267-07-06 (232)",
     email: "info@da-uwed.uz",
     privacyEmail: `${TODO_MARK}: укажите официальный e-mail для обращений по персональным данным`,
-    taxId: `${TODO_MARK}: укажите ИНН (СТИР)`,
     dataRegistryNumber: `${TODO_MARK}: укажите номер регистрации базы персональных данных в Государственном реестре либо статус «на регистрации»`,
     website: `${TODO_MARK}: укажите официальный домен сайта`,
   },

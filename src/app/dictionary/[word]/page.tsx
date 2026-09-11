@@ -176,7 +176,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
 
   // --- REUSABLE BLOCKS FOR LAYOUTS ---
   const MetadataGrid = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6 md:mt-8">
       <div className="space-y-8">
         {term.categories?.length > 0 && (
           <div>
@@ -291,7 +291,8 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
     <>
       <style>{editorStyles}</style>
 
-      {/* Floating Layout Switcher */}
+      {/* Maket almashtirgich — faqat ishlab chiqish rejimida */}
+      {process.env.NODE_ENV === "development" && (
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
         {showSwitcher && (
           <div className="bg-white p-3 rounded-2xl shadow-2xl border border-gray-100 flex flex-col gap-2 transition-all animate-in slide-in-from-bottom-5">
@@ -356,9 +357,11 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
         >
           <Settings
             className={`w-6 h-6 transition-transform ${showSwitcher ? "rotate-180" : ""}`}
+            aria-hidden="true"
           />
         </button>
       </div>
+      )}
 
       <div className="transition-all duration-500">
         {/* LAYOUT 1: HERO BANNER */}
@@ -406,7 +409,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
           <PageContainer maxWidth="sm">
             <button
               onClick={handleBack}
-              className="text-gray-600 hover:text-[#001c3b] mb-8 flex items-center text-sm font-semibold transition bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full w-fit shadow-sm"
+              className="text-gray-600 hover:text-[#001c3b] mb-5 sm:mb-8 flex items-center text-sm font-semibold transition bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full w-fit shadow-sm"
             >
               <ArrowBackIcon className="mr-2" fontSize="small" /> Orqaga
             </button>
@@ -415,9 +418,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               {/* Decorative top bar */}
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0099B5] via-[#c9a96e] to-[#1EB53A]"></div>
 
-              <div className="p-8 sm:p-12">
-                <div className="border-b border-gray-100 pb-6 mb-8">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 tracking-tight leading-tight">
+              <div className="p-5 sm:p-8 md:p-12">
+                <div className="border-b border-gray-100 pb-4 sm:pb-6 mb-5 sm:mb-8">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 tracking-tight leading-tight">
                     {term.title}
                   </h1>
                   <TimestampsLine />
@@ -462,7 +465,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`flex items-center px-8 py-5 font-bold text-sm sm:text-base transition-all whitespace-nowrap ${activeTab === tab.id ? "bg-white text-[#001c3b] border-b-2 border-[#001c3b]" : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"}`}
+                        className={`flex items-center px-4 sm:px-8 py-3 sm:py-5 font-bold text-sm sm:text-base transition-all whitespace-nowrap ${activeTab === tab.id ? "bg-white text-[#001c3b] border-b-2 border-[#001c3b]" : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"}`}
                       >
                         <tab.icon
                           fontSize="small"
@@ -472,9 +475,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                       </button>
                     ))}
                 </div>
-                <div className="p-8 min-h-[200px]">
+                <div className="p-5 sm:p-8 min-h-[160px] sm:min-h-[200px]">
                   {activeTab === "about" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                       {term.categories?.length > 0 && (
                         <div>
                           <h4 className="text-sm font-bold text-gray-400 mb-2 uppercase">
