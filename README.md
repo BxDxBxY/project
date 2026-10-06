@@ -126,6 +126,8 @@ npm run dev
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run type-check` - Run TypeScript type checking
+- `npm test` - Run the test suite once
+- `npm run test:watch` - Run the test suite in watch mode
 
 ## 🔧 Configuration
 
@@ -224,10 +226,13 @@ The application is fully responsive and works on:
 
 ### Testing
 
-No automated test suite is set up yet. Before changing dictionary sorting,
-verify `src/lib/uzbekCollation.ts` manually: `Oʻ`, `Gʻ`, `Sh`, `Ch`, `Ng` must
-come after `Z`, and all apostrophe variants (`ʻ ' ' \``) must be treated as one
-character.
+`npm test` runs the Vitest suite (`npm run test:watch` for watch mode).
+Coverage is intentionally narrow so far: `src/lib/uzbekCollation.test.ts`
+locks down the alphabetical-sorting invariants — `Oʻ`, `Gʻ`, `Sh`, `Ch`, `Ng`
+must come after `Z`, all apostrophe variants (`ʻ ' ' \``) must be treated as
+one character, and digraphs must group as one letter rather than falling
+under their first Latin letter. Any change to dictionary sorting should keep
+this suite green.
 
 ## 📈 Future Enhancements
 

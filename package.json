@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "predeploy": "npm run lint && npm run format && npm run format:check && npm run type-check && npm run build"
@@ -37,16 +39,13 @@
     "@tiptap/pm": "^3.3.0",
     "@tiptap/react": "^3.3.0",
     "@tiptap/starter-kit": "^3.3.0",
-    "@types/react-google-recaptcha": "^2.1.9",
     "axios": "^1.11.0",
     "js-cookie": "^3.0.5",
     "lru-cache": "^11.3.5",
     "lucide-react": "^0.539.0",
     "next": "^15.5.9",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-google-recaptcha": "^3.1.0",
-    "react-google-recaptcha-v3": "^1.11.0"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -58,6 +57,7 @@
     "prettier": "^3.6.2",
     "sass": "^1.91.0",
     "tailwindcss": "^4",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^5.0.2"
   }
 }
