@@ -74,8 +74,8 @@ export const HeaderDefault = () => {
           className="object-cover object-[50%_30%] opacity-20"
           priority
         />
-        {/* Golden line */}
-        <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 shadow-md" />
+        {/* Uzbekistan Flag gradient line */}
+        <div className="absolute bottom-0 left-0 w-full h-[4px] bg-[linear-gradient(90deg,#0099B5_0%,#0099B5_25%,#CE1126_35%,#FFFFFF_50%,#CE1126_65%,#1EB53A_75%,#1EB53A_100%)] shadow-md" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 w-full">

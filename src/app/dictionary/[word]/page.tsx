@@ -95,9 +95,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [layoutMode, setLayoutMode] = useState<1 | 2 | 3 | 4>(2); // Layout switcher (default to 2)
   const [showSwitcher, setShowSwitcher] = useState(false);
-  const [activeTab, setActiveTab] = useState<
-    "about" | "countries" | "terms" | "sources"
-  >("about");
+  // const [activeTab, setActiveTab] = useState<
+  //   "about" | "countries" | "terms" | "sources"
+  // >("about");
 
   const { word: termId } = React.use(params);
   const router = useRouter();
@@ -271,19 +271,19 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
     </div>
   );
 
-  const TimestampsLine = () => (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 font-medium">
-      <span>Yaratildi: {formatDateTime(term.created_at).formattedDate}</span>
-      {term.updated_at && (
-        <>
-          <span className="hidden sm:inline text-gray-300">•</span>
-          <span>
-            Tahrirlandi: {formatDateTime(term.updated_at).formattedDate}
-          </span>
-        </>
-      )}
-    </div>
-  );
+  // const TimestampsLine = () => (
+  //   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 font-medium">
+  //     <span>Yaratildi: {formatDateTime(term.created_at).formattedDate}</span>
+  //     {term.updated_at && (
+  //       <>
+  //         <span className="hidden sm:inline text-gray-300">•</span>
+  //         <span>
+  //           Tahrirlandi: {formatDateTime(term.updated_at).formattedDate}
+  //         </span>
+  //       </>
+  //     )}
+  //   </div>
+  // );
 
   // --- LAYOUT RENDERS ---
 
@@ -381,7 +381,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
                   {term.title}
                 </h1>
-                <TimestampsLine />
+                {/* <TimestampsLine /> */}
               </div>
             </div>
             <div className="max-w-4xl mx-auto px-4 py-12">
@@ -416,11 +416,11 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0099B5] via-[#c9a96e] to-[#1EB53A]"></div>
 
               <div className="p-8 sm:p-12">
-                <div className="border-b border-gray-100 pb-6 mb-8">
+                <div className="border-b border-gray-100 pb-0 mb-3">
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#001c3b] mb-4 tracking-tight leading-tight">
                     {term.title}
                   </h1>
-                  <TimestampsLine />
+                  {/* <TimestampsLine /> */}
                 </div>
 
                 <div className="prose prose-lg sm:prose-xl max-w-none text-gray-800 leading-loose">
@@ -432,7 +432,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               </div>
             </div>
 
-            {hasExtraInfo && (
+            {/* {hasExtraInfo && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className="flex overflow-x-auto border-b border-gray-100 bg-gray-50/50 scrollbar-hide">
                   {[
@@ -542,7 +542,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
                   )}
                 </div>
               </div>
-            )}
+            )} */}
           </PageContainer>
         )}
 
@@ -748,7 +748,7 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
               <div
                 className={`mt-8 ${hasExtraInfo ? "pb-8 border-b border-gray-100" : ""}`}
               >
-                <TimestampsLine />
+                {/* <TimestampsLine /> */}
               </div>
 
               {hasExtraInfo && <MetadataGrid />}

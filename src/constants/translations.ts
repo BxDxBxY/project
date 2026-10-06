@@ -10,8 +10,8 @@ export const translations = {
       contact: "Kontaktlar",
     },
     header: {
-      title: "Diplomatik Lug‘at",
-      subtitle: "Rasmiy va birinchi onlayn lug‘at",
+      title: "Diplomatik Izohli Lug‘at",
+      subtitle: "O‘zbek tilidagi elektron lug‘at",
       testBanner: "Sayt test tartibida ishlamoqda.",
       skipToContent: "Asosiy mazmunga oʻtish",
       openMenu: "Menyuni ochish",
@@ -93,7 +93,8 @@ export const translations = {
         "Biz faqat murojaatga javob berish uchun zarur maʼlumotlarni soʻraymiz. Rozilikni istalgan vaqtda bekor qilishingiz mumkin.",
       btnSending: "Yuborilmoqda...",
       btnSend: "Xat yuborish",
-      successMsg: "Xabaringiz uchun tashakkur! Tez orada siz bilan bogʻlanamiz.",
+      successMsg:
+        "Xabaringiz uchun tashakkur! Tez orada siz bilan bogʻlanamiz.",
       errorMsg:
         "Xatolik yuz berdi. Iltimos, birozdan soʻng qayta urinib koʻring.",
       captchaLoading:

@@ -49,9 +49,7 @@ const uzPrivacy: LegalDocument = {
   sections: [
     {
       title: "1. Maʼlumotlar operatori",
-      paragraphs: [
-        "Shaxsga oid maʼlumotlarning egasi va operatori:",
-      ],
+      paragraphs: ["Shaxsga oid maʼlumotlarning egasi va operatori:"],
       bullets: [
         `Toʻliq nomi: ${uzOrg.legalName}`,
         `Manzil: ${uzOrg.address}`,
@@ -255,7 +253,9 @@ const uzCookies: LegalDocument = {
   sections: [
     {
       title: "1. Sayt foydalanadigan cookie-fayllar",
-      paragraphs: ["Ustunlar tartibi: Nomi — Turi — Vazifasi — Saqlanish muddati — Kim oʻrnatadi."],
+      paragraphs: [
+        "Ustunlar tartibi: Nomi — Turi — Vazifasi — Saqlanish muddati — Kim oʻrnatadi.",
+      ],
       bullets: [
         "language — Zarur — Tanlangan interfeys tilini eslab qolish — 12 oy — Sayt",
         "cookie_consent — Zarur — Cookie boʻyicha tanlovingizni saqlash — 12 oy — Sayt",
@@ -515,7 +515,9 @@ const ruCookies: LegalDocument = {
   sections: [
     {
       title: "1. Какие cookie использует сайт",
-      paragraphs: ["Порядок сведений: Название — Тип — Назначение — Срок хранения — Кто устанавливает."],
+      paragraphs: [
+        "Порядок сведений: Название — Тип — Назначение — Срок хранения — Кто устанавливает.",
+      ],
       bullets: [
         "language — Необходимые — Запоминание выбранного языка интерфейса — 12 месяцев — Сайт",
         "cookie_consent — Необходимые — Хранение вашего выбора по cookie — 12 месяцев — Сайт",

@@ -2,35 +2,15 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { ApiError } from "@/types";
 import { TokenManager } from "./tokenManager";
 
-// Environment-based API URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
-
-// interface ErrorResponse {
-//   code?: string;
-//   message?: string;
-// }
-
-// class TokenManager {
-//   private static getStorage(): Storage | null {
-//     return typeof window !== "undefined" ? window.localStorage : null;
-//   }
-//   static getAccessToken() { return this.getStorage()?.getItem("accessToken") || null; }
-//   static getRefreshToken() { return this.getStorage()?.getItem("refreshToken") || null; }
-//   static setTokens(access: string, refresh: string) {
-//     const s = this.getStorage(); if (s) { s.setItem("accessToken", access); s.setItem("refreshToken", refresh); }
-//   }
-//   static clearTokens() {
-//     const s = this.getStorage(); if (s) { s.removeItem("accessToken"); s.removeItem("refreshToken"); }
-//   }
-// }
+// On the server (SSR), use BACKEND_URL directly because relative URLs fail in Node.js.
+// In the browser, use the same-origin /api proxy.
+const API_BASE_URL =
+  typeof window === "undefined"
+    ? process.env.BACKEND_URL || "http://localhost:8000"
+    : process.env.NEXT_PUBLIC_API_URL || "/api";
 
 class ApiClient {
   private client: AxiosInstance;
-  // private isRefreshing = false;
-  // private failedQueue: Array<{
-  //   resolve: (value: any) => void;
-  //   reject: (error: any) => void;
-  // }> = [];
 
   constructor() {
     this.client = axios.create({
@@ -56,7 +36,6 @@ class ApiClient {
           config.url?.includes("/dictionary/create_term");
 
         const isAuthFreeRoute = authFreeRoutes.some((route) => {
-          console.log(true);
           return config.url?.includes(route);
         });
 
@@ -66,7 +45,6 @@ class ApiClient {
           isTerminsAdminGet
         ) {
           const token = TokenManager.getAccessToken();
-          console.log("token exists", token);
           if (token) {
             config.headers.Authorization = `Bearer ${token}`;
           }
@@ -102,6 +80,7 @@ class ApiClient {
       const apiError: ApiError = {
         message:
           (axiosError.response?.data as any)?.message ||
+          (axiosError.response?.data as any)?.detail ||
           axiosError.message ||
           "An error occurred",
         status: axiosError.response?.status || 500,
@@ -113,4 +92,3 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
-// export { TokenManager };
