@@ -9,6 +9,8 @@ Before deploying, read:
 - `docs/LEGAL-RISK-REPORT.ru.md` — compliance status, open legal questions and the
   checklist for the legal department.
 - `docs/IMAGE-CREDITS.md` — image provenance register.
+- `docs/TECHNICAL-SPEC.ru.md` — measured performance, capacity estimates and
+  server requirements (for the hosting request).
 - `src/constants/organization.ts` — organisation details. Fields marked `TODO`
   are shown on the site until real data is filled in.
 

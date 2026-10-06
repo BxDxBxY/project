@@ -11,7 +11,7 @@ export const translations = {
     },
     header: {
       title: "Diplomatik Izohli Lug‘at",
-      subtitle: "O‘zbek tilidagi elektron lug‘at",
+      subtitle: "Diplomatik akademiya elektron resursi",
       testBanner: "Sayt test tartibida ishlamoqda.",
       skipToContent: "Asosiy mazmunga oʻtish",
       openMenu: "Menyuni ochish",
@@ -137,7 +137,6 @@ export const translations = {
       addressLabel: "Manzil",
       phoneLabel: "Telefon",
       emailLabel: "E-pochta",
-      taxIdLabel: "STIR",
       socialX: "Rasmiy X (Twitter) sahifasi",
       socialLinkedIn: "Rasmiy LinkedIn sahifasi",
     },
@@ -161,7 +160,7 @@ export const translations = {
     },
     header: {
       title: "Дипломатический словарь",
-      subtitle: "Официальный и первый онлайн-словарь",
+      subtitle: "Электронный ресурс Дипломатической академии",
       testBanner: "Сайт работает в тестовом режиме.",
       skipToContent: "Перейти к основному содержанию",
       openMenu: "Открыть меню",
@@ -284,7 +283,6 @@ export const translations = {
       addressLabel: "Адрес",
       phoneLabel: "Телефон",
       emailLabel: "E-mail",
-      taxIdLabel: "ИНН",
       socialX: "Официальная страница в X (Twitter)",
       socialLinkedIn: "Официальная страница в LinkedIn",
     },

@@ -124,7 +124,7 @@ export default function AdminContactsPage() {
   );
 
   return (
-    <PageContainer maxWidth="lg">
+    <PageContainer maxWidth="full" className="!px-0 !py-0">
       <div className="">
         <Typography
           variant="h4"

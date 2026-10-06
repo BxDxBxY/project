@@ -11,7 +11,7 @@ export default function AboutPage() {
 
   return (
     <PageContainer maxWidth="md">
-      <div className="py-8 sm:py-12 md:py-16">
+      <div>
         {/* Header Section */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#001c3b] mb-4 sm:mb-6 leading-tight">
