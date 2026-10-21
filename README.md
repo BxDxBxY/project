@@ -6,6 +6,8 @@ A comprehensive TypeScript-based web application for browsing and searching dipl
 
 Before deploying, read:
 
+- `docs/HANDOFF.ru.md` — project state, what is done and what is left (in Russian).
+  Start here if you are new to the project.
 - `docs/LEGAL-RISK-REPORT.ru.md` — compliance status, open legal questions and the
   checklist for the legal department.
 - `docs/IMAGE-CREDITS.md` — image provenance register.
