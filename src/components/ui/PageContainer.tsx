@@ -33,7 +33,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
 
   return (
     <div
-      className={`px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 mx-auto ${widthClass} ${className}`}
+      className={`px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10 mx-auto ${widthClass} ${className}`}
     >
       {children}
     </div>

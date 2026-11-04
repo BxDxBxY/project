@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { PageContainer } from "@/components/ui/PageContainer";
 // import { useRouter } from "next/navigation";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
 import { useDictionary } from "@/hooks/useDictionary";
@@ -359,36 +360,8 @@ const AdminTermsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-200 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="max-w-sm sm:max-w-md w-full bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center">
-          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4 sm:mb-6">
-            <svg
-              className="w-6 h-6 sm:w-7 sm:h-7 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-              />
-            </svg>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 tracking-tight">
-            Xatolik yuz berdi
-          </h1>
-          <p className="text-sm sm:!text-base text-gray-500 mb-4 sm:mb-6">
-            {error}
-          </p>
-          <button
-            onClick={handleRefresh}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm sm:!text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Qayta urinish
-          </button>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <ErrorState error={error} onRetry={handleRefresh} />
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { ConsentProvider } from "@/lib/ConsentContext";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import { ConsentedAnalytics } from "@/components/analytics/ConsentedAnalytics";
 import { SkipToContentLink } from "@/components/ui/SkipToContentLink";
+import { NetworkStatusBanner } from "@/components/ui/NetworkStatusBanner";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -61,6 +62,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
 
             <CookieConsent />
+            {/* Aloqa uzilganda — bitta sokin qator, hech narsani bloklamaydi */}
+            <NetworkStatusBanner />
             {/* Statistika faqat rozilikdan keyin yuklanadi */}
             <ConsentedAnalytics />
           </ConsentProvider>

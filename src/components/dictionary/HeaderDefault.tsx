@@ -59,10 +59,11 @@ export const HeaderDefault = () => {
         pathname.startsWith("/admin") ? "hidden" : ""
       } sticky top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A] flex flex-col shadow-md`}
     >
-      {/* Demo Banner */}
-      <div className="bg-amber-400 text-amber-950 text-xs sm:text-sm font-semibold py-1.5 w-full relative z-20 shadow-sm marquee-container">
-        <div className="marquee-content">Sayt test variantda ishlamoqda.</div>
-      </div>
+      {/*
+        The "Sayt test variantda ishlamoqda" marquee lived here. Removed for
+        the public launch — the site is no longer in test mode. The .marquee-*
+        rules stay in globals.css in case a running line is ever needed again.
+      */}
       {/* Background with gradient and photo */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0099B5] via-white to-[#1EB53A]" />

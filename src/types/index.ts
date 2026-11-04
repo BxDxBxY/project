@@ -32,16 +32,32 @@ export interface AuthTokens {
   user_type: string;
 }
 
+/**
+ * A staff account, exactly as dictionary.serializers.UserAdminSerializer
+ * returns it. `password` is write-only on the server and so never arrives
+ * here; it only appears in the update payload.
+ */
 export interface User {
   id: number;
   username: string;
-  password: string;
-  email: string;
+  first_name: string;
+  last_name: string;
   full_name: string;
-  // last_name: string;
-  // is_staff: boolean;
-  // is_active: boolean;
-  // date_joined: string;
+  phone_number: string;
+  email: string;
+  is_active: boolean;
+  is_superuser: boolean;
+  user_type: string | null;
+  created_at: string;
+}
+
+export interface UpdateUserData {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  email?: string;
+  is_active?: boolean;
+  password?: string;
 }
 
 // Dictionary Types - Updated to match Swagger
@@ -159,7 +175,12 @@ export interface DictionaryState {
   termDetail?: TermDetail;
   categories: Category[];
   loading: boolean;
-  error: string | null;
+  /**
+   * The failure itself, not a pre-flattened string: the UI needs its `kind`
+   * to tell "you are offline" from "the server is down" and to decide
+   * whether a retry button is worth offering.
+   */
+  error: unknown;
   search: string;
   selectedCategory: string;
   language: string;
@@ -178,9 +199,29 @@ export interface AdminState {
 // }
 
 // Error Types
+
+/**
+ * Why a request failed, in terms the interface can act on.
+ *
+ * The raw status code is kept too, but the UI should branch on this: it is
+ * what separates "you are offline" from "the server is down" from "the
+ * password is wrong", all of which used to surface as the same opaque text.
+ */
+export type ApiErrorKind =
+  | "offline"
+  | "network"
+  | "timeout"
+  | "unauthorized"
+  | "forbidden"
+  | "notFound"
+  | "rateLimited"
+  | "server"
+  | "client";
+
 export interface ApiError {
   message: string;
   status: number;
+  kind: ApiErrorKind;
   details?: any;
 }
 

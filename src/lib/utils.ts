@@ -13,11 +13,22 @@ export class AppError extends Error {
   }
 }
 
+/** Map an HTTP status onto the kind the interface branches on. */
+const kindForStatus = (status: number): ApiError["kind"] => {
+  if (status === 401) return "unauthorized";
+  if (status === 403) return "forbidden";
+  if (status === 404) return "notFound";
+  if (status === 429) return "rateLimited";
+  if (status >= 500) return "server";
+  return "client";
+};
+
 export const handleApiError = (error: any): ApiError => {
   if (error instanceof AppError) {
     return {
       message: error.message,
       status: error.status,
+      kind: kindForStatus(error.status),
       details: error.details,
     };
   }
@@ -30,6 +41,7 @@ export const handleApiError = (error: any): ApiError => {
         error.response.statusText ||
         "Server error",
       status: error.response.status,
+      kind: kindForStatus(error.response.status),
       details: error.response.data,
     };
   }
@@ -39,6 +51,10 @@ export const handleApiError = (error: any): ApiError => {
     return {
       message: "Network error - please check your connection",
       status: 0,
+      kind:
+        typeof navigator !== "undefined" && navigator.onLine === false
+          ? "offline"
+          : "network",
       details: error.request,
     };
   }
@@ -47,6 +63,7 @@ export const handleApiError = (error: any): ApiError => {
   return {
     message: error.message || "An unexpected error occurred",
     status: 500,
+    kind: "server",
     details: error,
   };
 };

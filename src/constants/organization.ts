@@ -17,6 +17,16 @@ export const TODO_MARK = "TODO";
 export interface OrganizationDetails {
   /** Toʻliq rasmiy nomi / Полное официальное наименование */
   legalName: string;
+  /**
+   * Rasmiy nom — maʼnoviy boʻlaklarga ajratilgan koʻrinishi.
+   *
+   * Footerda toʻliq nom bir qatorda siqilib ketardi. Boʻlaklar tartibi va
+   * matni `legalName` bilan bir xil boʻlishi shart — bu faqat koʻrinish.
+   *
+   * Разбивка официального наименования по смысловым строкам: в футере одна
+   * длинная строка нечитаема. Текст обязан совпадать с `legalName`.
+   */
+  legalNameLines: string[];
   /** Qisqa nomi / Краткое наименование */
   shortName: string;
   /** Tashkiliy tobelik / Ведомственная принадлежность */
@@ -35,6 +45,11 @@ export const ORGANIZATION: Record<LanguageCode, OrganizationDetails> = {
   uz: {
     legalName:
       "Oʻzbekiston Respublikasi Tashqi ishlar vazirligi Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi Diplomatik akademiya",
+    legalNameLines: [
+      "Oʻzbekiston Respublikasi Tashqi ishlar vazirligi",
+      "Jahon iqtisodiyoti va diplomatiya universiteti huzuridagi",
+      "Diplomatik akademiya",
+    ],
     shortName: "Diplomatik akademiya",
     affiliation:
       "Oʻzbekiston Respublikasi Tashqi ishlar vazirligi tizimidagi taʼlim muassasasi",
@@ -49,6 +64,11 @@ export const ORGANIZATION: Record<LanguageCode, OrganizationDetails> = {
   ru: {
     legalName:
       "Дипломатическая академия при Университете мировой экономики и дипломатии Министерства иностранных дел Республики Узбекистан",
+    legalNameLines: [
+      "Дипломатическая академия",
+      "при Университете мировой экономики и дипломатии",
+      "Министерства иностранных дел Республики Узбекистан",
+    ],
     shortName: "Дипломатическая академия",
     affiliation:
       "Образовательное учреждение в системе Министерства иностранных дел Республики Узбекистан",

@@ -1,5 +1,5 @@
 import { apiClient } from "./apiClient";
-import { User, CreateUserData } from "@/types";
+import { User, CreateUserData, UpdateUserData } from "@/types";
 
 export const fetchUsers = () =>
   apiClient.request<User[]>({ method: "GET", url: "/dictionary/user_list/" });
@@ -11,9 +11,9 @@ export const createUser = (data: CreateUserData) =>
     data,
   });
 
-export const updateUser = (id: number, data: Partial<User>) =>
+export const updateUser = (id: number, data: UpdateUserData) =>
   apiClient.request<User>({
-    method: "PUT",
+    method: "PATCH",
     url: `/dictionary/user_update/${id}/`,
     data,
   });

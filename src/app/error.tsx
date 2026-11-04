@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import HomeIcon from "@mui/icons-material/Home";
@@ -13,20 +13,32 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // navigator.onLine is only read after mount: the server render has no
+  // navigator, and guessing here would mean a hydration mismatch.
+  const [offline, setOffline] = useState(false);
+
   useEffect(() => {
     // Log the error to an error reporting service
     console.error("Global error boundary caught:", error);
+    setOffline(
+      typeof navigator !== "undefined" && navigator.onLine === false,
+    );
   }, [error]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-20">
       <div className="max-w-md w-full text-center">
-        <div className="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-8">
+        <div
+          className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 ${
+            offline ? "bg-amber-50" : "bg-red-50"
+          }`}
+        >
           <svg
-            className="w-10 h-10 text-red-500"
+            className={`w-10 h-10 ${offline ? "text-amber-500" : "text-red-500"}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -38,11 +50,12 @@ export default function Error({
         </div>
 
         <h1 className="text-3xl font-black text-[#001c3b] mb-4">
-          Nimadir notoʻgʻri ketdi
+          {offline ? "Internet aloqasi yoʻq" : "Nimadir notoʻgʻri ketdi"}
         </h1>
         <p className="text-gray-600 mb-10 leading-relaxed">
-          Tizimda kutilmagan xatolik yuz berdi. Iltimos, sahifani yangilang yoki
-          birozdan soʻng qayta urinib koʻring.
+          {offline
+            ? "Qurilmangiz tarmoqqa ulanmagan. Aloqani tekshirib, qayta urinib koʻring."
+            : "Tizimda kutilmagan xatolik yuz berdi. Iltimos, sahifani yangilang yoki birozdan soʻng qayta urinib koʻring."}
         </p>
 
         <div className="flex flex-col gap-3">

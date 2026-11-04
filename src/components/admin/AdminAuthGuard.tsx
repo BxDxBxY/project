@@ -1,103 +1,107 @@
 // components/admin/AdminAuthGuard.tsx
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TokenManager } from "@/lib/tokenManager";
 import { verifyToken, refreshToken } from "@/lib/authApi";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/constants/translations";
+import { ErrorState } from "@/components/ui/ErrorState";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { isApiError } from "@/lib/apiErrors";
 
+type Phase = "checking" | "allowed" | "unreachable";
+
+/**
+ * Gate for every /admin route except the login page.
+ *
+ * The important distinction here is between "your session ended" and "the
+ * server could not be reached". The first sends the editor to the login page;
+ * the second must not, or a dropped connection silently logs people out and
+ * throws away whatever they were editing.
+ */
 export const AdminAuthGuard: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language].admin;
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const access = TokenManager.getAccessToken();
-      const refresh = TokenManager.getRefreshToken();
+  const [phase, setPhase] = useState<Phase>("checking");
+  const [error, setError] = useState<unknown>(null);
 
-      console.log(
-        "AdminAuthGuard: Access token:",
-        access ? "present" : "missing",
-      );
-      console.log(
-        "AdminAuthGuard: Refresh token:",
-        refresh ? "present" : "missing",
-      );
+  const toLogin = useCallback(() => {
+    TokenManager.clearTokens();
+    router.replace("/admin/login?session=expired");
+  }, [router]);
 
-      if (!access && !refresh) {
-        console.log("No tokens, redirecting to login");
-        router.replace("/admin/login");
-        setChecking(false);
+  const checkAuth = useCallback(async () => {
+    setPhase("checking");
+    setError(null);
+
+    const access = TokenManager.getAccessToken();
+    const refresh = TokenManager.getRefreshToken();
+
+    if (!access && !refresh) {
+      TokenManager.clearTokens();
+      router.replace("/admin/login");
+      return;
+    }
+
+    try {
+      if (access) {
+        const res = await verifyToken(access);
+        if (!res.code && !res.detail) {
+          setPhase("allowed");
+          return;
+        }
+      }
+
+      if (refresh) {
+        const data = await refreshToken(refresh);
+        if (data.access) {
+          TokenManager.setTokens(data.access, refresh);
+          setPhase("allowed");
+          return;
+        }
+      }
+
+      toLogin();
+    } catch (err) {
+      // Transport failure — the token may well still be valid. Offer a retry
+      // instead of destroying the session.
+      const transport =
+        isApiError(err) &&
+        ["offline", "network", "timeout", "server"].includes(err.kind);
+
+      if (transport) {
+        setError(err);
+        setPhase("unreachable");
         return;
       }
 
-      try {
-        if (access) {
-          const res = await verifyToken(access);
-          console.log("verifyToken response:", res);
-          if (!res.code && !res.detail) {
-            setChecking(false);
-            return;
-          }
-          console.log("Access token invalid, attempting refresh");
-        }
+      toLogin();
+    }
+  }, [router, toLogin]);
 
-        if (refresh) {
-          const data = await refreshToken(refresh);
-          console.log("refreshToken response:", data);
-          if (data.access) {
-            TokenManager.setTokens(data.access, refresh); // Update access token
-            setChecking(false);
-            return;
-          }
-          console.log("Refresh token invalid, clearing tokens");
-          TokenManager.clearTokens();
-          router.replace("/admin/login");
-          setChecking(false);
-          return;
-        }
-
-        console.log("No valid tokens, redirecting to login");
-        TokenManager.clearTokens();
-        router.replace("/admin/login");
-        setChecking(false);
-      } catch (err: any) {
-        console.error("AdminAuthGuard error:", {
-          message: err.message,
-          stack: err.stack,
-        });
-        if (err.message.includes("Network Error")) {
-          setError(
-            "Authentication server unavailable. Please try again later.",
-          );
-        } else {
-          TokenManager.clearTokens();
-          router.replace("/admin/login");
-        }
-        setChecking(false);
-      }
-    };
-
+  useEffect(() => {
     checkAuth();
-  }, [router]);
+  }, [checkAuth]);
 
-  if (error) {
+  if (phase === "unreachable") {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">Error</h1>
-          <p>{error}</p>
-        </div>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+        <ErrorState error={error} onRetry={checkAuth} />
       </div>
     );
   }
 
-  if (checking) {
+  if (phase === "checking") {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-blue-900">Checking admin access...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 gap-4">
+        <LoadingSpinner size="lg" />
+        <p className="text-sm text-gray-600">{t.checkingAccess}</p>
       </div>
     );
   }

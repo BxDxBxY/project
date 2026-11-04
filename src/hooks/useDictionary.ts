@@ -38,7 +38,19 @@ interface UseDictionaryReturn extends DictionaryState {
 export const useDictionary = (
   initialTerms?: TermSummary[],
 ): UseDictionaryReturn => {
-  const [state, setState] = useState<DictionaryState>(globalState);
+  // Seed from the server-rendered terms on the very first render.
+  //
+  // Without this the page always started from the empty module singleton with
+  // loading: true, so the server shipped a spinner and the browser re-rendered
+  // the whole dictionary a moment later — the SSR fetch was paid for and
+  // thrown away. The alphabet bar and the term count were missing from the
+  // initial HTML for the same reason. Module state is left untouched here:
+  // loadData() hydrates it from the same array on mount.
+  const [state, setState] = useState<DictionaryState>(() =>
+    initialTerms && initialTerms.length > 0 && globalState.terms.length === 0
+      ? { ...globalState, terms: initialTerms, loading: false, error: null }
+      : globalState,
+  );
 
   useEffect(() => {
     listeners.add(setState);
@@ -79,16 +91,13 @@ export const useDictionary = (
       }));
       logger.info(`Loaded ${termsData.length} terms into memory cache!`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Failed to load dictionary data";
       logger.error("Error loading dictionary data:", error);
+      // Keep whatever terms are already on screen. Losing a refresh is no
+      // reason to blank a dictionary the visitor is reading.
       setGlobalState((prev) => ({
         ...prev,
         loading: false,
-        error: errorMessage,
-        terms: [],
+        error,
       }));
     }
   }, [initialTerms]);

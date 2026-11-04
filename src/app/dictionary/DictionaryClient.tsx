@@ -7,6 +7,11 @@ import { PageContainer } from "@/components/ui/PageContainer";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { SearchBar } from "@/components/dictionary/SearchBar";
 import { TermCard } from "@/components/dictionary/TermCard";
+import {
+  AlphabetNav,
+  letterAnchorId,
+} from "@/components/dictionary/AlphabetNav";
+import { ErrorState } from "@/components/ui/ErrorState";
 import { useDictionary } from "@/hooks/useDictionary";
 import { logger } from "@/lib/utils";
 import { useMemo, useState, useEffect } from "react";
@@ -52,12 +57,17 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
   const { language } = useLanguage();
   const t = translations[language].dictionary;
 
+  const [retrying, setRetrying] = useState(false);
+
   const handleRefresh = async () => {
+    setRetrying(true);
     try {
       await refreshData();
       logger.info("Dictionary data refreshed successfully");
     } catch (error) {
       logger.error("Failed to refresh dictionary data:", error);
+    } finally {
+      setRetrying(false);
     }
   };
 
@@ -110,38 +120,22 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (error) {
+  // A failure only takes over the page when there is nothing to show. If the
+  // terms are already in memory — the usual case once the page has loaded —
+  // the visitor keeps reading and gets a quiet notice instead.
+  if (error && terms.length === 0) {
     return (
       <PageContainer maxWidth="md">
-        <div className="flex flex-col items-center gap-6">
-          <h1 className="text-3xl font-bold text-gray-900">{t.title}</h1>
-          <div className="bg-white rounded-lg shadow-lg p-6 text-center max-w-lg">
-            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-red-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {t.errorMsg}
-            </h3>
-            <p className="text-sm text-gray-500 mb-4">{error}</p>
-            <button
-              onClick={handleRefresh}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#00527a] hover:bg-[#001c3b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001c3b]"
-            >
-              {t.retry}
-            </button>
-          </div>
+        <div className="flex flex-col items-center gap-6 sm:gap-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 text-center tracking-tight">
+            {t.title}
+          </h1>
+          <ErrorState
+            error={error}
+            title={t.errorMsg}
+            onRetry={handleRefresh}
+            retrying={retrying}
+          />
         </div>
       </PageContainer>
     );
@@ -167,6 +161,16 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
           />
         </div>
 
+        {/* Refresh failed but the cached terms are still usable */}
+        {!!error && terms.length > 0 && (
+          <p
+            role="status"
+            className="w-full max-w-4xl text-xs sm:text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5"
+          >
+            {t.offlineNotice}
+          </p>
+        )}
+
         {/* LOADING */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-12 sm:py-16">
@@ -178,27 +182,40 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
         ) : terms.length > 0 ? (
           /* HAS RESULTS */
           <>
+            {/* Alifbo boʻyicha oʻtish — sarlavhalar ostida yopishib turadi */}
+            {!search && <AlphabetNav available={letters} />}
+
             <div
-              className="w-full max-w-4xl text-sm sm:text-base text-gray-700 flex justify-between items-center mb-8 sm:mb-10"
+              className="w-full max-w-4xl text-sm sm:text-base text-gray-700 flex justify-between items-center"
               role="status"
             >
               <span>{totalTerms > 0 && `${totalTerms} ${t.termsShowing}`}</span>
             </div>
-            <div className="w-full space-y-16 sm:space-y-24">
+
+            {/*
+              Harflar orasidagi masofa 16/24 dan 10/12 ga tushirildi: avval
+              ekranning yarmi boʻsh qolardi va roʻyxat uzilib ketganday
+              koʻrinardi.
+            */}
+            <div className="w-full space-y-10 sm:space-y-12">
               {letters.map(
                 (letter) =>
                   groupedTerms[letter]?.length > 0 && (
                     <section
                       key={letter}
-                      className="scroll-mt-48"
+                      id={letterAnchorId(letter)}
+                      className="scroll-mt-[9.5rem] sm:scroll-mt-[11rem] md:scroll-mt-[12rem]"
                       aria-label={`${letter} — ${t.letterHeading}`}
                     >
-                      <div className="mb-6 sm:mb-10 px-2 sm:px-4">
-                        <h2 className="inline-block text-3xl sm:text-4xl md:text-5xl font-black text-[#001c3b] border-b-4 border-[#c9a96e] pb-2">
+                      <div className="mb-4 sm:mb-6 px-1 sm:px-2 flex items-baseline gap-3">
+                        <h2 className="inline-block text-2xl sm:text-3xl md:text-4xl font-black text-[#001c3b] border-b-4 border-[#c9a96e] pb-1.5">
                           {letter}
                         </h2>
+                        <span className="text-xs sm:text-sm text-gray-400 tabular-nums">
+                          {groupedTerms[letter].length}
+                        </span>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                         {groupedTerms[letter].map((term) => (
                           <div
                             key={term.id}

@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -30,6 +30,7 @@ import {
 import { Visibility } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { PageContainer } from "@/components/ui/PageContainer";
+import { ErrorState } from "@/components/ui/ErrorState";
 import {
   fetchAdminContacts,
   fetchAdminContact,
@@ -40,6 +41,7 @@ import {
 export default function AdminContactsPage() {
   const [contacts, setContacts] = useState<AdminContact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<unknown>(null);
 
   // pagination states
   const [page, setPage] = useState(0);
@@ -63,23 +65,27 @@ export default function AdminContactsPage() {
     sev: "success",
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchAdminContacts();
-        const sorted = [...data].sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
-        setContacts(sorted);
-      } catch (e) {
-        setToast({ open: true, msg: "Failed to load contacts.", sev: "error" });
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const data = await fetchAdminContacts();
+      const sorted = [...data].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+      setContacts(sorted);
+    } catch (e) {
+      setLoadError(e);
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleChangePage = (_: unknown, newPage: number) => setPage(newPage);
   const handleChangeRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +144,14 @@ export default function AdminContactsPage() {
             <div className="flex justify-center items-center !h-64">
               <CircularProgress />
             </div>
+          ) : loadError ? (
+            <div className="py-10 px-4">
+              <ErrorState error={loadError} onRetry={load} />
+            </div>
+          ) : contacts.length === 0 ? (
+            <p className="py-16 text-center text-sm text-gray-500">
+              Hozircha murojaatlar yoʻq.
+            </p>
           ) : (
             <>
               {isMobile ? (
