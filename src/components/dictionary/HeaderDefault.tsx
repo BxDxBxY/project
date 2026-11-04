@@ -38,12 +38,14 @@ export const HeaderDefault = () => {
 
   const handleMobileSearchSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    setSearch(mobileSearch);
-    triggerSearch(mobileSearch);
+    const query = mobileSearch.trim();
+    setSearch(query);
+    triggerSearch(query);
     setMobileOpen(false);
-    if (pathname !== "/dictionary") {
-      router.push("/dictionary");
-    }
+
+    // Always navigate with the query in the address bar, even when already on
+    // the dictionary: that is what lets Back return to these results later.
+    router.push(query ? `/dictionary?q=${encodeURIComponent(query)}` : "/dictionary");
   };
 
   const navLinks = [

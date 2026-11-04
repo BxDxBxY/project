@@ -417,28 +417,34 @@ export default function ContactPage() {
                   {isSubmitting ? t.btnSending : t.btnSend}
                 </Button>
 
-                {/* reCAPTCHA v3 — skript formaga tegilganda yuklanadi */}
-                <p className="text-[11px] leading-relaxed text-gray-500 sm:text-right sm:max-w-[16rem]">
-                  {t.recaptchaNoticePrefix}{" "}
-                  <a
-                    href="https://policies.google.com/privacy"
-                    className="text-[#00527a] underline underline-offset-2 hover:text-[#001c3b]"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t.recaptchaPrivacy}
-                  </a>
-                  {", "}
-                  <a
-                    href="https://policies.google.com/terms"
-                    className="text-[#00527a] underline underline-offset-2 hover:text-[#001c3b]"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t.recaptchaTerms}
-                  </a>
-                  .
-                </p>
+                {/*
+                  reCAPTCHA v3 — skript formaga tegilganda yuklanadi.
+                  Kalit sozlanmagan boʻlsa, bu matn koʻrsatilmaydi: aks holda
+                  sayt yuklanmaydigan xizmat haqida yolgʻon maʼlumot berardi.
+                */}
+                {isConfigured && (
+                  <p className="text-[11px] leading-relaxed text-gray-500 sm:text-right sm:max-w-[16rem]">
+                    {t.recaptchaNoticePrefix}{" "}
+                    <a
+                      href="https://policies.google.com/privacy"
+                      className="text-[#00527a] underline underline-offset-2 hover:text-[#001c3b]"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t.recaptchaPrivacy}
+                    </a>
+                    {", "}
+                    <a
+                      href="https://policies.google.com/terms"
+                      className="text-[#00527a] underline underline-offset-2 hover:text-[#001c3b]"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t.recaptchaTerms}
+                    </a>
+                    .
+                  </p>
+                )}
               </div>
             </form>
           </section>

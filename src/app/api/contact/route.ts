@@ -116,9 +116,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // No token at all (script blocked, offline-first load, wrong key version):
-  // allowed, but on the stricter budget.
-  if (!verified && used >= MAX_UNVERIFIED_PER_WINDOW) {
+  // A message that arrived without a verified token — script blocked, Google
+  // unreachable, the wrong key version — is allowed on a stricter budget.
+  // When no captcha is configured at all that is simply how the form works,
+  // so the ordinary limit applies instead of the reduced one.
+  if (captchaConfigured && !verified && used >= MAX_UNVERIFIED_PER_WINDOW) {
     return NextResponse.json({ message: MESSAGES.rateLimited }, { status: 429 });
   }
 

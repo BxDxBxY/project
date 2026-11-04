@@ -59,6 +59,44 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
 
   const [retrying, setRetrying] = useState(false);
 
+  /*
+    The search query lives in the address bar.
+
+    Until now it lived only in a module-level variable, so opening a term and
+    pressing Back came back to an unfiltered dictionary — the search was gone
+    and the visitor had to type it again. Keeping it in ?q= means Back
+    restores exactly what was on screen, and a result list can be linked to.
+
+    window.history is used rather than useSearchParams on purpose: this page
+    is statically rendered, and useSearchParams would force it dynamic (or
+    demand a Suspense boundary) for what is a client-only concern. Next 15
+    syncs its router with direct history calls.
+  */
+  const applyQueryFromUrl = () => {
+    if (typeof window === "undefined") return;
+    const q = new URLSearchParams(window.location.search).get("q") ?? "";
+    if (q !== search) {
+      setSearch(q);
+      triggerSearch(q);
+    }
+  };
+
+  // On mount and on every Back/Forward.
+  useEffect(() => {
+    applyQueryFromUrl();
+    window.addEventListener("popstate", applyQueryFromUrl);
+    return () => window.removeEventListener("popstate", applyQueryFromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSearch = async (query: string) => {
+    await triggerSearch(query);
+    const next = query ? `/dictionary?q=${encodeURIComponent(query)}` : "/dictionary";
+    if (typeof window !== "undefined" && window.location.pathname + window.location.search !== next) {
+      window.history.replaceState(null, "", next);
+    }
+  };
+
   const handleRefresh = async () => {
     setRetrying(true);
     try {
@@ -156,7 +194,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
             placeholder={t.searchPlaceholder}
             className="flex-1 text-gray-800 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             disabled={loading}
-            trigger={triggerSearch}
+            trigger={handleSearch}
             enableAutocomplete={true}
           />
         </div>
@@ -253,7 +291,7 @@ const DictionaryClient: React.FC<DictionaryClientProps> = ({
               variant="contained"
               onClick={() => {
                 setSearch("");
-                triggerSearch("");
+                handleSearch("");
               }}
               sx={{
                 backgroundColor: "#001c3b",

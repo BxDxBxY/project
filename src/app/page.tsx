@@ -207,7 +207,13 @@ export default function HomePage() {
   );
 
   return (
-    <div className="relative min-h-screen">
+    /*
+      No min-h-screen here. The root layout is already a min-h-screen flex
+      column with <main> as flex-1, so this forced a *second* full viewport
+      below the text and left a screen-high gap above the footer on both
+      desktop and phone. The layout handles the height.
+    */
+    <div className="relative">
       {variant === 1 && renderVariant1()}
       {variant === 2 && renderVariant2()}
       {variant === 3 && renderVariant3()}

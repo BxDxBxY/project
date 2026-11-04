@@ -116,7 +116,10 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
   const router = useRouter();
 
   const handleBack = () => {
-    if (window.history.length > 2) {
+    // history.length > 2 was too strict: arriving from the dictionary in a
+    // fresh tab leaves length === 2, so Back fell through to a plain push and
+    // the visitor's search was discarded. Going back keeps ?q= intact.
+    if (typeof window !== "undefined" && window.history.length > 1) {
       router.back();
     } else {
       router.push("/dictionary");
@@ -148,8 +151,9 @@ const TermDetailPage: React.FC<TermDetailPageProps> = ({
   }, [fetchTermData, initialTerm]);
 
   if (loading) {
+    // The header is sticky, not fixed — this needs no pt-[128px] spacer.
     return (
-      <div className="pt-[128px] p-8 flex flex-col items-center justify-center min-h-[60vh]">
+      <div className="p-8 flex flex-col items-center justify-center min-h-[50vh]">
         <LoadingSpinner size="lg" />
         <p className="mt-4 text-gray-500 font-medium">Termin yuklanmoqda...</p>
       </div>
