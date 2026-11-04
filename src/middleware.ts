@@ -15,10 +15,30 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // If no tokens, redirect to login
+  // If no tokens, redirect to login.
+  //
+  // The destination is built from the proxy headers rather than from
+  // `request.url`. Inside middleware `request.url` carries the address this
+  // server is bound to (127.0.0.1:3000), not the public hostname, so
+  // `new URL("/admin/login", request.url)` sent visitors to
+  // https://localhost:3000/admin/login and the admin panel was unreachable
+  // through lugat.uwed.uz. Next.js rejects a relative Location with
+  // ERR_INVALID_URL, so an absolute one it has to be — just not that one.
+  //
+  // nginx sets X-Forwarded-Proto and X-Forwarded-Host on every proxied
+  // request; Host is the fallback when something reaches this server directly.
   if (!access && !refresh) {
-    console.log("No tokens found, redirecting to login");
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    const forwardedHost = request.headers.get("x-forwarded-host");
+    const host = forwardedHost || request.headers.get("host");
+    const proto =
+      request.headers.get("x-forwarded-proto") ||
+      (request.nextUrl.protocol === "https:" ? "https" : "http");
+
+    const target = host
+      ? `${proto}://${host}/admin/login`
+      : new URL("/admin/login", request.url).toString();
+
+    return NextResponse.redirect(target, 307);
   }
 
   // Tokens present, allow access to admin routes
