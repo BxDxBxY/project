@@ -45,7 +45,13 @@ export const AlphabetNav: React.FC<AlphabetNavProps> = ({
   return (
     <nav
       aria-label={t.alphabetNavLabel}
-      className={`w-full sticky top-[88px] sm:top-[104px] md:top-[120px] z-30 ${className}`}
+      /*
+        Sticks directly under the header. Those offsets are the header's own
+        height — py-4 (32px) plus the logo, which is 60/64/80px across the
+        breakpoints — so the bar never slides under it or leaves a gap.
+        z-30 keeps it below the header's z-50.
+      */
+      className={`w-full sticky top-[92px] sm:top-[96px] md:top-[112px] z-30 ${className}`}
     >
       <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm px-2 py-2">
         <ul className="flex items-center gap-1 overflow-x-auto scrollbar-thin">
